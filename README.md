@@ -1,2 +1,4503 @@
-# osai
-職業安全智慧管理平台
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>OSAI｜職業安全智慧管理平台</title>
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --blue-700: #1d4ed8;
+            --blue-600: #2563eb;
+            --blue-500: #3b82f6;
+            --sky-600: #0284c7;
+            --sky-500: #0ea5e9;
+            --indigo-700: #4338ca;
+            --indigo-600: #4f46e5;
+            --emerald-600: #059669;
+            --emerald-500: #10b981;
+            --amber-500: #f59e0b;
+            --rose-500: #f43f5e;
+            --card-radius: 22px;
+            --shadow-soft: 0 18px 50px rgba(15, 23, 42, 0.09);
+            --shadow-card: 0 12px 32px rgba(15, 23, 42, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: clip;
+            color: var(--slate-800);
+            background:
+                radial-gradient(circle at 8% 4%, rgba(59, 130, 246, 0.10), transparent 30%),
+                radial-gradient(circle at 92% 14%, rgba(79, 70, 229, 0.08), transparent 28%),
+                linear-gradient(180deg, #f8fafc 0%, #f1f5f9 46%, #eef2ff 100%);
+            font-family:
+                "Noto Sans TC",
+                "Microsoft JhengHei",
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid rgba(59, 130, 246, 0.25);
+            outline-offset: 2px;
+        }
+
+        .no-scroll {
+            overflow: hidden;
+        }
+
+.app-shell {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 72px;
+}
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            min-height: 72px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+            background: rgba(248, 250, 252, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .topbar-inner {
+            width: min(1480px, calc(100% - 40px));
+            min-height: 72px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .brand-mini {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand-mini-logo {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: linear-gradient(135deg, var(--blue-500), var(--indigo-700));
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+        }
+
+        .brand-mini-logo i {
+            font-size: 19px;
+        }
+
+        .brand-mini-text {
+            min-width: 0;
+        }
+
+        .brand-mini-text strong {
+            display: block;
+            color: var(--slate-900);
+            font-size: 15px;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .brand-mini-text span {
+            display: block;
+            margin-top: 2px;
+            color: var(--slate-500);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .clock-box {
+            min-width: 176px;
+            padding: 8px 12px;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.82);
+            text-align: right;
+        }
+
+        .clock-date {
+            color: var(--slate-500);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+
+        .clock-time {
+            margin-top: 1px;
+            color: var(--slate-900);
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 0.03em;
+        }
+
+        .icon-button {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: inline-grid;
+            place-items: center;
+            cursor: pointer;
+            color: var(--slate-600);
+            border: 1px solid var(--slate-200);
+            background: rgba(255, 255, 255, 0.9);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .icon-button:hover {
+            color: var(--blue-600);
+            border-color: #bfdbfe;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .main {
+            flex: 1 1 auto;
+            width: min(1480px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 28px 0 36px;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            min-height: 260px;
+            padding: 38px 40px;
+            color: #fff;
+            background:
+                radial-gradient(circle at 82% 22%, rgba(56, 189, 248, 0.28), transparent 28%),
+                radial-gradient(circle at 62% 88%, rgba(99, 102, 241, 0.25), transparent 34%),
+                linear-gradient(135deg, #0f172a 0%, #172554 48%, #1e3a8a 100%);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            right: -110px;
+            top: -145px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow:
+                0 0 0 46px rgba(255, 255, 255, 0.025),
+                0 0 0 92px rgba(255, 255, 255, 0.018);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            border: 1px solid rgba(147, 197, 253, 0.22);
+            background: rgba(30, 64, 175, 0.25);
+            color: #dbeafe;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .hero-kicker-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #38bdf8;
+            box-shadow: 0 0 0 5px rgba(56, 189, 248, 0.12);
+        }
+
+        .hero-title {
+            margin: 22px 0 0;
+            font-size: clamp(30px, 4vw, 48px);
+            line-height: 1.12;
+            font-weight: 950;
+            letter-spacing: 0.025em;
+        }
+
+        .hero-title .osai {
+            color: #93c5fd;
+        }
+
+        .hero-subtitle {
+            margin-top: 10px;
+            color: #bfdbfe;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .hero-description {
+            max-width: 760px;
+            margin-top: 18px;
+            color: #dbeafe;
+            font-size: 14px;
+            line-height: 1.9;
+            font-weight: 600;
+        }
+
+        .hero-tags {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 11px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            color: #e2e8f0;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .hero-tag i {
+            color: #7dd3fc;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .overview-card {
+            position: relative;
+            min-height: 112px;
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.055);
+        }
+
+        .overview-label {
+            color: var(--slate-500);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+        }
+
+        .overview-value-row {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .overview-value {
+            color: var(--slate-900);
+            font-size: 26px;
+            line-height: 1;
+            font-weight: 950;
+        }
+
+        .overview-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            background: #eff6ff;
+            color: var(--blue-600);
+            font-size: 15px;
+        }
+
+        .overview-note {
+            margin-top: 8px;
+            color: var(--slate-400);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .section-head {
+            margin-top: 34px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .section-title-wrap {
+            min-width: 0;
+        }
+
+        .section-eyebrow {
+            color: var(--blue-600);
+            font-size: 10px;
+            font-weight: 950;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            margin: 6px 0 0;
+            color: var(--slate-900);
+            font-size: 24px;
+            font-weight: 950;
+            letter-spacing: 0.02em;
+        }
+
+        .section-description {
+            margin-top: 7px;
+            color: var(--slate-500);
+            font-size: 12px;
+            line-height: 1.7;
+            font-weight: 600;
+        }
+
+        .search-box {
+            width: min(360px, 100%);
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--slate-400);
+            font-size: 13px;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px 0 40px;
+            border-radius: 13px;
+            border: 1px solid var(--slate-200);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--slate-800);
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.045);
+        }
+
+        .system-grid {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .system-card {
+            --accent: #2563eb;
+            --accent-soft: #eff6ff;
+            --accent-border: #bfdbfe;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            padding: 22px;
+            border-radius: var(--card-radius);
+            border: 1px solid rgba(226, 232, 240, 0.96);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .system-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent), white 26%));
+        }
+
+        .system-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 44px rgba(15, 23, 42, 0.11);
+            border-color: var(--accent-border);
+        }
+
+        .system-card.is-disabled {
+            opacity: 0.58;
+            filter: grayscale(0.18);
+        }
+
+        .system-card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .system-icon {
+            width: 50px;
+            height: 50px;
+            flex: 0 0 50px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            font-size: 20px;
+        }
+
+        .system-seq {
+            color: var(--slate-300);
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 950;
+            letter-spacing: -0.03em;
+        }
+
+        .system-category {
+            margin-top: 18px;
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 950;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .system-name {
+            margin: 7px 0 0;
+            color: var(--slate-900);
+            font-size: 19px;
+            line-height: 1.45;
+            font-weight: 950;
+            letter-spacing: 0.01em;
+        }
+
+        .system-en {
+            margin-top: 5px;
+            color: var(--slate-400);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .system-desc {
+            margin-top: 13px;
+            min-height: 56px;
+            color: var(--slate-500);
+            font-size: 12px;
+            line-height: 1.75;
+            font-weight: 600;
+        }
+
+        .system-bottom {
+            margin-top: auto;
+            padding-top: 18px;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-width: 0;
+            color: var(--slate-500);
+            font-size: 10px;
+            font-weight: 850;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            flex: 0 0 7px;
+            border-radius: 50%;
+            background: var(--slate-300);
+        }
+
+        .status-dot.ready {
+            background: var(--emerald-500);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.11);
+        }
+
+        .status-dot.disabled {
+            background: var(--slate-400);
+        }
+
+        .last-opened {
+            min-width: 0;
+            color: var(--slate-400);
+            font-size: 9px;
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .launch-button {
+            width: 100%;
+            min-height: 44px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            cursor: pointer;
+            color: #fff;
+            background: var(--accent);
+            font-size: 12px;
+            font-weight: 950;
+            letter-spacing: 0.04em;
+            box-shadow: 0 10px 22px color-mix(in srgb, var(--accent), transparent 78%);
+            transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .launch-button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            filter: brightness(0.95);
+            box-shadow: 0 13px 26px color-mix(in srgb, var(--accent), transparent 72%);
+        }
+
+        .launch-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .launch-button:disabled {
+            cursor: not-allowed;
+            background: var(--slate-300);
+            box-shadow: none;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 48px 20px;
+            border-radius: 20px;
+            border: 1px dashed var(--slate-300);
+            background: rgba(255,255,255,.6);
+            text-align: center;
+            color: var(--slate-500);
+        }
+
+        .empty-state i {
+            font-size: 28px;
+            color: var(--slate-300);
+        }
+
+        .empty-state strong {
+            display: block;
+            margin-top: 12px;
+            color: var(--slate-700);
+            font-size: 14px;
+        }
+
+        .empty-state span {
+            display: block;
+            margin-top: 6px;
+            font-size: 11px;
+        }
+
+        .platform-note {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 18px;
+        }
+
+        .note-card {
+            border-radius: 20px;
+            padding: 22px;
+            border: 1px solid var(--slate-200);
+            background: rgba(255, 255, 255, 0.84);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045);
+        }
+
+        .note-card h3 {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 14px;
+            font-weight: 950;
+        }
+
+        .note-card p {
+            margin: 9px 0 0;
+            color: var(--slate-500);
+            font-size: 11px;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+
+        .architecture-flow {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0,1fr));
+            gap: 8px;
+        }
+
+        .flow-node {
+            padding: 10px;
+            border-radius: 12px;
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            text-align: center;
+        }
+
+        .flow-node i {
+            color: var(--blue-600);
+            font-size: 14px;
+        }
+
+        .flow-node strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--slate-700);
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+.footer {
+    width: min(1100px, calc(100% - 40px));
+
+    margin: 0 auto;
+    padding: 14px 0 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        auto
+        auto;
+
+    justify-content: center;
+    align-items: baseline;
+
+    column-gap: 72px;
+
+    text-align: left;
+}
+
+.footer-line {
+    grid-column: 1 / -1;
+
+    width: 240px;
+    height: 1px;
+
+    justify-self: center;
+
+    margin: 0 0 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #94a3b8,
+            transparent
+        );
+
+    opacity: 0.55;
+}
+
+.footer-title {
+    color: var(--slate-600);
+
+    font-size: 11px;
+    font-weight: 900;
+
+    letter-spacing: 0.08em;
+
+    white-space: nowrap;
+}
+
+.footer-dev {
+    margin-top: 0;
+
+    color: var(--blue-600);
+
+    font-size: 10px;
+    font-style: italic;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    white-space: nowrap;
+}
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(15, 23, 42, 0.62);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-panel {
+            width: min(820px, 100%);
+            max-height: min(88vh, 860px);
+            overflow: hidden;
+            border-radius: 24px;
+            background: #fff;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            box-shadow: 0 30px 80px rgba(2, 6, 23, 0.28);
+            animation: modalIn 0.18s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { transform: translateY(8px) scale(.985); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .modal-head {
+            padding: 20px 22px;
+            color: #fff;
+            background: linear-gradient(135deg, #0f172a, #172554 55%, #1e40af);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .modal-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .modal-icon {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.10);
+            border: 1px solid rgba(255,255,255,.10);
+            color: #bfdbfe;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 950;
+        }
+
+        .modal-subtitle {
+            margin-top: 3px;
+            color: #bfdbfe;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+        }
+
+        .modal-close {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            color: #e2e8f0;
+            background: rgba(255,255,255,.08);
+            transition: background .15s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,.16);
+        }
+
+        .modal-body {
+            max-height: calc(min(88vh, 860px) - 146px);
+            overflow-y: auto;
+            padding: 20px 22px;
+            background: #f8fafc;
+        }
+
+        .setting-intro {
+            padding: 13px 14px;
+            border-radius: 14px;
+            border: 1px solid #dbeafe;
+            background: #eff6ff;
+            color: #1e40af;
+            font-size: 11px;
+            line-height: 1.7;
+            font-weight: 700;
+        }
+
+        .setting-list {
+            margin-top: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .setting-item {
+            padding: 14px;
+            border-radius: 15px;
+            border: 1px solid var(--slate-200);
+            background: #fff;
+        }
+
+        .setting-item-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .setting-item-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--slate-800);
+            font-size: 11px;
+            font-weight: 950;
+        }
+
+        .setting-item-name i {
+            width: 18px;
+            text-align: center;
+            color: var(--blue-600);
+        }
+
+        .switch-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--slate-500);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .switch-wrap input {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--blue-600);
+        }
+
+        .url-input {
+            width: 100%;
+            height: 40px;
+            margin-top: 10px;
+            padding: 0 12px;
+            border-radius: 11px;
+            border: 1px solid var(--slate-200);
+            background: var(--slate-50);
+            color: var(--slate-700);
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        .url-input::placeholder {
+            color: var(--slate-400);
+        }
+
+        .modal-foot {
+            min-height: 72px;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-top: 1px solid var(--slate-200);
+            background: #fff;
+        }
+
+        .secondary-actions,
+        .primary-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn {
+            min-height: 38px;
+            padding: 0 13px;
+            border-radius: 11px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            font-size: 10px;
+            font-weight: 900;
+            transition: transform .15s ease, background .15s ease, border-color .15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-soft {
+            color: var(--slate-600);
+            background: var(--slate-100);
+            border: 1px solid var(--slate-200);
+        }
+
+        .btn-blue {
+            color: #fff;
+            background: var(--blue-600);
+            border: 1px solid var(--blue-600);
+        }
+
+        .btn-ghost {
+            color: var(--blue-600);
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+        }
+
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 200;
+            max-width: min(360px, calc(100vw - 40px));
+            padding: 12px 14px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            background: #0f172a;
+            box-shadow: 0 18px 40px rgba(15,23,42,.26);
+            transform: translateY(22px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .22s ease, opacity .22s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #065f46;
+        }
+
+        .toast.error {
+            background: #991b1b;
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            flex: 0 0 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,.14);
+            font-size: 10px;
+        }
+
+        .toast-message {
+            font-size: 11px;
+            line-height: 1.55;
+            font-weight: 850;
+        }
+
+        @media (max-width: 1100px) {
+            .system-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .overview-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .platform-note {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar-inner,
+            .main,
+            .footer {
+                width: min(100% - 24px, 1480px);
+            }
+
+            .topbar {
+                min-height: 64px;
+            }
+
+            .topbar-inner {
+                min-height: 64px;
+            }
+
+            .brand-mini-logo {
+                width: 38px;
+                height: 38px;
+                flex-basis: 38px;
+            }
+
+            .brand-mini-text strong {
+                font-size: 13px;
+            }
+
+            .brand-mini-text span {
+                display: none;
+            }
+
+            .clock-box {
+                display: none;
+            }
+
+            .main {
+                padding-top: 16px;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 28px 22px;
+                border-radius: 22px;
+            }
+
+            .hero-title {
+                font-size: 30px;
+            }
+
+            .hero-description {
+                font-size: 12px;
+            }
+
+            .overview-grid {
+                grid-template-columns: repeat(2, minmax(0,1fr));
+                gap: 10px;
+            }
+
+            .overview-card {
+                min-height: 100px;
+                padding: 15px;
+            }
+
+            .overview-value {
+                font-size: 22px;
+            }
+
+            .section-head {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .system-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .system-card {
+                min-height: 286px;
+            }
+
+            .modal-overlay {
+                padding: 10px;
+            }
+
+            .modal-panel {
+                border-radius: 20px;
+                max-height: 94vh;
+            }
+
+            .modal-body {
+                max-height: calc(94vh - 154px);
+                padding: 16px;
+            }
+
+            .modal-head,
+            .modal-foot {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .modal-foot {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .secondary-actions,
+            .primary-actions {
+                width: 100%;
+            }
+
+            .primary-actions {
+                justify-content: flex-end;
+            }
+
+            .secondary-actions .btn,
+            .primary-actions .btn {
+                flex: 1 1 auto;
+            }
+        }
+
+@media (max-width: 760px) {
+
+    .app-shell {
+        padding-top: 64px;
+    }
+
+}
+
+        @media (max-width: 460px) {
+
+.footer {
+    column-gap: 10px;
+    padding-top: 12px;
+    padding-bottom: 18px;
+}
+
+.footer-line {
+    margin-bottom: 10px;
+}
+
+.footer-title {
+    font-size: 8.5px;
+    letter-spacing: 0.02em;
+}
+
+.footer-dev {
+    font-size: 8px;
+    letter-spacing: 0.02em;
+}
+
+            .overview-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .overview-note {
+                display: none;
+            }
+
+            .hero-tags {
+                gap: 6px;
+            }
+
+            .hero-tag {
+                padding: 7px 9px;
+                font-size: 9px;
+            }
+
+            .architecture-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    
+
+/* =========================================================
+   OSAI v4：整合平台專業版
+========================================================= */
+.topbar {
+    min-height: 72px;
+    background:
+        linear-gradient(135deg, rgba(15,23,42,.98), rgba(23,37,84,.97));
+    border-bottom: 1px solid rgba(147,197,253,.16);
+    box-shadow: 0 10px 28px rgba(15,23,42,.16);
+}
+
+.topbar-inner {
+    min-height: 72px;
+}
+
+.topbar-branding {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-right: 20px;
+}
+
+.top-brand-osai {
+    color: #93c5fd;
+    font-size: 20px;
+    font-weight: 950;
+    letter-spacing: .11em;
+    white-space: nowrap;
+}
+
+.top-brand-integrated {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    color: #dbeafe;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .15em;
+    white-space: nowrap;
+}
+
+.integrated-orb {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: #2563eb;
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 0 0 5px rgba(56,189,248,.10);
+    animation: osaiOrbShift 4.8s ease-in-out infinite;
+}
+
+.integrated-orb i {
+    font-size: 12px;
+}
+
+@keyframes osaiOrbShift {
+    0%, 100% {
+        background: #2563eb;
+        box-shadow: 0 0 0 5px rgba(59,130,246,.12), 0 0 24px rgba(59,130,246,.22);
+    }
+    33% {
+        background: #4f46e5;
+        box-shadow: 0 0 0 5px rgba(99,102,241,.12), 0 0 24px rgba(99,102,241,.24);
+    }
+    66% {
+        background: #0891b2;
+        box-shadow: 0 0 0 5px rgba(6,182,212,.12), 0 0 24px rgba(6,182,212,.24);
+    }
+}
+
+.topbar-actions {
+    flex: 0 0 auto;
+    padding-left: 16px;
+    border-left: 1px solid rgba(148,163,184,.20);
+}
+
+.clock-box {
+    border-color: rgba(148,163,184,.20);
+    background: rgba(255,255,255,.07);
+}
+
+.clock-date { color: #94a3b8; }
+.clock-time { color: #f8fafc; }
+
+.role-chip {
+    min-width: 76px;
+    height: 34px;
+    padding: 0 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1px solid rgba(148,163,184,.22);
+    background: rgba(255,255,255,.08);
+    color: #cbd5e1;
+    font-size: 10px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.role-chip::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #94a3b8;
+}
+
+.role-chip.editor {
+    color: #a7f3d0;
+    border-color: rgba(16,185,129,.26);
+    background: rgba(16,185,129,.10);
+}
+.role-chip.editor::before { background: #10b981; }
+
+.role-chip.admin {
+    color: #fde68a;
+    border-color: rgba(245,158,11,.28);
+    background: rgba(245,158,11,.10);
+}
+.role-chip.admin::before { background: #f59e0b; }
+
+.topbar .icon-button {
+    width: 40px;
+    height: 40px;
+    color: #cbd5e1;
+    border-color: rgba(148,163,184,.22);
+    background: rgba(255,255,255,.08);
+}
+
+.topbar .icon-button:hover {
+    color: #fff;
+    border-color: rgba(147,197,253,.42);
+    background: rgba(37,99,235,.18);
+    box-shadow: 0 8px 22px rgba(2,6,23,.22);
+}
+
+.hidden { display: none !important; }
+
+.hero {
+    min-height: 236px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: none;
+}
+
+.hero-title { margin-top: 0; }
+
+.hero-kicker + .hero-title {
+    margin-top: 18px;
+}
+
+.hero-title .osai { display: none; }
+
+.hero-tags { margin-top: 26px; }
+
+.hero-link-right {
+    margin-left: auto;
+}
+
+.overview-card {
+    overflow: hidden;
+}
+
+.overview-card::after {
+    content: '';
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    right: -30px;
+    top: -34px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,.07), transparent 70%);
+    pointer-events: none;
+}
+
+.section-head-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.small-primary-btn,
+.small-soft-btn {
+    min-height: 40px;
+    padding: 0 13px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 900;
+    transition: all .18s ease;
+}
+
+.small-primary-btn {
+    color: #fff;
+    background: #2563eb;
+    box-shadow: 0 8px 20px rgba(37,99,235,.18);
+}
+.small-primary-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+.small-soft-btn {
+    color: #475569;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+}
+.small-soft-btn:hover { color: #2563eb; border-color: #bfdbfe; }
+
+.system-card {
+    position: relative;
+}
+
+.system-admin-actions {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    z-index: 3;
+    display: flex;
+    gap: 6px;
+}
+
+.system-admin-btn {
+    width: 29px;
+    height: 29px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: rgba(255,255,255,.92);
+    border: 1px solid var(--slate-200);
+    color: var(--slate-500);
+    box-shadow: 0 4px 12px rgba(15,23,42,.08);
+    transition: all .16s ease;
+}
+.system-admin-btn:hover { color: var(--blue-600); border-color: #bfdbfe; transform: translateY(-1px); }
+.system-admin-btn.delete:hover { color: #e11d48; border-color: #fecdd3; background: #fff1f2; }
+
+/* ===== 智慧管理中心 ===== */
+.management-section {
+    margin-top: 34px;
+}
+
+.management-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.management-card {
+    min-width: 0;
+    border: 1px solid rgba(226,232,240,.96);
+    border-radius: 20px;
+    background: rgba(255,255,255,.94);
+    box-shadow: 0 10px 28px rgba(15,23,42,.055);
+    padding: 18px;
+}
+
+.management-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.management-card-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 950;
+}
+
+.management-card-title .title-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.recent-list {
+    display: grid;
+    gap: 9px;
+}
+
+.recent-item {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 11px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all .16s ease;
+}
+.recent-item:hover { background: #eff6ff; border-color: #bfdbfe; transform: translateY(-1px); }
+
+.recent-item-icon {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    color: #2563eb;
+}
+
+.recent-item-text { min-width: 0; flex: 1 1 auto; }
+.recent-item-name { color: #1e293b; font-size: 11px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.recent-item-time { margin-top: 2px; color: #94a3b8; font-size: 9px; font-weight: 700; }
+.recent-item-arrow { color: #94a3b8; font-size: 11px; }
+
+.management-empty {
+    min-height: 112px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 18px;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+}
+
+.quick-action {
+    min-height: 82px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 9px;
+    text-align: left;
+    transition: all .16s ease;
+}
+.quick-action:hover { background: #eff6ff; border-color: #bfdbfe; transform: translateY(-1px); }
+.quick-action.locked { opacity: .62; }
+.quick-action i { color: #2563eb; font-size: 15px; }
+.quick-action strong { color: #1e293b; font-size: 11px; font-weight: 950; }
+.quick-action span { color: #94a3b8; font-size: 9px; font-weight: 700; }
+
+.management-metrics {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 8px;
+}
+.management-metric {
+    padding: 9px 8px;
+    border-radius: 11px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    text-align: center;
+}
+.management-metric strong { display:block; color:#0f172a; font-size:16px; font-weight:950; }
+.management-metric span { display:block; margin-top:2px; color:#94a3b8; font-size:8px; font-weight:800; }
+
+/* ===== 佈告欄 ===== */
+.bulletin-section {
+    margin-top: 34px;
+}
+
+.bulletin-title-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: #b45309;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+}
+
+.systems-title-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+
+    display: grid;
+    place-items: center;
+
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.bulletin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.notice-card {
+    min-width: 0;
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.96);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 24px rgba(15,23,42,.05);
+}
+
+.notice-card.pinned {
+    border-color: #fde68a;
+    background: linear-gradient(180deg,#fff,#fffbeb 150%);
+}
+
+.notice-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.notice-title-wrap { min-width:0; }
+.notice-title-line { display:flex; align-items:center; gap:7px; min-width:0; }
+.notice-title { margin:0; color:#0f172a; font-size:14px; font-weight:950; line-height:1.45; }
+.notice-pin { flex:0 0 auto; color:#b45309; font-size:10px; }
+.notice-meta { margin-top:4px; color:#94a3b8; font-size:9px; font-weight:700; }
+.notice-actions { flex:0 0 auto; display:flex; gap:5px; }
+.notice-action-btn {
+    width:29px; height:29px; border-radius:9px; display:grid; place-items:center;
+    cursor:pointer; background:#f8fafc; border:1px solid #e2e8f0; color:#64748b;
+}
+.notice-action-btn:hover { color:#2563eb; border-color:#bfdbfe; background:#eff6ff; }
+.notice-action-btn.delete:hover { color:#e11d48; border-color:#fecdd3; background:#fff1f2; }
+
+.notice-content {
+    margin-top: 12px;
+    color:#475569;
+    font-size:12px;
+    line-height:1.8;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.notice-attachments {
+    margin-top: 13px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.attachment-chip {
+    max-width:100%;
+    min-height:32px;
+    padding:6px 9px;
+    border-radius:9px;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    cursor:pointer;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    color:#475569;
+    font-size:9px;
+    font-weight:800;
+}
+.attachment-chip:hover { background:#eff6ff; border-color:#bfdbfe; color:#2563eb; }
+.attachment-chip .file-name { max-width:220px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.attachment-chip.pdf i { color:#ef4444; }
+.attachment-chip.image i { color:#3b82f6; }
+
+.bulletin-empty {
+    grid-column: 1 / -1;
+    min-height: 180px;
+    border-radius: 18px;
+    border: 1px dashed #cbd5e1;
+    background: rgba(255,255,255,.62);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:#94a3b8;
+    text-align:center;
+    padding:24px;
+}
+.bulletin-empty i { font-size:24px; color:#cbd5e1; }
+.bulletin-empty strong { color:#64748b; font-size:12px; }
+.bulletin-empty span { font-size:10px; font-weight:700; }
+
+/* ===== 通用專業 Modal ===== */
+.pro-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(15,23,42,.62);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+.pro-modal-overlay.show { display:flex; }
+
+.pro-modal-panel {
+    width:min(720px,100%);
+    max-height:min(88vh,900px);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    border-radius:22px;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    box-shadow:0 30px 90px rgba(15,23,42,.30);
+    animation:proModalIn .18s ease-out both;
+}
+.pro-modal-panel.sm { width:min(420px,100%); }
+.pro-modal-panel.lg { width:min(940px,100%); }
+
+@keyframes proModalIn {
+    from { opacity:0; transform:translateY(8px) scale(.985); }
+    to { opacity:1; transform:none; }
+}
+
+.pro-modal-head {
+    flex:0 0 auto;
+    min-height:68px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    border-bottom:1px solid #e2e8f0;
+    background:linear-gradient(180deg,#fff,#f8fafc);
+}
+
+.pro-modal-title-wrap { min-width:0; display:flex; align-items:center; gap:11px; }
+.pro-modal-icon { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:#eff6ff; color:#2563eb; }
+.pro-modal-title { margin:0; color:#0f172a; font-size:15px; font-weight:950; }
+.pro-modal-subtitle { margin-top:2px; color:#94a3b8; font-size:8px; font-weight:900; letter-spacing:.15em; }
+.pro-modal-close { width:36px; height:36px; border-radius:999px; display:grid; place-items:center; cursor:pointer; color:#64748b; background:#f1f5f9; }
+.pro-modal-close:hover { color:#e11d48; background:#fff1f2; }
+
+.pro-modal-body { flex:1 1 auto; min-height:0; overflow:auto; padding:18px; }
+.pro-modal-foot {
+    flex:0 0 auto;
+    padding:12px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border-top:1px solid #e2e8f0;
+    background:#f8fafc;
+}
+.pro-modal-foot .left-actions,
+.pro-modal-foot .right-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+.pro-btn {
+    min-height:38px;
+    padding:0 13px;
+    border-radius:11px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    cursor:pointer;
+    font-size:10px;
+    font-weight:900;
+    transition:all .16s ease;
+}
+.pro-btn.primary { color:#fff; background:#2563eb; }
+.pro-btn.primary:hover { background:#1d4ed8; }
+.pro-btn.soft { color:#475569; background:#e2e8f0; }
+.pro-btn.soft:hover { background:#cbd5e1; }
+.pro-btn.ghost { color:#475569; background:#fff; border:1px solid #e2e8f0; }
+.pro-btn.ghost:hover { color:#2563eb; border-color:#bfdbfe; background:#eff6ff; }
+.pro-btn.danger { color:#be123c; background:#fff1f2; border:1px solid #fecdd3; }
+.pro-btn.danger:hover { background:#ffe4e6; }
+
+.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.form-field { min-width:0; }
+.form-field.full { grid-column:1 / -1; }
+.form-label { display:block; margin-bottom:6px; color:#475569; font-size:10px; font-weight:900; }
+.form-input,
+.form-select,
+.form-textarea {
+    width:100%;
+    border:1px solid #cbd5e1;
+    border-radius:11px;
+    background:#f8fafc;
+    color:#0f172a;
+    padding:10px 11px;
+    font-size:12px;
+    font-weight:700;
+    outline:none;
+    transition:all .16s ease;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus { background:#fff; border-color:#3b82f6; box-shadow:0 0 0 4px rgba(59,130,246,.10); }
+.form-textarea { min-height:124px; resize:vertical; line-height:1.65; }
+.form-help { margin-top:5px; color:#94a3b8; font-size:9px; font-weight:700; line-height:1.5; }
+
+/* ===== 權限登入：比照六套系統 ===== */
+.auth-login-panel {
+    width:min(384px,calc(100% - 24px));
+    overflow:hidden;
+    border-radius:18px;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    box-shadow:0 30px 90px rgba(15,23,42,.34);
+    animation:proModalIn .18s ease-out both;
+}
+.auth-login-head {
+    position:relative;
+    padding:17px 20px;
+    color:#fff;
+    background:linear-gradient(90deg,#0f172a,#1e293b,#312e81);
+}
+.auth-login-head h3 { margin:0; font-size:18px; font-weight:950; letter-spacing:.04em; }
+.auth-login-head p { margin:5px 0 0; color:#cbd5e1; font-size:10px; font-weight:800; letter-spacing:.14em; }
+.auth-login-close {
+    position:absolute; right:12px; top:12px; width:32px; height:32px; border-radius:999px;
+    display:grid; place-items:center; cursor:pointer; color:#e2e8f0; background:rgba(255,255,255,.10);
+}
+.auth-login-body { padding:20px; display:grid; gap:14px; }
+.auth-security-bar {
+    width:100%; min-height:42px; padding:8px 12px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:#eef2ff; border:1px solid #e0e7ff; color:#4338ca;
+    font-size:14px; font-weight:950;
+}
+.auth-login-note { margin:0; text-align:center; color:#64748b; font-size:11px; line-height:1.65; font-weight:600; }
+.auth-login-label { display:block; margin-bottom:7px; text-align:center; color:#334155; font-size:12px; font-weight:900; }
+.auth-password-input {
+    width:100%; height:44px; border:1px solid #cbd5e1; border-radius:12px; padding:0 14px;
+    text-align:center; letter-spacing:.42em; font-size:16px; font-weight:900; color:#0f172a; background:#f8fafc;
+    outline:none;
+}
+.auth-password-input:focus { background:#fff; border-color:#6366f1; box-shadow:0 0 0 4px #eef2ff; }
+.auth-login-submit {
+    width:100%; height:44px; border-radius:12px; cursor:pointer; color:#fff; background:#4f46e5;
+    display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; font-weight:950;
+    box-shadow:0 8px 20px rgba(79,70,229,.18);
+}
+.auth-login-submit:hover { background:#4338ca; }
+.auth-login-error { color:#ef4444; text-align:center; font-size:10px; font-weight:900; }
+
+.permission-settings-note {
+    margin-bottom:12px; padding:10px 11px; border-radius:12px; background:#fffbeb; border:1px solid #fde68a;
+    color:#92400e; font-size:10px; line-height:1.6; font-weight:800;
+}
+.permission-toggle {
+    margin-top:10px; padding:10px 11px; border-radius:12px; background:#f8fafc; border:1px solid #e2e8f0;
+    display:flex; align-items:center; gap:9px; color:#334155; font-size:11px; font-weight:900;
+}
+.permission-toggle input { width:16px; height:16px; accent-color:#4f46e5; }
+
+/* ===== 平台系統管理 ===== */
+.system-settings-list { display:grid; gap:10px; }
+.system-setting-item {
+    padding:13px;
+    border-radius:14px;
+    border:1px solid #e2e8f0;
+    background:#f8fafc;
+}
+.system-setting-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:9px; }
+.system-setting-name { min-width:0; display:flex; align-items:center; gap:9px; color:#1e293b; font-size:11px; font-weight:950; }
+.system-setting-name i { color:#2563eb; }
+.system-setting-name span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.system-setting-actions { display:flex; align-items:center; gap:6px; }
+.setting-mini-btn { width:29px; height:29px; border-radius:9px; cursor:pointer; display:grid; place-items:center; background:#fff; border:1px solid #e2e8f0; color:#64748b; }
+.setting-mini-btn:hover { color:#2563eb; border-color:#bfdbfe; }
+.setting-mini-btn.delete:hover { color:#e11d48; border-color:#fecdd3; background:#fff1f2; }
+.setting-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:9px; align-items:center; }
+.setting-row input[type='url'] { min-width:0; width:100%; height:38px; border:1px solid #cbd5e1; border-radius:10px; padding:0 10px; background:#fff; color:#0f172a; font-size:11px; font-weight:700; outline:none; }
+.setting-row input[type='url']:focus { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.10); }
+.setting-switch { display:inline-flex; align-items:center; gap:6px; color:#475569; font-size:9px; font-weight:900; white-space:nowrap; }
+.setting-switch input { width:16px; height:16px; accent-color:#2563eb; }
+.core-badge { padding:3px 6px; border-radius:999px; background:#e0e7ff; color:#4338ca; font-size:7px; font-weight:950; letter-spacing:.08em; }
+
+/* ===== 佈告欄編輯與附件 ===== */
+.notice-drop-zone {
+    min-height:112px;
+    border:2px dashed #cbd5e1;
+    border-radius:14px;
+    background:#f8fafc;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    padding:16px;
+    text-align:center;
+    cursor:pointer;
+    transition:all .16s ease;
+}
+.notice-drop-zone:hover,
+.notice-drop-zone.drag-over { border-color:#60a5fa; background:#eff6ff; }
+.notice-drop-zone i { color:#3b82f6; font-size:20px; }
+.notice-drop-zone strong { color:#334155; font-size:11px; }
+.notice-drop-zone span { color:#94a3b8; font-size:9px; font-weight:700; }
+
+.editor-attachment-list { margin-top:10px; display:grid; gap:7px; }
+.editor-attachment-item {
+    padding:8px 9px;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+.editor-file-icon { width:30px; height:30px; border-radius:9px; display:grid; place-items:center; flex:0 0 30px; background:#f1f5f9; color:#2563eb; }
+.editor-attachment-text { flex:1 1 auto; min-width:0; }
+.editor-attachment-name { color:#334155; font-size:10px; font-weight:900; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.editor-attachment-meta { margin-top:2px; color:#94a3b8; font-size:8px; font-weight:700; }
+.editor-attachment-actions { flex:0 0 auto; display:flex; gap:5px; }
+.editor-file-btn { width:29px; height:29px; border-radius:9px; display:grid; place-items:center; cursor:pointer; background:#f8fafc; color:#64748b; border:1px solid #e2e8f0; }
+.editor-file-btn:hover { color:#2563eb; border-color:#bfdbfe; }
+.editor-file-btn.delete:hover { color:#e11d48; border-color:#fecdd3; background:#fff1f2; }
+
+/* ===== 附件預覽：比照證照系統 ===== */
+.file-preview-modal {
+    position:fixed;
+    inset:0;
+    z-index:900;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:min(22px,3vw);
+    padding-top:calc(min(22px,3vw) + env(safe-area-inset-top));
+    padding-bottom:calc(min(22px,3vw) + env(safe-area-inset-bottom));
+    background:
+        radial-gradient(circle at 20% 20%,rgba(59,130,246,.22),transparent 32%),
+        radial-gradient(circle at 80% 10%,rgba(14,165,233,.14),transparent 28%),
+        rgba(15,23,42,.88);
+    backdrop-filter:blur(12px);
+}
+.file-preview-modal.hidden { display:none; }
+.file-preview-shell {
+    width:min(1180px,100%);
+    height:min(860px,100%);
+    min-height:0;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    border-radius:24px;
+    background:linear-gradient(180deg,rgba(15,23,42,.98),rgba(30,41,59,.96));
+    border:1px solid rgba(148,163,184,.28);
+    box-shadow:0 30px 90px rgba(2,6,23,.48);
+}
+.file-preview-header { flex:0 0 auto; min-height:60px; padding:12px 16px; background:rgba(15,23,42,.94); border-bottom:1px solid rgba(148,163,184,.2); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.file-preview-title-wrap { min-width:0; display:flex; align-items:center; gap:10px; }
+.file-preview-badge { flex:0 0 auto; min-width:42px; padding:5px 9px; border-radius:999px; background:rgba(59,130,246,.16); border:1px solid rgba(147,197,253,.28); color:#bfdbfe; font-size:10px; font-weight:950; letter-spacing:.08em; text-align:center; }
+.file-preview-title { color:#f8fafc; font-size:13px; font-weight:900; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.file-preview-subtitle { margin-top:2px; color:#94a3b8; font-size:9px; font-weight:700; }
+.file-preview-close { width:42px; height:42px; flex:0 0 42px; border-radius:999px; cursor:pointer; background:rgba(255,255,255,.1); color:#fff; display:grid; place-items:center; }
+.file-preview-close:hover { color:#fecaca; background:rgba(248,113,113,.18); }
+.file-preview-toolbar { flex:0 0 auto; padding:10px 14px; background:rgba(15,23,42,.86); border-bottom:1px solid rgba(148,163,184,.18); display:flex; align-items:center; justify-content:center; gap:8px; overflow-x:auto; }
+.file-preview-tool-btn { min-height:36px; padding:8px 13px; border-radius:999px; cursor:pointer; background:rgba(255,255,255,.1); color:#f8fafc; font-size:10px; font-weight:900; display:inline-flex; align-items:center; justify-content:center; gap:6px; white-space:nowrap; }
+.file-preview-tool-btn:hover { background:rgba(255,255,255,.18); }
+.file-preview-zoom-pill { min-width:66px; background:rgba(37,99,235,.28); color:#dbeafe; border:1px solid rgba(147,197,253,.24); }
+.file-preview-body { position:relative; flex:1 1 auto; min-height:0; overflow:auto; padding:18px; background:rgba(2,6,23,.28); -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:manipulation; }
+#file-preview-stage { min-width:100%; min-height:100%; display:flex; align-items:center; justify-content:center; }
+#file-preview-image { display:block; width:auto; height:auto; max-width:none; max-height:none; border-radius:16px; background:#fff; box-shadow:0 20px 50px rgba(2,6,23,.34); user-select:none; -webkit-user-drag:none; }
+#pdf-preview-pages { width:max-content; min-width:min(100%,280px); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:18px; margin:0 auto; padding:2px 0 18px; }
+.pdf-preview-page-shell { position:relative; border-radius:16px; background:#fff; box-shadow:0 20px 50px rgba(2,6,23,.34); overflow:hidden; }
+.pdf-preview-page-number { position:absolute; top:10px; right:10px; padding:4px 8px; border-radius:999px; background:rgba(15,23,42,.72); color:#fff; font-size:9px; font-weight:900; pointer-events:none; }
+.pdf-preview-page-canvas { display:block; background:#fff; }
+#file-preview-frame { width:100%; height:100%; min-height:620px; border:0; background:#fff; border-radius:16px; }
+.file-preview-loading { position:absolute; z-index:3; left:50%; top:50%; transform:translate(-50%,-50%); min-width:148px; padding:12px 16px; border-radius:999px; background:rgba(15,23,42,.88); color:#e2e8f0; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center; gap:8px; }
+.file-preview-spinner { width:14px; height:14px; border:2px solid rgba(226,232,240,.35); border-top-color:#bfdbfe; border-radius:999px; animation:filePreviewSpin .8s linear infinite; }
+@keyframes filePreviewSpin { to { transform:rotate(360deg); } }
+.file-preview-hint { flex:0 0 auto; padding:8px 14px 10px; background:rgba(15,23,42,.92); border-top:1px solid rgba(148,163,184,.16); color:#94a3b8; font-size:9px; font-weight:800; text-align:center; }
+body.file-preview-open { overflow:hidden; }
+
+/* 手機表單防自動放大 */
+@media screen and (max-width:900px), (hover:none) and (pointer:coarse) {
+    input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='button']):not([type='submit']),
+    select,
+    textarea { font-size:16px !important; }
+}
+
+@media (max-width: 980px) {
+    .top-brand-integrated { display:none; }
+    .topbar-branding { padding-right:10px; }
+    .management-grid { grid-template-columns:1fr; }
+    .bulletin-grid { grid-template-columns:1fr; }
+}
+
+@media (max-width: 760px) {
+    .topbar-inner { width:calc(100% - 20px); }
+    .clock-box { display:none; }
+    .role-chip { min-width:auto; padding:0 9px; }
+    .role-chip span { display:none; }
+    .topbar-actions { gap:6px; padding-left:10px; }
+    .topbar .icon-button { width:38px; height:38px; }
+    .main { width:calc(100% - 20px); padding-top:16px; }
+    .hero { min-height:228px; padding:28px 22px; border-radius:22px; }
+    .hero-title { font-size:clamp(27px,8vw,38px); }
+    .hero-subtitle { font-size:10px; line-height:1.6; }
+    .overview-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .section-head { align-items:stretch; flex-direction:column; gap:12px; }
+    .section-head-actions { width:100%; }
+    .search-box { flex:1 1 auto; }
+    .small-primary-btn .label-desktop { display:none; }
+    .form-grid { grid-template-columns:1fr; }
+    .form-field.full { grid-column:auto; }
+    .pro-modal-overlay { padding:10px; }
+    .pro-modal-panel { max-height:92vh; border-radius:18px; }
+    .pro-modal-foot { align-items:stretch; flex-direction:column; }
+    .pro-modal-foot .left-actions,
+    .pro-modal-foot .right-actions { width:100%; }
+    .pro-modal-foot .right-actions .pro-btn { flex:1 1 auto; }
+    .setting-row { grid-template-columns:1fr; }
+    .quick-actions-grid { grid-template-columns:1fr 1fr; }
+    .file-preview-modal { padding:0; padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
+    .file-preview-shell { width:100%; height:100%; border-radius:0; border-left:0; border-right:0; }
+    .file-preview-header { min-height:56px; padding:9px 12px; }
+    .file-preview-toolbar { justify-content:flex-start; }
+    .file-preview-tool-btn { min-height:34px; padding:7px 10px; }
+    .file-preview-tool-btn span:not(#file-preview-zoom-label) { display:none; }
+    .file-preview-body { padding:12px; }
+    .file-preview-hint { display:none; }
+}
+
+
+/* =========================================================
+   OSAI v4：介面精簡與系統排序
+========================================================= */
+
+/* 標頭固定於畫面上方 */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    z-index: 100;
+}
+
+.topbar-branding {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 16px;
+
+    padding-right: 18px;
+}
+
+.top-brand-osai {
+    line-height: 1;
+}
+
+.integrated-orb {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: 999px;
+    display: inline-block;
+    border: 0;
+    color: transparent;
+    background: #38bdf8;
+    box-shadow: 0 0 0 5px rgba(56,189,248,.12);
+    animation: osaiIntegratedDotShift 4.8s ease-in-out infinite;
+}
+
+.integrated-orb i { display: none !important; }
+
+@keyframes osaiIntegratedDotShift {
+    0%, 100% {
+        background: #38bdf8;
+        box-shadow: 0 0 0 5px rgba(56,189,248,.12), 0 0 18px rgba(56,189,248,.30);
+    }
+    33% {
+        background: #818cf8;
+        box-shadow: 0 0 0 5px rgba(129,140,248,.12), 0 0 18px rgba(99,102,241,.28);
+    }
+    66% {
+        background: #22d3ee;
+        box-shadow: 0 0 0 5px rgba(34,211,238,.12), 0 0 18px rgba(6,182,212,.28);
+    }
+}
+
+/* =========================================================
+   平台活動紀錄 / 職業安全管理佈告欄
+========================================================= */
+
+.platform-overview-grid {
+    margin-top: 18px;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, .85fr)
+        minmax(0, 1.15fr);
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+.activity-section,
+.bulletin-section {
+    margin-top: 0;
+    min-width: 0;
+}
+
+.platform-overview-grid .section-head {
+    margin-top: 0;
+}
+
+
+/* ===== 活動紀錄標題圖示 ===== */
+
+.activity-title-icon {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 12px;
+
+    display: grid;
+    place-items: center;
+
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+
+/* ===== 活動紀錄主卡 ===== */
+
+.activity-card {
+    margin-top: 14px;
+
+    min-width: 0;
+    min-height: 180px;
+
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,.96);
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 8px 24px
+        rgba(15,23,42,.05);
+}
+
+
+/* ===== 最近活動標題 ===== */
+
+.activity-list-head {
+    margin-top: 0;
+    padding-bottom: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    color: #475569;
+
+    font-size: 10px;
+    font-weight: 900;
+}
+
+#activity-log-count {
+    color: #94a3b8;
+    font-size: 9px;
+}
+
+
+/* ===== 活動紀錄列表 ===== */
+
+.activity-log-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 320px;
+
+    overflow-y: auto;
+
+    display: grid;
+
+    margin-top: 4px;
+}
+
+.activity-log-item {
+    min-width: 0;
+
+    padding: 10px 2px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.activity-log-item:last-child {
+    border-bottom: 0;
+}
+
+.activity-log-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    border-radius: 9px;
+
+    display: grid;
+    place-items: center;
+
+    color: #2563eb;
+    background: #eff6ff;
+
+    font-size: 11px;
+}
+
+.activity-log-main {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.activity-log-title {
+    color: #1e293b;
+
+    font-size: 10px;
+    font-weight: 900;
+
+    line-height: 1.45;
+}
+
+.activity-log-detail {
+    margin-top: 2px;
+
+    color: #64748b;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    line-height: 1.45;
+}
+
+.activity-log-meta {
+    margin-top: 4px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #94a3b8;
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.activity-log-empty {
+    min-height: 110px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #94a3b8;
+
+    text-align: center;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.activity-log-empty i {
+    color: #cbd5e1;
+    font-size: 22px;
+}
+
+
+/* ===== 清除紀錄 ===== */
+
+.activity-clear-btn {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+
+    color: #64748b;
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    transition:
+        color .16s ease,
+        border-color .16s ease,
+        background .16s ease;
+}
+
+.activity-clear-btn:hover {
+    color: #e11d48;
+
+    border-color: #fecdd3;
+    background: #fff1f2;
+}
+
+
+/* 右側佈告欄改為單欄，內容過多時改為框內捲動 */
+.platform-overview-grid .bulletin-grid {
+    grid-template-columns: 1fr;
+
+    max-height: 380px;
+    overflow-y: auto;
+
+    align-content: start;
+
+    padding-right: 4px;
+
+    overscroll-behavior: contain;
+}
+
+
+/* ===== 平板 / 手機 ===== */
+
+@media (max-width: 980px) {
+
+    .platform-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 760px) {
+
+    .activity-section .section-head {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    .activity-section .section-head-actions {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .activity-log-list {
+        max-height: 260px;
+    }
+
+.platform-overview-grid .bulletin-grid {
+    max-height: 320px;
+}    
+
+}
+
+/* =========================================================
+   全平台統一 Tooltip
+
+   與六套職安系統一致：
+   深黑藍背景、白字、10px、700、6px 圓角。
+   僅桌機滑鼠裝置顯示。
+========================================================= */
+
+.system-tooltip-btn {
+    position: relative;
+}
+
+/* 權限登入視窗右上角 X 原本為 absolute */
+.auth-login-close.system-tooltip-btn {
+    position: absolute;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+    .system-tooltip-btn::after {
+        content: attr(data-tooltip);
+
+        position: absolute;
+        z-index: 200;
+
+        left: 50%;
+        top: calc(100% + 6px);
+
+        transform:
+            translateX(-50%)
+            translateY(-2px);
+
+        padding: 4px 7px;
+
+        border-radius: 6px;
+
+        background:
+            rgba(15, 23, 42, 0.94);
+
+        color: #ffffff;
+
+        font-family:
+            'Noto Sans TC',
+            sans-serif;
+
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1.2;
+
+        white-space: nowrap;
+
+        opacity: 0;
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.14s ease,
+            transform 0.14s ease,
+            visibility 0.14s ease;
+
+        box-shadow:
+            0 6px 16px
+            rgba(15, 23, 42, 0.18);
+    }
+
+    .system-tooltip-btn:hover::after {
+        opacity: 1;
+        visibility: visible;
+
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+
+}
+
+/* 系統排序控制 */
+.setting-order-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding-right: 2px;
+}
+.setting-mini-btn.order {
+    color: #475569;
+    background: #ffffff;
+}
+.setting-mini-btn.order:hover:not(:disabled) {
+    color: #2563eb;
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+.setting-mini-btn:disabled {
+    opacity: .34;
+    cursor: default;
+    transform: none !important;
+}
+
+/* 所有 Modal / 附件預覽開啟時，右下角通知永遠保持在最上層 */
+.toast {
+    z-index: 1400 !important;
+    right: max(20px, env(safe-area-inset-right));
+    bottom: max(20px, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 980px) {
+    .topbar-branding { gap: 16px; }
+    .top-brand-integrated { display: inline-flex; }
+}
+
+@media (max-width: 760px) {
+    .top-brand-integrated { display: none; }
+}
+
+    </style>
+</head>
+<body>
+<div class="app-shell">
+    <header class="topbar">
+        <div class="topbar-inner">
+<div class="topbar-branding">
+
+    <div class="top-brand-osai">OSAI</div>
+
+    <div class="top-brand-integrated">
+        <span class="integrated-orb" aria-hidden="true"></span>
+        <span>OCCUPATIONAL SAFETY ADVANCED INTELLIGENCE</span>
+    </div>
+
+</div>
+
+            <div class="topbar-actions">
+                <div id="role-chip" class="role-chip" aria-label="目前權限">
+                    <span id="role-chip-text">預覽模式</span>
+                </div>
+
+                <div class="clock-box" aria-live="polite">
+                    <div id="clock-date" class="clock-date">--</div>
+                    <div id="clock-time" class="clock-time">--:--:--</div>
+                </div>
+
+                <button id="login-action-btn" type="button" class="icon-button system-tooltip-btn" aria-label="權限登入或登出" data-tooltip="權限登入">
+                    <i id="login-action-icon" class="fa-solid fa-lock"></i>
+                </button>
+
+                <button id="platform-settings-btn" type="button" class="icon-button system-tooltip-btn hidden" aria-label="平台系統管理" data-tooltip="平台系統管理">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
+
+                <button id="permission-settings-btn" type="button" class="icon-button system-tooltip-btn hidden" aria-label="權限與密碼設定" data-tooltip="權限與密碼設定">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+<section class="hero">
+    <div class="hero-content">
+
+<h1 class="hero-title">職業安全智慧管理平台</h1>
+
+        <div class="hero-subtitle">
+            Occupational Safety Intelligence Management Platform
+        </div>
+
+<div class="hero-tags">
+
+    <span class="hero-tag">
+        <i class="fa-solid fa-layer-group"></i> 專業系統
+    </span>
+
+    <span class="hero-tag smart-management">
+        <i class="fa-solid fa-database"></i> 資料庫管理
+    </span>
+
+    <span class="hero-tag">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> 獨立啟動
+    </span>
+
+    <span class="hero-tag">
+        <i class="fa-solid fa-cloud"></i> CLOUD CENTER
+    </span>
+
+</div>
+            </div>
+        </section>
+
+<div class="platform-overview-grid">
+
+    <!-- 平台活動紀錄 -->
+    <section class="activity-section" id="activity-section">
+
+        <div class="section-head">
+            <div class="section-title-wrap">
+                <div style="display:flex;align-items:center;gap:11px;">
+
+                    <div class="activity-title-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+
+                    <div>
+                        <div class="section-eyebrow">
+                            Platform Activity Log
+                        </div>
+
+                        <h2 class="section-title" style="margin-top:3px;">
+                            平台活動紀錄
+                        </h2>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="section-head-actions">
+                <button
+                    id="clear-activity-log-btn"
+                    type="button"
+                    class="activity-clear-btn system-tooltip-btn hidden"
+                    aria-label="清除活動紀錄"
+                    data-tooltip="清除活動紀錄"
+                >
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        </div>
+
+<div class="activity-card">
+
+    <div class="activity-list-head">
+        <span>最近活動</span>
+        <span id="activity-log-count">0 筆</span>
+    </div>
+
+    <div id="activity-log-list" class="activity-log-list"></div>
+
+</div>
+
+    </section>
+
+
+    <!-- 職業安全管理佈告欄 -->
+    <section class="bulletin-section" id="bulletin-section">
+
+        <div class="section-head">
+            <div class="section-title-wrap">
+
+                <div style="display:flex;align-items:center;gap:11px;">
+
+                    <div class="bulletin-title-icon">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+
+                    <div>
+                        <div class="section-eyebrow">
+                            Occupational Safety Bulletin
+                        </div>
+
+                        <h2 class="section-title" style="margin-top:3px;">
+                            職業安全管理佈告欄
+                        </h2>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="section-head-actions">
+                <button id="add-notice-btn" type="button" class="small-primary-btn hidden">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>新增佈告</span>
+                </button>
+            </div>
+
+        </div>
+
+        <div id="bulletin-grid" class="bulletin-grid"></div>
+
+    </section>
+
+</div>
+        <section id="systems-section">
+            <div class="section-head">
+<div class="section-title-wrap">
+    <div style="display:flex;align-items:center;gap:11px;">
+
+        <div class="systems-title-icon">
+            <i class="fa-solid fa-layer-group"></i>
+        </div>
+
+        <div>
+            <div class="section-eyebrow">
+                Integrated Safety Systems
+            </div>
+
+            <h2 class="section-title" style="margin-top:3px;">
+                職業安全管理系統
+            </h2>
+        </div>
+
+    </div>
+</div>
+
+                <div class="section-head-actions">
+                    <label class="search-box" aria-label="搜尋系統">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="system-search" type="search" placeholder="搜尋系統名稱或功能…" autocomplete="off" />
+                    </label>
+
+                </div>
+            </div>
+
+            <div id="system-grid" class="system-grid"></div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-line"></div>
+        <div class="footer-title">© OSAI｜職業安全智慧管理平台</div>
+        <div class="footer-dev">Developed by Sam Sun</div>
+    </footer>
+</div>
+
+<!-- 權限登入 Modal -->
+<div id="login-modal" class="pro-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title">
+    <div class="auth-login-panel" onclick="event.stopPropagation()">
+        <div class="auth-login-head">
+            <button id="login-close-btn" type="button" class="auth-login-close system-tooltip-btn"
+data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display:flex;align-items:center;gap:9px;padding-right:36px;">
+                <i class="fa-solid fa-lock" style="color:#fde047;font-size:15px;"></i>
+                <h3 id="login-title">權限登入</h3>
+            </div>
+            <p>ACCESS CONTROL</p>
+        </div>
+        <div class="auth-login-body">
+            <div class="auth-security-bar"><i class="fa-solid fa-shield-halved"></i>安全驗證</div>
+            <p class="auth-login-note">請輸入管理者或使用者密碼，以啟動對應的平台操作權限。</p>
+            <div>
+                <label for="login-pwd" class="auth-login-label">請輸入登入密碼</label>
+                <input id="login-pwd" type="password" class="auth-password-input" placeholder="••••••" autocomplete="current-password" />
+            </div>
+            <button id="login-submit-btn" type="button" class="auth-login-submit"><i class="fa-solid fa-right-to-bracket"></i>登入驗證</button>
+            <div id="login-error" class="auth-login-error hidden">密碼錯誤，請重新輸入</div>
+        </div>
+    </div>
+</div>
+
+<!-- 權限與密碼設定 -->
+<div id="permission-modal" class="pro-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="permission-title">
+    <div class="pro-modal-panel sm" onclick="event.stopPropagation()">
+        <div class="pro-modal-head">
+            <div class="pro-modal-title-wrap">
+                <div class="pro-modal-icon" style="background:#fffbeb;color:#d97706;"><i class="fa-solid fa-key"></i></div>
+                <div><h2 id="permission-title" class="pro-modal-title">權限與密碼設定</h2><div class="pro-modal-subtitle">ACCESS SETTINGS</div></div>
+            </div>
+            <button id="permission-close-btn" type="button" class="pro-modal-close system-tooltip-btn"
+data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="pro-modal-body">
+            <div class="permission-settings-note">僅管理者可修改平台密碼與使用者共用權限。</div>
+            <div class="form-grid" style="grid-template-columns:1fr;">
+                <div class="form-field"><label class="form-label" for="old-admin-pwd">目前管理者密碼</label><input id="old-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
+                <div class="form-field"><label class="form-label" for="new-admin-pwd">新管理者密碼</label><input id="new-admin-pwd" type="password" class="form-input" placeholder="留白表示不變更" /></div>
+                <div class="form-field"><label class="form-label" for="new-editor-pwd">新使用者密碼</label><input id="new-editor-pwd" type="password" class="form-input" placeholder="留白表示不變更" /></div>
+            </div>
+            <label class="permission-toggle"><input id="editor-enabled-checkbox" type="checkbox" /><span>啟用使用者共用權限</span></label>
+            <div class="form-help" style="margin-top:8px;">使用者可維護佈告欄內容與上傳附件；新增、刪除系統及權限設定仍限管理者。</div>
+        </div>
+        <div class="pro-modal-foot">
+            <div></div>
+            <div class="right-actions"><button id="permission-cancel-btn" type="button" class="pro-btn soft">取消</button><button id="permission-save-btn" type="button" class="pro-btn primary"><i class="fa-solid fa-floppy-disk"></i>儲存設定</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 平台系統管理 -->
+<div id="platform-settings-modal" class="pro-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="platform-settings-title">
+    <div class="pro-modal-panel lg" onclick="event.stopPropagation()">
+        <div class="pro-modal-head">
+            <div class="pro-modal-title-wrap">
+                <div class="pro-modal-icon"><i class="fa-solid fa-sliders"></i></div>
+                <div><h2 id="platform-settings-title" class="pro-modal-title">平台系統管理</h2><div class="pro-modal-subtitle">SYSTEM CONFIGURATION</div></div>
+            </div>
+            <button id="platform-settings-close-btn" type="button" class="pro-modal-close system-tooltip-btn"
+data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="pro-modal-body">
+            <div id="system-settings-list" class="system-settings-list"></div>
+        </div>
+        <div class="pro-modal-foot">
+            <div class="left-actions">
+                <button id="export-platform-btn" type="button" class="pro-btn ghost"><i class="fa-solid fa-file-export"></i>匯出平台資料</button>
+                <button id="import-platform-btn" type="button" class="pro-btn ghost"><i class="fa-solid fa-file-import"></i>匯入平台資料</button>
+            </div>
+            <div class="right-actions">
+                <button id="settings-add-system-btn" type="button" class="pro-btn ghost"><i class="fa-solid fa-plus"></i>新增系統</button>
+                <button id="platform-settings-cancel-btn" type="button" class="pro-btn soft">取消</button>
+                <button id="platform-settings-save-btn" type="button" class="pro-btn primary"><i class="fa-solid fa-floppy-disk"></i>儲存設定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="import-platform-file" type="file" accept="application/json,.json" hidden />
+
+<!-- 新增 / 編輯系統 -->
+<div id="system-editor-modal" class="pro-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="system-editor-title">
+    <div class="pro-modal-panel" onclick="event.stopPropagation()">
+        <div class="pro-modal-head">
+            <div class="pro-modal-title-wrap">
+                <div class="pro-modal-icon"><i class="fa-solid fa-cubes-stacked"></i></div>
+                <div><h2 id="system-editor-title" class="pro-modal-title">新增系統</h2><div class="pro-modal-subtitle">SYSTEM MODULE</div></div>
+            </div>
+            <button id="system-editor-close-btn" type="button" class="pro-modal-close system-tooltip-btn"
+data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="pro-modal-body">
+            <div class="form-grid">
+                <div class="form-field full"><label class="form-label" for="system-name-input">系統名稱</label><input id="system-name-input" class="form-input" type="text" placeholder="例如：職業安全教育訓練系統" /></div>
+                <div class="form-field full"><label class="form-label" for="system-english-input">英文名稱</label><input id="system-english-input" class="form-input" type="text" placeholder="Occupational Safety ..." /></div>
+                <div class="form-field"><label class="form-label" for="system-category-input">系統分類</label><input id="system-category-input" class="form-input" type="text" placeholder="例如：教育訓練管理" /></div>
+                <div class="form-field"><label class="form-label" for="system-icon-input">系統圖示</label>
+                    <select id="system-icon-input" class="form-select">
+                        <option value="fa-solid fa-briefcase-medical">職安管理</option>
+                        <option value="fa-solid fa-graduation-cap">教育訓練</option>
+                        <option value="fa-solid fa-clipboard-check">稽核檢查</option>
+                        <option value="fa-solid fa-helmet-safety">現場安全</option>
+                        <option value="fa-solid fa-chart-pie">統計分析</option>
+                        <option value="fa-solid fa-folder-tree">文件管理</option>
+                        <option value="fa-solid fa-list-check">任務管理</option>
+                        <option value="fa-solid fa-shield-heart">健康安全</option>
+                    </select>
+                </div>
+                <div class="form-field full"><label class="form-label" for="system-description-input">功能說明</label><textarea id="system-description-input" class="form-textarea" placeholder="簡要說明系統主要用途與管理功能"></textarea></div>
+                <div class="form-field full"><label class="form-label" for="system-url-input">系統網址</label><input id="system-url-input" class="form-input" type="url" inputmode="url" placeholder="https://..." /></div>
+                <div class="form-field full"><label class="permission-toggle" style="margin-top:0;"><input id="system-enabled-input" type="checkbox" checked /><span>啟用平台入口</span></label></div>
+            </div>
+        </div>
+        <div class="pro-modal-foot">
+            <div></div>
+            <div class="right-actions"><button id="system-editor-cancel-btn" type="button" class="pro-btn soft">取消</button><button id="system-editor-save-btn" type="button" class="pro-btn primary"><i class="fa-solid fa-floppy-disk"></i>儲存系統</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 佈告欄編輯 -->
+<div id="notice-editor-modal" class="pro-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="notice-editor-title">
+    <div class="pro-modal-panel lg" onclick="event.stopPropagation()">
+        <div class="pro-modal-head">
+            <div class="pro-modal-title-wrap">
+                <div class="pro-modal-icon" style="background:#fffbeb;color:#b45309;"><i class="fa-solid fa-bullhorn"></i></div>
+                <div><h2 id="notice-editor-title" class="pro-modal-title">新增佈告</h2><div class="pro-modal-subtitle">SAFETY BULLETIN</div></div>
+            </div>
+            <button id="notice-editor-close-btn" type="button" class="pro-modal-close system-tooltip-btn"
+data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="pro-modal-body">
+            <div class="form-grid">
+                <div class="form-field full"><label class="form-label" for="notice-title-input">佈告標題</label><input id="notice-title-input" class="form-input" type="text" maxlength="120" placeholder="輸入佈告標題" /></div>
+                <div class="form-field full"><label class="form-label" for="notice-content-input">內容說明</label><textarea id="notice-content-input" class="form-textarea" maxlength="5000" placeholder="輸入職業安全管理訊息、工作提醒或公告內容"></textarea></div>
+                <div class="form-field full"><label class="permission-toggle" style="margin-top:0;"><input id="notice-pinned-input" type="checkbox" /><span>將此佈告置頂</span></label></div>
+                <div class="form-field full">
+                    <label class="form-label">附件資料</label>
+                    <div id="notice-drop-zone" class="notice-drop-zone" role="button" tabindex="0" aria-label="上傳附件">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <strong>拖移 PDF、JPG、PNG 至此處，或點擊選擇檔案</strong>
+                        <span>單一檔案上限 5MB，可一次選擇多個檔案</span>
+                    </div>
+                    <input id="notice-file-input" type="file" accept="application/pdf,image/jpeg,image/png,.pdf,.jpg,.jpeg,.png" multiple hidden />
+                    <div id="notice-editor-attachments" class="editor-attachment-list"></div>
+                </div>
+            </div>
+        </div>
+        <div class="pro-modal-foot">
+            <div></div>
+            <div class="right-actions"><button id="notice-editor-cancel-btn" type="button" class="pro-btn soft">取消</button><button id="notice-editor-save-btn" type="button" class="pro-btn primary"><i class="fa-solid fa-floppy-disk"></i>儲存佈告</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- 附件預覽 -->
+<div id="file-preview-modal" class="file-preview-modal hidden" onclick="closeFilePreviewByBackdrop(event)">
+    <div class="file-preview-shell" onclick="event.stopPropagation()">
+        <div class="file-preview-header">
+            <div class="file-preview-title-wrap">
+                <span id="file-preview-badge" class="file-preview-badge">FILE</span>
+                <div style="min-width:0;">
+                    <div id="file-preview-title" class="file-preview-title">附件預覽</div>
+                    <div id="file-preview-subtitle" class="file-preview-subtitle">職業安全管理佈告欄</div>
+                </div>
+            </div>
+            <button type="button" class="file-preview-close system-tooltip-btn"
+data-tooltip="關閉附件預覽" onclick="closeFilePreviewModal()" aria-label="關閉附件預覽"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div id="file-preview-toolbar" class="file-preview-toolbar">
+            <button type="button" class="file-preview-tool-btn" onclick="zoomFilePreviewBy(-0.15)"><i class="fa-solid fa-magnifying-glass-minus"></i><span>縮小</span></button>
+            <button type="button" class="file-preview-tool-btn file-preview-zoom-pill" onclick="fitFilePreviewToScreen()"><span id="file-preview-zoom-label">100%</span></button>
+            <button type="button" class="file-preview-tool-btn" onclick="zoomFilePreviewBy(0.15)"><i class="fa-solid fa-magnifying-glass-plus"></i><span>放大</span></button>
+            <button type="button" class="file-preview-tool-btn" onclick="rotateFilePreviewBy(90)"><i class="fa-solid fa-rotate-right"></i><span>旋轉</span></button>
+            <button type="button" class="file-preview-tool-btn" onclick="fitFilePreviewToScreen()"><i class="fa-solid fa-maximize"></i><span>適合畫面</span></button>
+        </div>
+
+        <div id="file-preview-body" class="file-preview-body">
+            <div id="file-preview-loading" class="file-preview-loading hidden"><span class="file-preview-spinner"></span><span id="file-preview-loading-text">載入中...</span></div>
+            <div id="file-preview-stage">
+                <iframe id="file-preview-frame" class="hidden" title="附件 PDF 預覽"></iframe>
+                <img id="file-preview-image" class="hidden" alt="附件預覽" />
+                <div id="pdf-preview-pages" class="hidden" aria-label="PDF 預覽頁面"></div>
+            </div>
+        </div>
+
+        <div class="file-preview-hint">可使用 Ctrl + 滑鼠滾輪、工具列按鈕縮放；手機支援雙指縮放，並可旋轉或適合畫面</div>
+    </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite">
+    <div class="toast-icon"><i class="fa-solid fa-check"></i></div>
+    <div id="toast-message" class="toast-message"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+'use strict';
+
+/* =========================================================
+   OSAI｜職業安全智慧管理平台 v4
+   平台入口、佈告欄、附件預覽與三層權限
+========================================================= */
+
+const PLATFORM_CONFIG_VERSION = 'osai-smart-platform-config-v3';
+const PLATFORM_DATA_VERSION = 'osai-smart-platform-data-v3';
+const DB_NAME = 'osai_smart_safety_platform_db';
+const DB_VERSION = 2;
+const STORE_NAME = 'platform_state';
+const CONFIG_KEY = 'platform_config_v3';
+const RECENT_KEY = 'recent_opened_v3';
+const BULLETIN_KEY = 'bulletin_notices_v1';
+const USAGE_KEY = 'usage_stats_v1';
+const SECURITY_KEY = 'platform_security_v1';
+const ACTIVITY_KEY = 'platform_activity_log_v1';
+
+const MAX_ACTIVITY_LOGS = 100;
+
+const DEFAULT_ADMIN_PASSWORD = 'admincore1098';
+const DEFAULT_EDITOR_PASSWORD = 'teamuser001';
+const DEFAULT_EDITOR_ENABLED = true;
+
+const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
+const ALLOWED_ATTACHMENT_TYPES = new Set(['application/pdf', 'image/jpeg', 'image/png']);
+
+const DEFAULT_SYSTEMS = [
+    { id:'certificate', order:1, core:true, category:'人員資格管理', name:'職業安全證照管理系統', english:'Occupational Safety Certificate Management', description:'整合人員證照、訓練紀錄、複訓期限與附件管理，支援證照資料的查詢、維護與雲端工作。', icon:'fa-solid fa-id-card-clip', accent:'#2563eb', soft:'#eff6ff', border:'#bfdbfe', url:'https://oscms-cert.vercel.app/', enabled:true },
+    { id:'performance', order:2, core:true, category:'績效管理', name:'職業安全績效管理系統', english:'Occupational Safety Performance Management', description:'管理年度職安計畫、績效指標、執行情形與成果附件，建立可持續追蹤的年度績效管理架構。', icon:'fa-solid fa-chart-line', accent:'#059669', soft:'#ecfdf5', border:'#a7f3d0', url:'https://ospms.vercel.app/', enabled:true },
+    { id:'risk-assessment', order:3, core:true, category:'風險管理', name:'職業安全風險評估系統', english:'Occupational Safety Risk Assessment', description:'執行風險辨識、風險矩陣評估、控制措施與複評管理，協助建立完整的職業安全風險紀錄。', icon:'fa-solid fa-triangle-exclamation', accent:'#ea580c', soft:'#fff7ed', border:'#fed7aa', url:'https://osras.vercel.app/', enabled:true },
+    { id:'regulation-identification', order:4, core:true, category:'法遵管理', name:'職業安全法規鑑別系統', english:'Occupational Safety Regulation Identification', description:'集中管理職安法規監測、最新公布日期、適用性鑑別與條文差異紀錄，支援法遵工作持續更新。', icon:'fa-solid fa-scale-balanced', accent:'#7c3aed', soft:'#f5f3ff', border:'#ddd6fe', url:'https://osris.vercel.app/', enabled:true },
+    { id:'standard-procedure', order:5, core:true, category:'程序文件管理', name:'職業安全標準程序系統', english:'Occupational Safety Standard Procedure', description:'建立、維護與展示職業安全標準程序書，支援程序分類、文件保存、AI 生成與雲端接續作業。', icon:'fa-solid fa-book-open', accent:'#0284c7', soft:'#f0f9ff', border:'#bae6fd', url:'https://ossps.vercel.app/', enabled:true },
+    { id:'hazard-identification', order:6, core:true, category:'危害管理', name:'職業安全危害識別系統', english:'Occupational Safety Hazard Identification', description:'針對現場危害進行影像、改善案件與檢查紀錄管理，協助危害追蹤、改善與附件佐證。', icon:'fa-solid fa-magnifying-glass-location', accent:'#e11d48', soft:'#fff1f2', border:'#fecdd3', url:'https://oshis.vercel.app/', enabled:true }
+];
+
+const CUSTOM_PALETTE = [
+    ['#0f766e','#f0fdfa','#99f6e4'],
+    ['#9333ea','#faf5ff','#e9d5ff'],
+    ['#c2410c','#fff7ed','#fed7aa'],
+    ['#0369a1','#f0f9ff','#bae6fd'],
+    ['#be123c','#fff1f2','#fecdd3'],
+    ['#4f46e5','#eef2ff','#c7d2fe']
+];
+
+let platformConfig = { version: PLATFORM_CONFIG_VERSION, systems: clone(DEFAULT_SYSTEMS) };
+let recentOpened = {};
+let bulletinNotices = [];
+let activityLogs = [];
+let usageStats = { date: getLocalDateKey(), todayLaunches: 0, totalLaunches: 0 };
+
+let systemPassword = DEFAULT_ADMIN_PASSWORD;
+let editorPassword = DEFAULT_EDITOR_PASSWORD;
+let editorEnabled = DEFAULT_EDITOR_ENABLED;
+let isAdmin = false;
+let isEditor = false;
+
+let toastTimer = null;
+let editingSystemId = '';
+let editingNoticeId = '';
+let pendingNoticeAttachments = [];
+
+let filePreviewMode = '';
+let filePreviewScale = 1;
+let filePreviewDefaultScale = 1;
+let filePreviewRotation = 0;
+let filePreviewPdfDocument = null;
+let filePreviewPdfRenderSerial = 0;
+let filePreviewPdfAppliedRelativeScale = 1;
+let filePreviewTouchDistance = null;
+let filePreviewTouchScale = 1;
+let filePreviewObjectUrl = '';
+
+function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+}
+
+function escapeHTML(value) {
+    return String(value ?? '').replace(/[&<>\'"]/g, char => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;'
+    })[char]);
+}
+
+function makeId(prefix) {
+    return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
+}
+
+function getLocalDateKey() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth()+1).padStart(2,'0');
+    const d = String(now.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+}
+
+function normalizeUsageStats() {
+    const today = getLocalDateKey();
+    if (!usageStats || typeof usageStats !== 'object') {
+        usageStats = { date: today, todayLaunches:0, totalLaunches:0 };
+    }
+    if (usageStats.date !== today) {
+        usageStats.date = today;
+        usageStats.todayLaunches = 0;
+    }
+    usageStats.todayLaunches = Number(usageStats.todayLaunches || 0);
+    usageStats.totalLaunches = Number(usageStats.totalLaunches || 0);
+}
+
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME, { keyPath:'key' });
+            }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error('平台資料開啟失敗'));
+    });
+}
+
+async function getDBValue(key) {
+    const db = await openDB();
+    return new Promise((resolve,reject) => {
+        const tx = db.transaction(STORE_NAME,'readonly');
+        const req = tx.objectStore(STORE_NAME).get(key);
+        req.onsuccess = () => resolve(req.result?.value ?? null);
+        req.onerror = () => reject(req.error || new Error('平台資料讀取失敗'));
+        tx.oncomplete = () => db.close();
+        tx.onerror = () => { db.close(); reject(tx.error || new Error('平台資料讀取失敗')); };
+    });
+}
+
+async function setDBValue(key,value) {
+    const db = await openDB();
+    return new Promise((resolve,reject) => {
+        const tx = db.transaction(STORE_NAME,'readwrite');
+        tx.objectStore(STORE_NAME).put({ key, value });
+        tx.oncomplete = () => { db.close(); resolve(); };
+        tx.onerror = () => { db.close(); reject(tx.error || new Error('平台資料儲存失敗')); };
+        tx.onabort = () => { db.close(); reject(tx.error || new Error('平台資料儲存已中止')); };
+    });
+}
+
+function normalizeSystem(raw,index=0) {
+    const palette = CUSTOM_PALETTE[index % CUSTOM_PALETTE.length];
+    return {
+        id: String(raw?.id || makeId('system')),
+        order: Number(raw?.order || index + 1),
+        core: raw?.core === true,
+        category: String(raw?.category || '職安管理'),
+        name: String(raw?.name || '未命名系統'),
+        english: String(raw?.english || 'Occupational Safety System'),
+        description: String(raw?.description || ''),
+        icon: String(raw?.icon || 'fa-solid fa-briefcase-medical'),
+        accent: String(raw?.accent || palette[0]),
+        soft: String(raw?.soft || palette[1]),
+        border: String(raw?.border || palette[2]),
+        url: String(raw?.url || '').trim(),
+        enabled: raw?.enabled !== false
+    };
+}
+
+function mergeSystems(savedSystems) {
+    const saved = Array.isArray(savedSystems) ? savedSystems : [];
+    const savedMap = new Map(saved.map(item => [String(item?.id || ''), item]));
+
+    const coreSystems = DEFAULT_SYSTEMS.map(core => {
+        const old = savedMap.get(core.id) || {};
+        const oldOrder = Number(old?.order);
+        return {
+            ...clone(core),
+            order: Number.isFinite(oldOrder) && oldOrder > 0 ? oldOrder : core.order,
+            url: typeof old.url === 'string' ? old.url.trim() : core.url,
+            enabled: typeof old.enabled === 'boolean' ? old.enabled : core.enabled
+        };
+    });
+
+    const customSystems = saved
+        .filter(item => item && !DEFAULT_SYSTEMS.some(core => core.id === item.id))
+        .map((item,index) => normalizeSystem(item, DEFAULT_SYSTEMS.length + index));
+
+    return [...coreSystems, ...customSystems]
+        .sort((a,b) => {
+            const orderA = Number(a.order || 9999);
+            const orderB = Number(b.order || 9999);
+            return orderA - orderB;
+        })
+        .map((item,index) => ({ ...item, order:index + 1 }));
+}
+
+async function loadPlatformState() {
+    try {
+const [savedConfig,savedRecent,savedBulletin,savedUsage,savedSecurity,savedActivity,legacyConfig,legacyRecent] = await Promise.all([
+    getDBValue(CONFIG_KEY),
+    getDBValue(RECENT_KEY),
+    getDBValue(BULLETIN_KEY),
+    getDBValue(USAGE_KEY),
+    getDBValue(SECURITY_KEY),
+    getDBValue(ACTIVITY_KEY),
+    getDBValue('platform_config'),
+    getDBValue('recent_opened')
+]);
+
+        const effectiveConfig = savedConfig || legacyConfig;
+        const effectiveRecent = savedRecent || legacyRecent;
+
+        if (effectiveConfig && Array.isArray(effectiveConfig.systems)) {
+            platformConfig = { version:PLATFORM_CONFIG_VERSION, systems:mergeSystems(effectiveConfig.systems) };
+        }
+        if (effectiveRecent && typeof effectiveRecent === 'object') recentOpened = effectiveRecent;
+if (Array.isArray(savedBulletin)) bulletinNotices = savedBulletin;
+if (Array.isArray(savedActivity)) activityLogs = savedActivity.slice(0, MAX_ACTIVITY_LOGS);
+if (savedUsage && typeof savedUsage === 'object') usageStats = savedUsage;
+if (savedSecurity && typeof savedSecurity === 'object') {
+            systemPassword = String(savedSecurity.adminPassword || DEFAULT_ADMIN_PASSWORD);
+            editorPassword = String(savedSecurity.editorPassword || DEFAULT_EDITOR_PASSWORD);
+            editorEnabled = savedSecurity.editorEnabled !== false;
+        }
+        normalizeUsageStats();
+    } catch (error) {
+        console.error('平台資料初始化失敗：', error);
+        showToast('平台資料讀取失敗，已使用預設狀態。','error');
+    }
+}
+
+async function persistPlatformConfig() {
+    await setDBValue(CONFIG_KEY, {
+        version: PLATFORM_CONFIG_VERSION,
+        savedAt: new Date().toISOString(),
+        systems: platformConfig.systems.map((system,index) => ({ ...system, order:index + 1 }))
+    });
+}
+
+async function persistRecentOpened() { await setDBValue(RECENT_KEY, recentOpened); }
+async function persistBulletin() { await setDBValue(BULLETIN_KEY, bulletinNotices); }
+async function persistActivityLogs() { await setDBValue(ACTIVITY_KEY, activityLogs); }
+async function persistUsageStats() { normalizeUsageStats(); await setDBValue(USAGE_KEY, usageStats); }
+async function persistSecurity() {
+    await setDBValue(SECURITY_KEY, { adminPassword:systemPassword, editorPassword, editorEnabled });
+}
+
+function getCurrentRole() {
+    if (isAdmin) return 'admin';
+    if (isEditor) return 'editor';
+    return 'viewer';
+}
+function canEditBulletin() { return isAdmin || isEditor; }
+function canManageSystems() { return isAdmin; }
+function canDeleteData() { return isAdmin; }
+function canChangePassword() { return isAdmin; }
+
+function showModal(id) {
+    document.getElementById(id)?.classList.add('show');
+    document.body.classList.add('no-scroll');
+}
+function hideModal(id) {
+    document.getElementById(id)?.classList.remove('show');
+    if (!document.querySelector('.pro-modal-overlay.show')) document.body.classList.remove('no-scroll');
+}
+
+function showToast(message,type='success') {
+    const toast = document.getElementById('toast');
+    const msg = document.getElementById('toast-message');
+    const icon = toast?.querySelector('.toast-icon i');
+    if (!toast || !msg) return;
+    msg.textContent = message;
+    if (icon) icon.className = type === 'error' ? 'fa-solid fa-xmark' : 'fa-solid fa-check';
+    toast.classList.toggle('error', type === 'error');
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+function updateClock() {
+    const now = new Date();
+    const date = now.toLocaleDateString('zh-TW', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });
+    const time = now.toLocaleTimeString('zh-TW', { hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    document.getElementById('clock-date').textContent = date;
+    document.getElementById('clock-time').textContent = time;
+    normalizeUsageStats();
+}
+
+function updateRoleUI() {
+    const role = getCurrentRole();
+    const chip = document.getElementById('role-chip');
+    const chipText = document.getElementById('role-chip-text');
+    const loginIcon = document.getElementById('login-action-icon');
+
+const loginButton =
+    document.getElementById('login-action-btn');
+
+    chip.classList.remove('admin','editor');
+    if (role === 'admin') {
+        chip.classList.add('admin');
+        chipText.textContent = '管理者模式';
+        loginIcon.className = 'fa-solid fa-right-from-bracket';
+        loginButton.dataset.tooltip = '登出目前權限';
+    } else if (role === 'editor') {
+        chip.classList.add('editor');
+        chipText.textContent = '使用者模式';
+        loginIcon.className = 'fa-solid fa-right-from-bracket';
+        loginButton.dataset.tooltip = '登出目前權限';
+    } else {
+        chipText.textContent = '預覽模式';
+        loginIcon.className = 'fa-solid fa-lock';
+        loginButton.dataset.tooltip = '權限登入';
+    }
+
+document.getElementById('platform-settings-btn').classList.toggle('hidden', !isAdmin);
+document.getElementById('permission-settings-btn').classList.toggle('hidden', !isAdmin);
+document.getElementById('add-notice-btn').classList.toggle('hidden', !canEditBulletin());
+
+renderSystems();
+renderBulletin();
+}
+
+function openLoginModal() {
+    if (getCurrentRole() !== 'viewer') return;
+    const input = document.getElementById('login-pwd');
+    const error = document.getElementById('login-error');
+    input.value = '';
+    error.classList.add('hidden');
+    showModal('login-modal');
+    setTimeout(() => input.focus(), 80);
+}
+function closeLoginModal() { hideModal('login-modal'); }
+
+async function checkPassword() {
+    const input = document.getElementById('login-pwd');
+    const error = document.getElementById('login-error');
+    const pwd = String(input.value || '');
+    error.classList.add('hidden');
+
+    if (pwd === systemPassword) {
+        isAdmin = true; isEditor = false;
+        closeLoginModal();
+updateRoleUI();
+await addActivityLog(
+    'login',
+    '登入管理者模式'
+);
+showToast('已登入管理者模式。');
+return;
+    }
+    if (editorEnabled && pwd === editorPassword) {
+        isAdmin = false; isEditor = true;
+        closeLoginModal();
+updateRoleUI();
+await addActivityLog(
+    'login',
+    '登入使用者模式'
+);
+showToast('已登入使用者模式。');
+return;
+    }
+
+    input.value = '';
+    error.classList.remove('hidden');
+    input.focus();
+}
+
+function handleLoginAction() {
+    if (getCurrentRole() === 'viewer') {
+        openLoginModal();
+        return;
+    }
+if (!confirm('確定要登出目前權限嗎？')) return;
+
+const previousRole = getCurrentRole();
+
+isAdmin = false;
+isEditor = false;
+
+updateRoleUI();
+
+void addActivityLog(
+    'logout',
+    '登出平台權限',
+    '',
+    previousRole
+);
+
+showToast('已登出，目前為預覽模式。');
+}
+
+function openPermissionSettings() {
+    if (!canChangePassword()) { showToast('僅管理者可開啟權限設定。','error'); return; }
+    document.getElementById('old-admin-pwd').value = '';
+    document.getElementById('new-admin-pwd').value = '';
+    document.getElementById('new-editor-pwd').value = '';
+    document.getElementById('editor-enabled-checkbox').checked = editorEnabled;
+    showModal('permission-modal');
+}
+function closePermissionSettings() { hideModal('permission-modal'); }
+
+async function savePasswordSettings() {
+    if (!canChangePassword()) return;
+    const oldPwd = document.getElementById('old-admin-pwd').value;
+    const newAdmin = document.getElementById('new-admin-pwd').value;
+    const newEditor = document.getElementById('new-editor-pwd').value;
+    const nextEnabled = document.getElementById('editor-enabled-checkbox').checked;
+
+    if (oldPwd !== systemPassword) {
+        showToast('目前管理者密碼不正確。','error');
+        document.getElementById('old-admin-pwd').focus();
+        return;
+    }
+    if (newAdmin && newAdmin.length < 6) { showToast('新管理者密碼至少需 6 個字元。','error'); return; }
+    if (newEditor && newEditor.length < 6) { showToast('新使用者密碼至少需 6 個字元。','error'); return; }
+
+    if (newAdmin) systemPassword = newAdmin;
+    if (newEditor) editorPassword = newEditor;
+    editorEnabled = nextEnabled;
+    try {
+        await persistSecurity();
+        closePermissionSettings();
+        showToast('權限與密碼設定已更新。');
+    } catch (error) {
+        console.error(error);
+        showToast('權限設定儲存失敗。','error');
+    }
+}
+
+function isConfigured(system) { return Boolean(String(system?.url || '').trim()); }
+
+function getSafeTargetUrl(rawUrl) {
+    const raw = String(rawUrl || '').trim();
+    if (!raw) return null;
+    try {
+        const url = new URL(raw, window.location.href);
+        const allowed = new Set(['http:','https:','file:']);
+        return allowed.has(url.protocol) ? url.href : null;
+    } catch (_) { return null; }
+}
+
+function formatDateTime(isoString) {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false });
+}
+
+function renderSystems() {
+    const grid = document.getElementById('system-grid');
+    const query = String(document.getElementById('system-search')?.value || '').trim().toLowerCase();
+    const systems = platformConfig.systems
+        .slice()
+        .sort((a,b) => a.order - b.order)
+        .filter(system => {
+            if (!query) return true;
+            return [system.name,system.english,system.category,system.description].join(' ').toLowerCase().includes(query);
+        });
+
+    if (!systems.length) {
+        grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><strong>找不到符合的系統</strong><span>請嘗試其他關鍵字。</span></div>`;
+        updateStats();
+        return;
+    }
+
+    grid.innerHTML = systems.map(system => {
+        const configured = isConfigured(system);
+        const enabled = system.enabled === true;
+        const recent = formatDateTime(recentOpened[system.id]);
+        let statusText = '待設定連結';
+        let statusClass = '';
+        if (!enabled) { statusText = '平台入口已停用'; statusClass = 'disabled'; }
+        else if (configured) { statusText = '已完成連結設定'; statusClass = 'ready'; }
+
+        const adminActions = isAdmin && !system.core ? `
+            <div class="system-admin-actions">
+                <button type="button" class="system-admin-btn delete system-tooltip-btn" data-system-delete="${escapeHTML(system.id)}" aria-label="刪除系統" data-tooltip="刪除系統"><i class="fa-solid fa-trash-can"></i></button>
+            </div>` : '';
+
+        return `
+            <article class="system-card ${enabled ? '' : 'is-disabled'}" style="--accent:${system.accent};--accent-soft:${system.soft};--accent-border:${system.border};" data-system-id="${escapeHTML(system.id)}">
+                ${adminActions}
+                <div class="system-card-head">
+                    <div class="system-icon" aria-hidden="true"><i class="${escapeHTML(system.icon)}"></i></div>
+                    <div class="system-seq">${String(system.order).padStart(2,'0')}</div>
+                </div>
+                <div class="system-category">${escapeHTML(system.category)}</div>
+                <h3 class="system-name">${escapeHTML(system.name)}</h3>
+                <div class="system-en">${escapeHTML(system.english)}</div>
+                <div class="system-desc">${escapeHTML(system.description)}</div>
+                <div class="system-bottom">
+                    <div class="status-row">
+                        <div class="status-pill"><span class="status-dot ${statusClass}"></span><span>${statusText}</span></div>
+                        <div class="last-opened">${recent ? `最近開啟 ${escapeHTML(recent)}` : ''}</div>
+                    </div>
+                    <button type="button" class="launch-button" data-launch-id="${escapeHTML(system.id)}" ${enabled ? '' : 'disabled'}>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>${configured ? '開啟系統' : '系統連結待設定'}
+                    </button>
+                </div>
+            </article>`;
+    }).join('');
+
+    grid.querySelectorAll('[data-launch-id]').forEach(btn => btn.addEventListener('click', () => launchSystem(btn.dataset.launchId)));
+    grid.querySelectorAll('[data-system-delete]').forEach(btn => btn.addEventListener('click', () => deleteCustomSystem(btn.dataset.systemDelete)));
+    updateStats();
+}
+
+function updateStats() {
+    /*
+     * v4 已移除首頁即時統計圖卡與智慧管理中心。
+     * 保留本函式作為既有流程相容入口，只維護當日統計狀態。
+     */
+    normalizeUsageStats();
+}
+
+async function launchSystem(systemId) {
+    const system = platformConfig.systems.find(item => item.id === systemId);
+    if (!system) return;
+    if (!system.enabled) { showToast('此系統入口目前已停用。','error'); return; }
+    const targetUrl = getSafeTargetUrl(system.url);
+    if (!targetUrl) {
+        if (isAdmin) {
+            openPlatformSettings(system.id);
+            showToast(`請先設定「${system.name}」的正式網址。`,'error');
+        } else {
+            showToast('此系統尚未完成正式連結設定。','error');
+        }
+        return;
+    }
+
+    const newWindow = window.open(targetUrl,'_blank');
+    if (!newWindow) { showToast('瀏覽器阻擋了新分頁，請允許彈出視窗後再試。','error'); return; }
+    try { newWindow.opener = null; } catch (_) {}
+
+recentOpened[system.id] =
+    new Date().toISOString();
+
+normalizeUsageStats();
+
+usageStats.todayLaunches += 1;
+usageStats.totalLaunches += 1;
+
+try {
+    await Promise.all([
+        persistRecentOpened(),
+        persistUsageStats()
+    ]);
+} catch (error) {
+    console.warn(error);
+}
+
+await addActivityLog(
+    'launch',
+    `開啟${system.name}`
+);
+
+renderSystems();
+updateStats();
+renderActivityLog();
+}
+
+
+function refreshSystemSettingOrderLabels() {
+    const list = document.getElementById('system-settings-list');
+    if (!list) return;
+
+    const items = Array.from(list.querySelectorAll('[data-setting-id]'));
+    items.forEach((item, index) => {
+        const orderLabel = item.querySelector('[data-setting-order-label]');
+        if (orderLabel) orderLabel.textContent = String(index + 1).padStart(2, '0');
+
+        const upButton = item.querySelector('[data-setting-move="up"]');
+        const downButton = item.querySelector('[data-setting-move="down"]');
+        if (upButton) upButton.disabled = index === 0;
+        if (downButton) downButton.disabled = index === items.length - 1;
+    });
+}
+
+function moveSystemSettingItem(systemId, direction) {
+    const list = document.getElementById('system-settings-list');
+    const item = list?.querySelector(`[data-setting-id="${CSS.escape(systemId)}"]`);
+    if (!list || !item) return;
+
+    if (direction === 'up') {
+        const previous = item.previousElementSibling;
+        if (previous) list.insertBefore(item, previous);
+    } else if (direction === 'down') {
+        const next = item.nextElementSibling;
+        if (next) list.insertBefore(next, item);
+    }
+
+    refreshSystemSettingOrderLabels();
+}
+
+function renderSystemSettings(focusSystemId='') {
+    const list = document.getElementById('system-settings-list');
+    const orderedSystems = platformConfig.systems.slice().sort((a,b) => a.order-b.order);
+
+    list.innerHTML = orderedSystems.map((system,index) => `
+        <div class="system-setting-item" data-setting-id="${escapeHTML(system.id)}">
+            <div class="system-setting-head">
+                <div class="system-setting-name">
+                    <i class="${escapeHTML(system.icon)}"></i>
+                    <span><span data-setting-order-label>${String(index + 1).padStart(2,'0')}</span>｜${escapeHTML(system.name)}</span>
+                    ${system.core ? '<span class="core-badge">CORE</span>' : ''}
+                </div>
+                <div class="system-setting-actions">
+                    <span class="setting-order-actions" aria-label="系統排序">
+                        <button type="button" class="setting-mini-btn order system-tooltip-btn" data-tooltip="向上移動" data-setting-move="up" data-setting-move-id="${escapeHTML(system.id)}" aria-label="向上移動"><i class="fa-solid fa-arrow-up"></i></button>
+                        <button type="button" class="setting-mini-btn order system-tooltip-btn" data-tooltip="向下移動" data-setting-move="down" data-setting-move-id="${escapeHTML(system.id)}" aria-label="向下移動"><i class="fa-solid fa-arrow-down"></i></button>
+                    </span>
+                    ${system.core ? '' : `<button type="button" class="setting-mini-btn system-tooltip-btn" data-tooltip="編輯系統" data-setting-edit="${escapeHTML(system.id)}" aria-label="編輯系統"><i class="fa-solid fa-pen"></i></button><button type="button" class="setting-mini-btn delete system-tooltip-btn" data-tooltip="刪除系統" data-setting-delete="${escapeHTML(system.id)}" aria-label="刪除系統"><i class="fa-solid fa-trash-can"></i></button>`}
+                </div>
+            </div>
+            <div class="setting-row">
+                <input type="url" inputmode="url" data-setting-url="${escapeHTML(system.id)}" value="${escapeHTML(system.url)}" placeholder="https://..." />
+                <label class="setting-switch"><input type="checkbox" data-setting-enabled="${escapeHTML(system.id)}" ${system.enabled ? 'checked' : ''} /><span>啟用入口</span></label>
+            </div>
+        </div>`).join('');
+
+    list.querySelectorAll('[data-setting-move]').forEach(btn => btn.addEventListener('click', () => {
+        moveSystemSettingItem(btn.dataset.settingMoveId, btn.dataset.settingMove);
+    }));
+    list.querySelectorAll('[data-setting-edit]').forEach(btn => btn.addEventListener('click', () => { closePlatformSettings(); openSystemEditor(btn.dataset.settingEdit); }));
+    list.querySelectorAll('[data-setting-delete]').forEach(btn => btn.addEventListener('click', () => deleteCustomSystem(btn.dataset.settingDelete, true)));
+
+    refreshSystemSettingOrderLabels();
+
+    if (focusSystemId) setTimeout(() => {
+        const input = list.querySelector(`[data-setting-url="${CSS.escape(focusSystemId)}"]`);
+        input?.focus();
+        input?.scrollIntoView({ behavior:'smooth', block:'center' });
+    },80);
+}
+
+function openPlatformSettings(focusSystemId='') {
+    if (!canManageSystems()) { showToast('僅管理者可開啟平台系統管理。','error'); return; }
+    renderSystemSettings(focusSystemId);
+    showModal('platform-settings-modal');
+}
+function closePlatformSettings() { hideModal('platform-settings-modal'); }
+
+async function savePlatformSettings() {
+    if (!canManageSystems()) return;
+
+    const currentMap = new Map(platformConfig.systems.map(system => [system.id, system]));
+    const settingItems = Array.from(document.querySelectorAll('#system-settings-list [data-setting-id]'));
+
+    const next = settingItems.map((item, index) => {
+        const systemId = String(item.dataset.settingId || '');
+        const system = currentMap.get(systemId);
+        if (!system) return null;
+
+        const url = String(item.querySelector(`[data-setting-url="${CSS.escape(systemId)}"]`)?.value || '').trim();
+        const enabled = Boolean(item.querySelector(`[data-setting-enabled="${CSS.escape(systemId)}"]`)?.checked);
+
+        return { ...system, order:index + 1, url, enabled };
+    }).filter(Boolean);
+
+    const invalid = next.find(system => system.url && !getSafeTargetUrl(system.url));
+    if (invalid) {
+        showToast(`「${invalid.name}」網址格式不正確。`,'error');
+        document.querySelector(`[data-setting-url="${CSS.escape(invalid.id)}"]`)?.focus();
+        return;
+    }
+
+    platformConfig.systems = next;
+    try {
+        await persistPlatformConfig();
+        closePlatformSettings();
+        renderSystems();
+        updateStats();
+        showToast('平台系統設定已儲存。');
+    } catch (error) {
+        console.error(error);
+        showToast('平台系統設定儲存失敗。','error');
+    }
+}
+
+function handleSystemEdit(systemId) {
+    if (!isAdmin) return;
+    const system = platformConfig.systems.find(item => item.id === systemId);
+    if (!system) return;
+    if (system.core) openPlatformSettings(systemId);
+    else openSystemEditor(systemId);
+}
+
+function openSystemEditor(systemId='') {
+    if (!isAdmin) { showToast('僅管理者可新增或編輯系統。','error'); return; }
+    editingSystemId = systemId;
+    const system = systemId ? platformConfig.systems.find(item => item.id === systemId) : null;
+    if (system?.core) { openPlatformSettings(systemId); return; }
+
+    document.getElementById('system-editor-title').textContent = system ? '編輯系統' : '新增系統';
+    document.getElementById('system-name-input').value = system?.name || '';
+    document.getElementById('system-english-input').value = system?.english || '';
+    document.getElementById('system-category-input').value = system?.category || '';
+    document.getElementById('system-icon-input').value = system?.icon || 'fa-solid fa-briefcase-medical';
+    document.getElementById('system-description-input').value = system?.description || '';
+    document.getElementById('system-url-input').value = system?.url || '';
+    document.getElementById('system-enabled-input').checked = system?.enabled !== false;
+    showModal('system-editor-modal');
+    setTimeout(() => document.getElementById('system-name-input').focus(),80);
+}
+function closeSystemEditor() { hideModal('system-editor-modal'); editingSystemId=''; }
+
+async function saveSystemEditor() {
+    if (!isAdmin) return;
+    const wasEditing = Boolean(editingSystemId);
+    const name = document.getElementById('system-name-input').value.trim();
+    const english = document.getElementById('system-english-input').value.trim();
+    const category = document.getElementById('system-category-input').value.trim();
+    const icon = document.getElementById('system-icon-input').value;
+    const description = document.getElementById('system-description-input').value.trim();
+    const url = document.getElementById('system-url-input').value.trim();
+    const enabled = document.getElementById('system-enabled-input').checked;
+
+    if (!name) { showToast('請輸入系統名稱。','error'); return; }
+    if (url && !getSafeTargetUrl(url)) { showToast('系統網址格式不正確。','error'); return; }
+
+    if (editingSystemId) {
+        const index = platformConfig.systems.findIndex(item => item.id === editingSystemId && !item.core);
+        if (index < 0) return;
+        platformConfig.systems[index] = { ...platformConfig.systems[index], name, english:english || 'Occupational Safety System', category:category || '職安管理', icon, description, url, enabled };
+    } else {
+        const palette = CUSTOM_PALETTE[(platformConfig.systems.length - DEFAULT_SYSTEMS.length) % CUSTOM_PALETTE.length];
+        platformConfig.systems.push({
+            id: makeId('custom-system'), order:platformConfig.systems.length + 1, core:false,
+            name, english:english || 'Occupational Safety System', category:category || '職安管理', icon, description, url, enabled,
+            accent:palette[0], soft:palette[1], border:palette[2]
+        });
+    }
+
+    platformConfig.systems = platformConfig.systems.map((item,index) => ({ ...item, order:index+1 }));
+    try {
+        await persistPlatformConfig();
+        closeSystemEditor();
+        renderSystems(); updateStats();
+        showToast(wasEditing ? '系統資料已更新。' : '新系統已加入平台。');
+    } catch (error) { console.error(error); showToast('系統資料儲存失敗。','error'); }
+}
+
+async function deleteCustomSystem(systemId, rerenderSettings=false) {
+    if (!isAdmin) { showToast('僅管理者可刪除系統。','error'); return; }
+    const system = platformConfig.systems.find(item => item.id === systemId);
+    if (!system) return;
+    if (system.core) { showToast('六套核心系統採保護模式，如暫不使用請改為停用入口。','error'); return; }
+    if (!confirm(`確定要刪除「${system.name}」？`)) return;
+    if (!confirm('此操作會將此擴充系統從平台入口永久移除，確定要繼續嗎？')) return;
+
+    platformConfig.systems = platformConfig.systems.filter(item => item.id !== systemId).map((item,index) => ({ ...item, order:index+1 }));
+    delete recentOpened[systemId];
+    try {
+        await Promise.all([persistPlatformConfig(),persistRecentOpened()]);
+        renderSystems(); updateStats();
+        if (rerenderSettings) renderSystemSettings();
+        showToast('系統已從平台移除。');
+    } catch (error) { console.error(error); showToast('系統移除失敗。','error'); }
+}
+
+function getRoleDisplay(role) {
+    return role === 'admin' ? '管理者' : role === 'editor' ? '使用者' : '預覽者';
+}
+
+function getActivityIcon(type) {
+    const icons = {
+        login: 'fa-solid fa-right-to-bracket',
+        logout: 'fa-solid fa-right-from-bracket',
+        launch: 'fa-solid fa-arrow-up-right-from-square',
+        bulletin: 'fa-solid fa-bullhorn',
+        system: 'fa-solid fa-layer-group',
+        security: 'fa-solid fa-key',
+        import: 'fa-solid fa-file-import',
+        export: 'fa-solid fa-file-export'
+    };
+
+    return icons[type] || 'fa-solid fa-circle-info';
+}
+
+
+function renderActivityLog() {
+    const countEl =
+        document.getElementById('activity-log-count');
+
+    const list =
+        document.getElementById('activity-log-list');
+
+    const clearBtn =
+        document.getElementById('clear-activity-log-btn');
+
+    if (!list) return;
+
+    if (countEl) {
+        countEl.textContent =
+            `${activityLogs.length} 筆`;
+    }
+
+    if (clearBtn) {
+        clearBtn.classList.toggle(
+            'hidden',
+            !isAdmin || activityLogs.length === 0
+        );
+    }
+
+    if (!activityLogs.length) {
+        list.innerHTML = `
+            <div class="activity-log-empty">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>目前尚無平台活動紀錄</span>
+            </div>
+        `;
+
+        return;
+    }
+
+    list.innerHTML =
+        activityLogs
+            .slice(0, MAX_ACTIVITY_LOGS)
+            .map(log => `
+                <div class="activity-log-item">
+
+                    <div class="activity-log-icon">
+                        <i class="${getActivityIcon(log.type)}"></i>
+                    </div>
+
+                    <div class="activity-log-main">
+
+                        <div class="activity-log-title">
+                            ${escapeHTML(log.title)}
+                        </div>
+
+                        ${
+                            log.detail
+                                ? `<div class="activity-log-detail">${escapeHTML(log.detail)}</div>`
+                                : ''
+                        }
+
+                        <div class="activity-log-meta">
+                            <span>${escapeHTML(formatDateTime(log.time))}</span>
+                            <span>｜</span>
+                            <span>${escapeHTML(getRoleDisplay(log.role))}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            `)
+            .join('');
+}
+
+
+async function addActivityLog(
+    type,
+    title,
+    detail = '',
+    roleOverride = ''
+) {
+    const entry = {
+        id: makeId('activity'),
+        time: new Date().toISOString(),
+        role: roleOverride || getCurrentRole(),
+        type: String(type || 'info'),
+        title: String(title || ''),
+        detail: String(detail || '')
+    };
+
+    activityLogs.unshift(entry);
+
+    activityLogs =
+        activityLogs.slice(0, MAX_ACTIVITY_LOGS);
+
+    try {
+        await persistActivityLogs();
+    } catch (error) {
+        console.warn(
+            '活動紀錄儲存失敗：',
+            error
+        );
+    }
+
+    renderActivityLog();
+}
+
+
+async function clearActivityLogs() {
+    if (!isAdmin) {
+        showToast(
+            '僅管理者可清除活動紀錄。',
+            'error'
+        );
+        return;
+    }
+
+    if (!activityLogs.length) return;
+
+    if (!confirm(
+        '確定要清除目前所有平台活動紀錄嗎？'
+    )) return;
+
+    activityLogs = [];
+
+    try {
+        await persistActivityLogs();
+
+        renderActivityLog();
+
+        showToast(
+            '平台活動紀錄已清除。'
+        );
+    } catch (error) {
+        console.error(error);
+
+        showToast(
+            '活動紀錄清除失敗。',
+            'error'
+        );
+    }
+}
+
+function renderBulletin() {
+    const grid = document.getElementById('bulletin-grid');
+    const sorted = bulletinNotices.slice().sort((a,b) => {
+        if (Boolean(a.pinned) !== Boolean(b.pinned)) return a.pinned ? -1 : 1;
+        return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+    });
+
+    if (!sorted.length) {
+        grid.innerHTML = `
+    <div class="bulletin-empty">
+        <i class="fa-solid fa-bullhorn"></i>
+        <strong>目前尚無佈告資訊</strong>
+    </div>
+`;
+        updateStats();
+        return;
+    }
+
+    grid.innerHTML = sorted.map(notice => {
+        const attachments = Array.isArray(notice.attachments) ? notice.attachments : [];
+        const actions = canEditBulletin() ? `
+            <div class="notice-actions">
+                <button type="button" class="notice-action-btn system-tooltip-btn" data-tooltip="編輯佈告" data-notice-edit="${escapeHTML(notice.id)}" aria-label="編輯佈告"><i class="fa-solid fa-pen"></i></button>
+                ${isAdmin ? `<button type="button" class="notice-action-btn delete system-tooltip-btn" data-tooltip="刪除佈告" data-notice-delete="${escapeHTML(notice.id)}" aria-label="刪除佈告"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+            </div>` : '';
+        const attachmentHtml = attachments.length ? `<div class="notice-attachments">${attachments.map(file => {
+            const isPdf = String(file.type).includes('pdf');
+            return `<button type="button" class="attachment-chip ${isPdf ? 'pdf' : 'image'}" data-preview-file="${escapeHTML(file.id)}"><i class="fa-solid ${isPdf ? 'fa-file-pdf' : 'fa-file-image'}"></i><span class="file-name">${escapeHTML(file.name)}</span><span>${escapeHTML(formatFileSize(file.size))}</span></button>`;
+        }).join('')}</div>` : '';
+
+        return `<article class="notice-card ${notice.pinned ? 'pinned' : ''}">
+            <div class="notice-head">
+                <div class="notice-title-wrap">
+                    <div class="notice-title-line">${notice.pinned ? '<i class="fa-solid fa-thumbtack notice-pin"></i>' : ''}<h3 class="notice-title">${escapeHTML(notice.title)}</h3></div>
+                    <div class="notice-meta">${escapeHTML(formatDateTime(notice.updatedAt || notice.createdAt))}｜${escapeHTML(getRoleDisplay(notice.updatedByRole || notice.createdByRole))}</div>
+                </div>
+                ${actions}
+            </div>
+            ${notice.content ? `<div class="notice-content">${escapeHTML(notice.content)}</div>` : ''}
+            ${attachmentHtml}
+        </article>`;
+    }).join('');
+
+    grid.querySelectorAll('[data-notice-edit]').forEach(btn => btn.addEventListener('click', () => openNoticeEditor(btn.dataset.noticeEdit)));
+    grid.querySelectorAll('[data-notice-delete]').forEach(btn => btn.addEventListener('click', () => deleteNotice(btn.dataset.noticeDelete)));
+    grid.querySelectorAll('[data-preview-file]').forEach(btn => btn.addEventListener('click', () => openFilePreviewById(btn.dataset.previewFile)));
+    updateStats();
+}
+
+function openNoticeEditor(noticeId='') {
+    if (!canEditBulletin()) { openLoginModal(); return; }
+    editingNoticeId = noticeId;
+    pendingNoticeAttachments = [];
+    const notice = noticeId ? bulletinNotices.find(item => item.id === noticeId) : null;
+    document.getElementById('notice-editor-title').textContent = notice ? '編輯佈告' : '新增佈告';
+    document.getElementById('notice-title-input').value = notice?.title || '';
+    document.getElementById('notice-content-input').value = notice?.content || '';
+    document.getElementById('notice-pinned-input').checked = Boolean(notice?.pinned);
+    document.getElementById('notice-file-input').value = '';
+    renderNoticeEditorAttachments();
+    showModal('notice-editor-modal');
+    setTimeout(() => document.getElementById('notice-title-input').focus(),80);
+}
+function closeNoticeEditor() {
+    hideModal('notice-editor-modal');
+    editingNoticeId='';
+    pendingNoticeAttachments=[];
+    document.getElementById('notice-file-input').value='';
+}
+
+function findAttachmentById(fileId) {
+    for (const notice of bulletinNotices) {
+        const found = (Array.isArray(notice.attachments) ? notice.attachments : []).find(file => file.id === fileId);
+        if (found) return found;
+    }
+    return pendingNoticeAttachments.find(file => file.id === fileId) || null;
+}
+
+function renderNoticeEditorAttachments() {
+    const container = document.getElementById('notice-editor-attachments');
+    const notice = editingNoticeId ? bulletinNotices.find(item => item.id === editingNoticeId) : null;
+    const existing = Array.isArray(notice?.attachments) ? notice.attachments : [];
+    const rows = [];
+
+    existing.forEach(file => rows.push({ file, pending:false }));
+    pendingNoticeAttachments.forEach(file => rows.push({ file, pending:true }));
+
+    if (!rows.length) { container.innerHTML = ''; return; }
+
+    container.innerHTML = rows.map(({file,pending}) => `
+        <div class="editor-attachment-item">
+            <span class="editor-file-icon"><i class="fa-solid ${String(file.type).includes('pdf') ? 'fa-file-pdf' : 'fa-file-image'}"></i></span>
+            <span class="editor-attachment-text"><span class="editor-attachment-name">${escapeHTML(file.name)}</span><span class="editor-attachment-meta">${escapeHTML(formatFileSize(file.size))}${pending ? '｜待加入' : ''}</span></span>
+            <span class="editor-attachment-actions">
+                <button type="button" class="editor-file-btn system-tooltip-btn" data-tooltip="預覽附件" data-editor-preview="${escapeHTML(file.id)}" aria-label="預覽附件"><i class="fa-solid fa-eye"></i></button>
+                ${pending ? `<button type="button" class="editor-file-btn system-tooltip-btn delete" data-tooltip="移除待加入附件" data-pending-remove="${escapeHTML(file.id)}" aria-label="移除待加入附件"><i class="fa-solid fa-xmark"></i></button>` : (isAdmin ? `<button type="button" class="editor-file-btn system-tooltip-btn delete" data-tooltip="刪除附件" data-existing-remove="${escapeHTML(file.id)}" aria-label="刪除附件"><i class="fa-solid fa-trash-can"></i></button>` : '')}
+            </span>
+        </div>`).join('');
+
+    container.querySelectorAll('[data-editor-preview]').forEach(btn => btn.addEventListener('click', () => openFilePreviewById(btn.dataset.editorPreview)));
+    container.querySelectorAll('[data-pending-remove]').forEach(btn => btn.addEventListener('click', () => {
+        pendingNoticeAttachments = pendingNoticeAttachments.filter(file => file.id !== btn.dataset.pendingRemove);
+        renderNoticeEditorAttachments();
+    }));
+    container.querySelectorAll('[data-existing-remove]').forEach(btn => btn.addEventListener('click', () => deleteNoticeAttachment(btn.dataset.existingRemove)));
+}
+
+function formatFileSize(size) {
+    const bytes = Number(size || 0);
+    if (!bytes) return '大小未知';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024*1024) return `${(bytes/1024).toFixed(1)} KB`;
+    return `${(bytes/1024/1024).toFixed(1)} MB`;
+}
+
+function fileToDataUrl(file) {
+    return new Promise((resolve,reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(reader.error || new Error('檔案讀取失敗'));
+        reader.readAsDataURL(file);
+    });
+}
+
+async function processNoticeFiles(fileList) {
+    if (!canEditBulletin()) { showToast('目前權限無法上傳附件。','error'); return; }
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+
+    for (const file of files) {
+        const type = String(file.type || '').toLowerCase();
+        const lower = String(file.name || '').toLowerCase();
+        const normalizedType = type || (lower.endsWith('.pdf') ? 'application/pdf' : lower.endsWith('.png') ? 'image/png' : (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) ? 'image/jpeg' : '');
+        if (!ALLOWED_ATTACHMENT_TYPES.has(normalizedType)) {
+            showToast(`「${file.name}」格式不支援，僅接受 PDF、JPG、PNG。`,'error');
+            continue;
+        }
+        if (file.size > MAX_ATTACHMENT_BYTES) {
+            showToast(`「${file.name}」超過 5MB，未加入附件。`,'error');
+            continue;
+        }
+        try {
+            const data = await fileToDataUrl(file);
+            pendingNoticeAttachments.push({ id:makeId('file'), name:file.name, type:normalizedType, size:file.size, data, createdAt:new Date().toISOString() });
+        } catch (error) {
+            console.error(error);
+            showToast(`「${file.name}」讀取失敗。`,'error');
+        }
+    }
+    renderNoticeEditorAttachments();
+}
+
+async function saveNotice() {
+    if (!canEditBulletin()) return;
+    const title = document.getElementById('notice-title-input').value.trim();
+    const content = document.getElementById('notice-content-input').value.trim();
+    const pinned = document.getElementById('notice-pinned-input').checked;
+    if (!title) { showToast('請輸入佈告標題。','error'); return; }
+
+    const now = new Date().toISOString();
+    if (editingNoticeId) {
+        const notice = bulletinNotices.find(item => item.id === editingNoticeId);
+        if (!notice) return;
+        notice.title = title;
+        notice.content = content;
+        notice.pinned = pinned;
+        notice.updatedAt = now;
+        notice.updatedByRole = getCurrentRole();
+        notice.attachments = [...(Array.isArray(notice.attachments) ? notice.attachments : []), ...pendingNoticeAttachments];
+    } else {
+        bulletinNotices.push({
+            id:makeId('notice'), title, content, pinned,
+            createdAt:now, updatedAt:now,
+            createdByRole:getCurrentRole(), updatedByRole:getCurrentRole(),
+            attachments:[...pendingNoticeAttachments]
+        });
+    }
+
+    try {
+        await persistBulletin();
+        closeNoticeEditor();
+        renderBulletin(); updateStats();
+        showToast('佈告欄內容已儲存。');
+    } catch (error) { console.error(error); showToast('佈告欄儲存失敗。','error'); }
+}
+
+async function deleteNotice(noticeId) {
+    if (!isAdmin) { showToast('僅管理者可刪除佈告內容。','error'); return; }
+    const notice = bulletinNotices.find(item => item.id === noticeId);
+    if (!notice) return;
+    if (!confirm(`確定要刪除「${notice.title}」？`)) return;
+    bulletinNotices = bulletinNotices.filter(item => item.id !== noticeId);
+    try { await persistBulletin(); renderBulletin(); updateStats(); showToast('佈告內容已刪除。'); }
+    catch (error) { console.error(error); showToast('佈告內容刪除失敗。','error'); }
+}
+
+async function deleteNoticeAttachment(fileId) {
+    if (!isAdmin || !editingNoticeId) { showToast('僅管理者可刪除已儲存附件。','error'); return; }
+    const notice = bulletinNotices.find(item => item.id === editingNoticeId);
+    const file = (notice?.attachments || []).find(item => item.id === fileId);
+    if (!notice || !file) return;
+    if (!confirm(`確定要移除附件「${file.name}」？`)) return;
+    notice.attachments = notice.attachments.filter(item => item.id !== fileId);
+    notice.updatedAt = new Date().toISOString();
+    notice.updatedByRole = getCurrentRole();
+    try { await persistBulletin(); renderNoticeEditorAttachments(); renderBulletin(); updateStats(); showToast('附件已移除。'); }
+    catch (error) { console.error(error); showToast('附件移除失敗。','error'); }
+}
+
+function scrollToBulletin() {
+    document.getElementById('bulletin-section')?.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function handleQuickAction(action) {
+    if (action === 'bulletin') { scrollToBulletin(); return; }
+    if (action === 'notice') {
+        if (canEditBulletin()) openNoticeEditor(); else openLoginModal();
+        return;
+    }
+    if (action === 'system') {
+        if (isAdmin) openSystemEditor(); else if (getCurrentRole()==='viewer') openLoginModal(); else showToast('新增系統僅限管理者。','error');
+        return;
+    }
+    if (action === 'settings') {
+        if (isAdmin) openPlatformSettings(); else if (getCurrentRole()==='viewer') openLoginModal(); else showToast('平台設定僅限管理者。','error');
+    }
+}
+
+/* ===== 平台資料匯出 / 匯入：不包含密碼與權限設定 ===== */
+function exportPlatformData() {
+    if (!isAdmin) return;
+    const payload = {
+        version: PLATFORM_DATA_VERSION,
+        exportType: 'osai-platform-data',
+        exportedAt: new Date().toISOString(),
+        systems: platformConfig.systems,
+        bulletin: bulletinNotices,
+        recentOpened,
+        usageStats
+    };
+    const blob = new Blob([JSON.stringify(payload,null,2)], { type:'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `OSAI_職業安全智慧管理平台_${getLocalDateKey()}.json`;
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    showToast('平台資料已匯出。');
+}
+
+async function importPlatformData(file) {
+    if (!isAdmin || !file) return;
+    try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        if (data?.exportType !== 'osai-platform-data' || !Array.isArray(data.systems)) throw new Error('INVALID');
+        if (!confirm('匯入平台資料將覆蓋目前的系統入口、佈告欄與使用紀錄，確定要繼續嗎？')) return;
+        platformConfig = { version:PLATFORM_CONFIG_VERSION, systems:mergeSystems(data.systems) };
+        bulletinNotices = Array.isArray(data.bulletin) ? data.bulletin : [];
+        recentOpened = data.recentOpened && typeof data.recentOpened === 'object' ? data.recentOpened : {};
+        usageStats = data.usageStats && typeof data.usageStats === 'object' ? data.usageStats : { date:getLocalDateKey(),todayLaunches:0,totalLaunches:0 };
+        normalizeUsageStats();
+        await Promise.all([persistPlatformConfig(),persistBulletin(),persistRecentOpened(),persistUsageStats()]);
+        closePlatformSettings(); renderAll();
+        showToast('平台資料匯入完成。');
+    } catch (error) {
+        console.error(error);
+        showToast('平台資料格式不正確或讀取失敗。','error');
+    } finally {
+        document.getElementById('import-platform-file').value='';
+    }
+}
+
+/* ===== 附件預覽 ===== */
+function getFilePreviewElements() {
+    return {
+        modal:document.getElementById('file-preview-modal'),
+        title:document.getElementById('file-preview-title'),
+        subtitle:document.getElementById('file-preview-subtitle'),
+        badge:document.getElementById('file-preview-badge'),
+        toolbar:document.getElementById('file-preview-toolbar'),
+        zoomLabel:document.getElementById('file-preview-zoom-label'),
+        loading:document.getElementById('file-preview-loading'),
+        loadingText:document.getElementById('file-preview-loading-text'),
+        body:document.getElementById('file-preview-body'),
+        frame:document.getElementById('file-preview-frame'),
+        image:document.getElementById('file-preview-image'),
+        pdfPages:document.getElementById('pdf-preview-pages')
+    };
+}
+
+function clamp(value,min=.2,max=4) { return Math.min(max,Math.max(min,value)); }
+function updateFilePreviewZoomLabel() {
+    const label = getFilePreviewElements().zoomLabel;
+    const base = filePreviewDefaultScale || 1;
+    if (label) label.textContent = `${Math.round((filePreviewScale/base)*100)}%`;
+}
+function setFilePreviewLoading(show,text='載入中...') {
+    const {loading,loadingText} = getFilePreviewElements();
+    if (!loading) return;
+    if (loadingText) loadingText.textContent = text;
+    loading.classList.toggle('hidden', !show);
+}
+function revokePreviewObjectUrl() {
+    if (filePreviewObjectUrl) { URL.revokeObjectURL(filePreviewObjectUrl); filePreviewObjectUrl=''; }
+}
+function resetFilePreview() {
+    const {frame,image,pdfPages} = getFilePreviewElements();
+    filePreviewPdfRenderSerial++;
+    if (filePreviewPdfDocument?.destroy) { try { filePreviewPdfDocument.destroy(); } catch (_) {} }
+    filePreviewPdfDocument=null; filePreviewMode=''; filePreviewScale=1; filePreviewDefaultScale=1; filePreviewRotation=0; filePreviewPdfAppliedRelativeScale=1; filePreviewTouchDistance=null; filePreviewTouchScale=1;
+    revokePreviewObjectUrl();
+    if (frame) { frame.removeAttribute('src'); frame.classList.add('hidden'); frame.style.transform=''; frame.style.width=''; frame.style.height=''; }
+    if (image) { image.onload=null; image.onerror=null; image.removeAttribute('src'); image.classList.add('hidden'); image.style.width=''; image.style.height=''; image.style.transform=''; image.style.margin=''; }
+    if (pdfPages) { pdfPages.innerHTML=''; pdfPages.classList.add('hidden'); }
+    setFilePreviewLoading(false); updateFilePreviewZoomLabel();
+}
+
+function dataUrlToUint8Array(dataUrl) {
+    const base64 = String(dataUrl || '').split(',')[1] || '';
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+    return bytes;
+}
+
+function dataUrlToBlobUrl(dataUrl) {
+    const [header,base64=''] = String(dataUrl || '').split(',');
+    const mime = (header.match(/^data:([^;]+)/i) || [,'application/octet-stream'])[1];
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+    return URL.createObjectURL(new Blob([bytes],{type:mime}));
+}
+
+function applyImageScale() {
+    const {image} = getFilePreviewElements();
+    if (!image?.naturalWidth) return;
+    const w = Math.round(image.naturalWidth * filePreviewScale);
+    const h = Math.round(image.naturalHeight * filePreviewScale);
+    image.style.width=`${w}px`; image.style.height=`${h}px`; image.style.transform=`rotate(${filePreviewRotation}deg)`; image.style.transformOrigin='center center';
+    const sideways = Math.abs(filePreviewRotation % 180) === 90;
+    image.style.margin = sideways ? `${Math.max(0,(w-h)/2)}px ${Math.max(0,(h-w)/2)}px` : '';
+    updateFilePreviewZoomLabel();
+}
+
+function applyPdfScale() {
+    const {pdfPages} = getFilePreviewElements();
+    if (!pdfPages) return;
+    const relative = Math.max(.05,filePreviewScale/(filePreviewDefaultScale||1));
+    pdfPages.querySelectorAll('.pdf-preview-page-shell').forEach(shell => {
+        const bw=Number(shell.dataset.baseWidth||1), bh=Number(shell.dataset.baseHeight||1);
+        const sw=Math.round(bw*relative), sh=Math.round(bh*relative);
+        shell.style.width=`${sw}px`; shell.style.height=`${sh}px`;
+        const canvas=shell.querySelector('canvas'); if(canvas){canvas.style.width=`${sw}px`;canvas.style.height=`${sh}px`;}
+    });
+    filePreviewPdfAppliedRelativeScale=relative;
+    updateFilePreviewZoomLabel();
+}
+
+function setFilePreviewScale(next) {
+    filePreviewScale=clamp(next,.15,4);
+    if (filePreviewMode==='image') applyImageScale();
+    else if (filePreviewMode==='pdf') applyPdfScale();
+    else updateFilePreviewZoomLabel();
+}
+function zoomFilePreviewBy(delta) { setFilePreviewScale(filePreviewScale + ((filePreviewDefaultScale||1)*delta)); }
+function fitFilePreviewToScreen() {
+    setFilePreviewScale(filePreviewDefaultScale||1);
+    const body=getFilePreviewElements().body;
+    if (body) body.scrollTo({top:0,left:0,behavior:'smooth'});
+}
+async function rotateFilePreviewBy(degrees=90) {
+    filePreviewRotation=(filePreviewRotation+degrees)%360;
+    if (filePreviewMode==='image') applyImageScale();
+    else if (filePreviewMode==='pdf') await renderPdfPreviewPages();
+}
+
+async function renderPdfPreviewPages() {
+    const {pdfPages} = getFilePreviewElements();
+    if (!pdfPages || !filePreviewPdfDocument) return;
+    const relativeBefore=filePreviewScale/(filePreviewDefaultScale||1);
+    const serial=++filePreviewPdfRenderSerial;
+    const pdf=filePreviewPdfDocument;
+    const outputScale=Math.min(Math.max(window.devicePixelRatio||1,1.4),2.2);
+    pdfPages.innerHTML=''; pdfPages.classList.remove('hidden');
+    try {
+        for (let pageNumber=1;pageNumber<=pdf.numPages;pageNumber++) {
+            if (serial!==filePreviewPdfRenderSerial) return;
+            const page=await pdf.getPage(pageNumber);
+            const viewport=page.getViewport({scale:filePreviewDefaultScale,rotation:filePreviewRotation});
+            const width=Math.floor(viewport.width), height=Math.floor(viewport.height);
+            const shell=document.createElement('div'); shell.className='pdf-preview-page-shell'; shell.dataset.baseWidth=String(width); shell.dataset.baseHeight=String(height); shell.style.width=`${width}px`; shell.style.height=`${height}px`;
+            const canvas=document.createElement('canvas'); canvas.className='pdf-preview-page-canvas'; canvas.width=Math.floor(width*outputScale); canvas.height=Math.floor(height*outputScale); canvas.style.width=`${width}px`; canvas.style.height=`${height}px`;
+            const badge=document.createElement('div'); badge.className='pdf-preview-page-number'; badge.textContent=`${pageNumber} / ${pdf.numPages}`;
+            shell.append(canvas,badge); pdfPages.appendChild(shell);
+            await page.render({canvasContext:canvas.getContext('2d'),viewport,transform:outputScale!==1?[outputScale,0,0,outputScale,0,0]:null}).promise;
+        }
+        filePreviewScale=filePreviewDefaultScale*relativeBefore;
+        applyPdfScale();
+    } catch (error) { console.warn('PDF 預覽繪製失敗：',error); }
+    finally { if (serial===filePreviewPdfRenderSerial) setFilePreviewLoading(false); }
+}
+
+async function openPdfPreview(file) {
+    const {body,frame,image,pdfPages} = getFilePreviewElements();
+    filePreviewMode='pdf';
+    frame.classList.add('hidden'); image.classList.add('hidden'); pdfPages.classList.remove('hidden');
+    setFilePreviewLoading(true,'PDF 載入中...');
+    try {
+        if (!window.pdfjsLib) throw new Error('PDFJS_UNAVAILABLE');
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const pdf=await window.pdfjsLib.getDocument({data:dataUrlToUint8Array(file.data)}).promise;
+        filePreviewPdfDocument=pdf;
+        const first=await pdf.getPage(1);
+        const viewport=first.getViewport({scale:1});
+        const available=Math.max(280,(body?.clientWidth||window.innerWidth)-44);
+        const desktop=window.matchMedia('(min-width:901px)').matches;
+        filePreviewDefaultScale=clamp((available/viewport.width)*(desktop ? 0.76 : 1),.35,1.7);
+        filePreviewScale=filePreviewDefaultScale;
+        await renderPdfPreviewPages();
+    } catch (error) {
+        console.warn('PDF.js unavailable, fallback viewer:',error);
+        filePreviewMode='pdf-frame';
+        pdfPages.classList.add('hidden'); image.classList.add('hidden');
+        filePreviewObjectUrl=dataUrlToBlobUrl(file.data);
+        frame.src=filePreviewObjectUrl; frame.classList.remove('hidden');
+        filePreviewDefaultScale=1; filePreviewScale=1; updateFilePreviewZoomLabel(); setFilePreviewLoading(false);
+    }
+}
+
+function openImagePreview(file) {
+    const {body,frame,image,pdfPages} = getFilePreviewElements();
+    filePreviewMode='image'; frame.classList.add('hidden'); pdfPages.classList.add('hidden'); image.classList.remove('hidden');
+    setFilePreviewLoading(true,'圖片載入中...');
+    image.onload=()=>{
+        const aw=Math.max(260,(body?.clientWidth||window.innerWidth)-36), ah=Math.max(260,(body?.clientHeight||window.innerHeight)-36);
+        const fit=Math.min(aw/image.naturalWidth,ah/image.naturalHeight,1);
+        filePreviewDefaultScale=clamp(fit,.15,1);
+        filePreviewScale=window.matchMedia('(min-width:901px)').matches?Math.min(filePreviewDefaultScale*1.25,1.25):filePreviewDefaultScale;
+        applyImageScale(); setFilePreviewLoading(false);
+    };
+    image.onerror=()=>{setFilePreviewLoading(false);showToast('圖片預覽載入失敗。','error');};
+    image.src=file.data;
+}
+
+function openFilePreviewById(fileId) {
+    const file=findAttachmentById(fileId);
+    if (!file) { showToast('找不到附件資料。','error'); return; }
+    resetFilePreview();
+    const {modal,title,subtitle,badge}=getFilePreviewElements();
+    title.textContent=file.name||'附件預覽';
+    subtitle.textContent='職業安全管理佈告欄附件';
+    badge.textContent=String(file.type).includes('pdf')?'PDF':String(file.type).includes('png')?'PNG':'JPG';
+    document.body.classList.add('file-preview-open'); modal.classList.remove('hidden');
+    if (String(file.type).includes('pdf')) openPdfPreview(file); else openImagePreview(file);
+}
+
+function closeFilePreviewModal() {
+    resetFilePreview();
+    document.getElementById('file-preview-modal').classList.add('hidden');
+    document.body.classList.remove('file-preview-open');
+}
+function closeFilePreviewByBackdrop(event) { if (event?.target?.id==='file-preview-modal') closeFilePreviewModal(); }
+
+function ensureFilePreviewGestures() {
+    const body=document.getElementById('file-preview-body');
+    if (!body || body.dataset.gestureReady==='true') return;
+    body.dataset.gestureReady='true';
+    body.addEventListener('wheel',event=>{
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault(); zoomFilePreviewBy(event.deltaY<0?.12:-.12);
+    },{passive:false});
+    body.addEventListener('touchstart',event=>{
+        if (event.touches.length!==2) return;
+        filePreviewTouchDistance=getTouchDistance(event.touches); filePreviewTouchScale=filePreviewScale;
+    },{passive:true});
+    body.addEventListener('touchmove',event=>{
+        if (event.touches.length!==2 || !filePreviewTouchDistance) return;
+        event.preventDefault(); setFilePreviewScale(filePreviewTouchScale*(getTouchDistance(event.touches)/filePreviewTouchDistance));
+    },{passive:false});
+    body.addEventListener('touchend',event=>{ if(event.touches.length<2){filePreviewTouchDistance=null;filePreviewTouchScale=filePreviewScale;} });
+}
+function getTouchDistance(touches) { const dx=touches[0].clientX-touches[1].clientX,dy=touches[0].clientY-touches[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
+
+function renderAll() {
+    renderSystems();
+    renderBulletin();
+    renderActivityLog();
+    updateStats();
+    updateRoleUI();
+}
+
+/* ===== 事件 ===== */
+document.getElementById('system-search').addEventListener('input',renderSystems);
+document.getElementById('login-action-btn').addEventListener('click',handleLoginAction);
+document.getElementById('platform-settings-btn').addEventListener('click',()=>openPlatformSettings());
+document.getElementById('permission-settings-btn').addEventListener('click',openPermissionSettings);
+document.getElementById('add-notice-btn').addEventListener('click',()=>openNoticeEditor());
+
+document
+    .getElementById('clear-activity-log-btn')
+    .addEventListener(
+        'click',
+        clearActivityLogs
+    );
+
+document.getElementById('login-submit-btn').addEventListener('click',checkPassword);
+document.getElementById('login-close-btn').addEventListener('click',closeLoginModal);
+document.getElementById('login-pwd').addEventListener('keydown',event=>{if(event.key==='Enter')checkPassword();});
+
+document.getElementById('permission-close-btn').addEventListener('click',closePermissionSettings);
+document.getElementById('permission-cancel-btn').addEventListener('click',closePermissionSettings);
+document.getElementById('permission-save-btn').addEventListener('click',savePasswordSettings);
+
+document.getElementById('platform-settings-close-btn').addEventListener('click',closePlatformSettings);
+document.getElementById('platform-settings-cancel-btn').addEventListener('click',closePlatformSettings);
+document.getElementById('platform-settings-save-btn').addEventListener('click',savePlatformSettings);
+document.getElementById('settings-add-system-btn').addEventListener('click',()=>{closePlatformSettings();openSystemEditor();});
+document.getElementById('export-platform-btn').addEventListener('click',exportPlatformData);
+document.getElementById('import-platform-btn').addEventListener('click',()=>document.getElementById('import-platform-file').click());
+document.getElementById('import-platform-file').addEventListener('change',event=>importPlatformData(event.target.files?.[0]));
+
+document.getElementById('system-editor-close-btn').addEventListener('click',closeSystemEditor);
+document.getElementById('system-editor-cancel-btn').addEventListener('click',closeSystemEditor);
+document.getElementById('system-editor-save-btn').addEventListener('click',saveSystemEditor);
+
+document.getElementById('notice-editor-close-btn').addEventListener('click',closeNoticeEditor);
+document.getElementById('notice-editor-cancel-btn').addEventListener('click',closeNoticeEditor);
+document.getElementById('notice-editor-save-btn').addEventListener('click',saveNotice);
+
+const noticeDropZone=document.getElementById('notice-drop-zone');
+const noticeFileInput=document.getElementById('notice-file-input');
+noticeDropZone.addEventListener('click',()=>{if(canEditBulletin())noticeFileInput.click();});
+noticeDropZone.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&canEditBulletin()){event.preventDefault();noticeFileInput.click();}});
+noticeFileInput.addEventListener('change',event=>processNoticeFiles(event.target.files));
+noticeDropZone.addEventListener('dragover',event=>{event.preventDefault();if(canEditBulletin())noticeDropZone.classList.add('drag-over');});
+noticeDropZone.addEventListener('dragleave',()=>noticeDropZone.classList.remove('drag-over'));
+noticeDropZone.addEventListener('drop',event=>{event.preventDefault();noticeDropZone.classList.remove('drag-over');processNoticeFiles(event.dataTransfer.files);});
+
+document.querySelectorAll('.pro-modal-overlay').forEach(modal=>{
+    modal.addEventListener('pointerdown',event=>{ if(event.target===modal){
+        if(modal.id==='login-modal')closeLoginModal();
+        else if(modal.id==='permission-modal')closePermissionSettings();
+        else if(modal.id==='platform-settings-modal')closePlatformSettings();
+        else if(modal.id==='system-editor-modal')closeSystemEditor();
+        else if(modal.id==='notice-editor-modal')closeNoticeEditor();
+    }});
+});
+
+document.addEventListener('keydown',event=>{
+    if(event.key!=='Escape')return;
+    if(!document.getElementById('file-preview-modal').classList.contains('hidden')){closeFilePreviewModal();return;}
+    if(document.getElementById('notice-editor-modal').classList.contains('show')){closeNoticeEditor();return;}
+    if(document.getElementById('system-editor-modal').classList.contains('show')){closeSystemEditor();return;}
+    if(document.getElementById('platform-settings-modal').classList.contains('show')){closePlatformSettings();return;}
+    if(document.getElementById('permission-modal').classList.contains('show')){closePermissionSettings();return;}
+    if(document.getElementById('login-modal').classList.contains('show'))closeLoginModal();
+});
+
+ensureFilePreviewGestures();
+
+(async function initPlatform(){
+    await loadPlatformState();
+    updateClock();
+    setInterval(updateClock,1000);
+    renderAll();
+})();
+</script>
+</body>
+</html>
