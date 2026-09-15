@@ -2107,12 +2107,126 @@ body.file-preview-open { overflow:hidden; }
 }
 
 @media (max-width: 760px) {
-    .topbar-inner { width:calc(100% - 20px); }
-    .clock-box { display:none; }
-    .role-chip { min-width:auto; padding:0 9px; }
-    .role-chip span { display:none; }
-    .topbar-actions { gap:6px; padding-left:10px; }
-    .topbar .icon-button { width:38px; height:38px; }
+
+    .topbar-inner {
+        width: calc(100% - 16px);
+        gap: 6px;
+    }
+
+    .topbar-branding {
+        flex: 0 1 auto;
+        min-width: 0;
+        padding-right: 4px;
+    }
+
+    .top-brand-osai {
+        font-size: 17px;
+        letter-spacing: .08em;
+    }
+
+    /* 手機版保留精簡時間，只隱藏日期 */
+    .clock-box {
+        display: block;
+
+        min-width: 0;
+        width: auto;
+
+        padding: 0 3px;
+
+        border: 0;
+        border-radius: 0;
+
+        background: transparent;
+
+        text-align: center;
+    }
+
+    .clock-date {
+        display: none;
+    }
+
+    .clock-time {
+        margin-top: 0;
+
+        color: #f8fafc;
+
+        font-size: 10px;
+        line-height: 1;
+
+        font-weight: 900;
+
+        letter-spacing: .01em;
+
+        white-space: nowrap;
+    }
+
+    /* 手機版重新顯示權限文字 */
+    .role-chip {
+        min-width: 0;
+
+        height: 30px;
+
+        padding: 0 6px;
+
+        gap: 4px;
+
+        font-size: 9px;
+    }
+
+    .role-chip::before {
+        width: 6px;
+        height: 6px;
+    }
+
+    .role-chip span {
+        display: inline;
+    }
+
+    .topbar-actions {
+        gap: 4px;
+        padding-left: 6px;
+    }
+
+    .topbar .icon-button {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 10px;
+    }
+
+@media (max-width: 360px) {
+
+    .topbar-inner {
+        width: calc(100% - 12px);
+        gap: 4px;
+    }
+
+    .top-brand-osai {
+        font-size: 16px;
+        letter-spacing: .05em;
+    }
+
+    .role-chip {
+        height: 28px;
+        padding: 0 4px;
+        font-size: 8px;
+    }
+
+    .clock-time {
+        font-size: 9px;
+    }
+
+    .topbar-actions {
+        gap: 3px;
+        padding-left: 4px;
+    }
+
+    .topbar .icon-button {
+        width: 32px;
+        height: 32px;
+    }
+}    
+
     .main { width:calc(100% - 20px); padding-top:16px; }
     .hero { min-height:228px; padding:28px 22px; border-radius:22px; }
     .hero-title { font-size:clamp(27px,8vw,38px); }
