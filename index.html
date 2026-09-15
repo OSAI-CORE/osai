@@ -2598,11 +2598,20 @@ body.file-preview-open { overflow:hidden; }
 
 @media (max-width: 980px) {
     .topbar-branding { gap: 16px; }
-    .top-brand-integrated { display: inline-flex; }
 }
 
-@media (max-width: 760px) {
-    .top-brand-integrated { display: none; }
+/* 較寬的橫式畫面才保留完整英文品牌 */
+@media (min-width: 931px) and (max-width: 980px) {
+    .top-brand-integrated {
+        display: inline-flex;
+    }
+}
+
+/* 一般手機橫式與手機直式僅保留 OSAI */
+@media (max-width: 930px) {
+    .top-brand-integrated {
+        display: none;
+    }
 }
 
     </style>
@@ -3036,6 +3045,54 @@ const ACTIVITY_KEY = 'platform_activity_log_v1';
 
 const MAX_ACTIVITY_LOGS = 100;
 
+/*
+ * =========================================================
+ * OSAI Hub 瀏覽器導航
+ *
+ * 管理平台與六套核心系統各自使用固定視窗名稱，
+ * 避免重複開啟相同系統分頁。
+ * =========================================================
+ */
+
+const OSAI_PLATFORM_WINDOW_NAME =
+    'OSAI_PLATFORM';
+
+const OSAI_SYSTEM_WINDOW_NAMES =
+    Object.freeze({
+        certificate:
+            'OSAI_CERTIFICATE',
+
+        performance:
+            'OSAI_PERFORMANCE',
+
+        'risk-assessment':
+            'OSAI_RISK',
+
+        'regulation-identification':
+            'OSAI_REGULATION',
+
+        'standard-procedure':
+            'OSAI_SOP',
+
+        'hazard-identification':
+            'OSAI_HAZARD'
+    });
+
+const osaiSystemWindowRefs =
+    new Map();
+
+/*
+ * 將目前這一頁正式登記為
+ * OSAI 管理平台視窗。
+ *
+ * 後續六套系統的「OSAI 平台」按鈕
+ * 就可以尋找這個既有平台分頁。
+ */
+try {
+    window.name =
+        OSAI_PLATFORM_WINDOW_NAME;
+} catch (_) {}
+
 const DEFAULT_ADMIN_PASSWORD = 'admincore1098';
 const DEFAULT_EDITOR_PASSWORD = 'teamuser001';
 const DEFAULT_EDITOR_ENABLED = true;
@@ -3101,6 +3158,201 @@ function escapeHTML(value) {
 
 function makeId(prefix) {
     return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
+}
+
+/*
+ * =========================================================
+ * OSAI Hub：取得各系統固定視窗名稱
+ * =========================================================
+ */
+
+function getOsaiSystemWindowName(
+    systemId
+) {
+    const id =
+        String(
+            systemId || ''
+        ).trim();
+
+    if (
+        OSAI_SYSTEM_WINDOW_NAMES[
+            id
+        ]
+    ) {
+        return (
+            OSAI_SYSTEM_WINDOW_NAMES[
+                id
+            ]
+        );
+    }
+
+    /*
+     * 自訂系統也給予獨立視窗名稱，
+     * 避免每次都重複開新分頁。
+     */
+    const safeId =
+        id
+            .replace(
+                /[^a-zA-Z0-9_-]/g,
+                '_'
+            )
+            .toUpperCase();
+
+    return (
+        'OSAI_SYSTEM_' +
+        (
+            safeId ||
+            'CUSTOM'
+        )
+    );
+}
+
+
+/*
+ * =========================================================
+ * OSAI Hub：開啟或切回既有系統分頁
+ *
+ * 規則：
+ * 1. 同一系統已經開啟 → 直接切回原分頁。
+ * 2. 尚未開啟 → 建立新分頁。
+ * 3. 不重新載入已開啟的系統，保留目前操作畫面。
+ * =========================================================
+ */
+
+function openOrFocusOsaiSystemWindow(
+    targetUrl,
+    systemId
+) {
+    const windowName =
+        getOsaiSystemWindowName(
+            systemId
+        );
+
+    let targetWindow =
+        osaiSystemWindowRefs.get(
+            systemId
+        );
+
+    /*
+     * 本次平台工作階段已經開啟過，
+     * 而且分頁仍存在時，直接切回。
+     */
+    if (
+        targetWindow &&
+        !targetWindow.closed
+    ) {
+        try {
+            targetWindow.focus();
+        } catch (_) {}
+
+        return targetWindow;
+    }
+
+    /*
+     * 平台若曾重新整理，
+     * 仍先嘗試尋找同名系統分頁。
+     */
+    try {
+        targetWindow =
+            window.open(
+                '',
+                windowName
+            );
+    } catch (error) {
+        console.warn(
+            error
+        );
+
+        targetWindow =
+            null;
+    }
+
+    if (!targetWindow) {
+        return null;
+    }
+
+    let needsNavigation =
+        false;
+
+    /*
+     * 新建立的空白頁與平台同源，
+     * 可以讀取 location。
+     *
+     * 如果是已存在的外部系統分頁，
+     * 因跨來源限制會進入 catch，
+     * 此時不要重新載入，以保留工作狀態。
+     */
+    try {
+        const currentUrl =
+            String(
+                targetWindow
+                    .location
+                    .href ||
+                ''
+            );
+
+        needsNavigation =
+            (
+                !currentUrl ||
+                currentUrl ===
+                    'about:blank'
+            );
+
+    } catch (_) {
+        needsNavigation =
+            false;
+    }
+
+    if (needsNavigation) {
+        try {
+            targetWindow
+                .location
+                .replace(
+                    targetUrl
+                );
+
+        } catch (_) {
+
+            try {
+                targetWindow
+                    .location
+                    .href =
+                        targetUrl;
+
+            } catch (error) {
+                console.warn(
+                    error
+                );
+
+                try {
+                    targetWindow.close();
+                } catch (_) {}
+
+                return null;
+            }
+        }
+    }
+
+    osaiSystemWindowRefs.set(
+        systemId,
+        targetWindow
+    );
+
+    try {
+        targetWindow.focus();
+    } catch (_) {}
+
+    /*
+     * 子系統不需要直接控制管理平台，
+     * 保留原本降低 reverse-tabnabbing
+     * 風險的設計。
+     */
+    try {
+        targetWindow.opener =
+            null;
+    } catch (_) {}
+
+    return targetWindow;
 }
 
 function getLocalDateKey() {
@@ -3232,10 +3484,35 @@ if (Array.isArray(savedBulletin)) bulletinNotices = savedBulletin;
 if (Array.isArray(savedActivity)) activityLogs = savedActivity.slice(0, MAX_ACTIVITY_LOGS);
 if (savedUsage && typeof savedUsage === 'object') usageStats = savedUsage;
 if (savedSecurity && typeof savedSecurity === 'object') {
-            systemPassword = String(savedSecurity.adminPassword || DEFAULT_ADMIN_PASSWORD);
-            editorPassword = String(savedSecurity.editorPassword || DEFAULT_EDITOR_PASSWORD);
-            editorEnabled = savedSecurity.editorEnabled !== false;
-        }
+
+    /*
+     * 只還原「啟用使用者共用權限」設定。
+     *
+     * 管理者／使用者密碼一律使用程式碼內
+     * 的預設值，不從 IndexedDB 還原。
+     */
+    editorEnabled =
+        savedSecurity.editorEnabled !== false;
+
+    /*
+     * 舊版本曾把密碼存入 IndexedDB。
+     * 如果偵測到舊欄位，立即覆寫成
+     * 只包含 editorEnabled 的安全格式。
+     */
+    const hasLegacyPasswordRecord =
+        Object.prototype.hasOwnProperty.call(
+            savedSecurity,
+            'adminPassword'
+        ) ||
+        Object.prototype.hasOwnProperty.call(
+            savedSecurity,
+            'editorPassword'
+        );
+
+    if (hasLegacyPasswordRecord) {
+        await persistSecurity();
+    }
+}
         normalizeUsageStats();
     } catch (error) {
         console.error('平台資料初始化失敗：', error);
@@ -3256,7 +3533,13 @@ async function persistBulletin() { await setDBValue(BULLETIN_KEY, bulletinNotice
 async function persistActivityLogs() { await setDBValue(ACTIVITY_KEY, activityLogs); }
 async function persistUsageStats() { normalizeUsageStats(); await setDBValue(USAGE_KEY, usageStats); }
 async function persistSecurity() {
-    await setDBValue(SECURITY_KEY, { adminPassword:systemPassword, editorPassword, editorEnabled });
+    /*
+     * 僅保存使用者共用權限開關。
+     * 管理者／使用者密碼不得寫入 IndexedDB。
+     */
+    await setDBValue(SECURITY_KEY, {
+        editorEnabled
+    });
 }
 
 function getCurrentRole() {
@@ -3343,7 +3626,23 @@ function openLoginModal() {
     showModal('login-modal');
     setTimeout(() => input.focus(), 80);
 }
-function closeLoginModal() { hideModal('login-modal'); }
+function closeLoginModal() {
+    const input =
+        document.getElementById('login-pwd');
+
+    const error =
+        document.getElementById('login-error');
+
+    if (input) {
+        input.value = '';
+    }
+
+    if (error) {
+        error.classList.add('hidden');
+    }
+
+    hideModal('login-modal');
+}
 
 async function checkPassword() {
     const input = document.getElementById('login-pwd');
@@ -3391,6 +3690,40 @@ const previousRole = getCurrentRole();
 isAdmin = false;
 isEditor = false;
 
+/*
+ * 登出後清除本次工作階段
+ * 曾修改過的管理者／使用者密碼。
+ */
+systemPassword =
+    DEFAULT_ADMIN_PASSWORD;
+
+editorPassword =
+    DEFAULT_EDITOR_PASSWORD;
+
+/*
+ * 同時清除可能仍存在於 DOM 的密碼文字。
+ */
+const loginPasswordInput =
+    document.getElementById('login-pwd');
+
+if (loginPasswordInput) {
+    loginPasswordInput.value = '';
+}
+
+[
+    'old-admin-pwd',
+    'new-admin-pwd',
+    'new-editor-pwd'
+].forEach(id => {
+
+    const input =
+        document.getElementById(id);
+
+    if (input) {
+        input.value = '';
+    }
+});
+
 updateRoleUI();
 
 void addActivityLog(
@@ -3411,7 +3744,24 @@ function openPermissionSettings() {
     document.getElementById('editor-enabled-checkbox').checked = editorEnabled;
     showModal('permission-modal');
 }
-function closePermissionSettings() { hideModal('permission-modal'); }
+function closePermissionSettings() {
+
+    [
+        'old-admin-pwd',
+        'new-admin-pwd',
+        'new-editor-pwd'
+    ].forEach(id => {
+
+        const input =
+            document.getElementById(id);
+
+        if (input) {
+            input.value = '';
+        }
+    });
+
+    hideModal('permission-modal');
+}
 
 async function savePasswordSettings() {
     if (!canChangePassword()) return;
@@ -3542,9 +3892,20 @@ async function launchSystem(systemId) {
         return;
     }
 
-    const newWindow = window.open(targetUrl,'_blank');
-    if (!newWindow) { showToast('瀏覽器阻擋了新分頁，請允許彈出視窗後再試。','error'); return; }
-    try { newWindow.opener = null; } catch (_) {}
+const systemWindow =
+    openOrFocusOsaiSystemWindow(
+        targetUrl,
+        system.id
+    );
+
+if (!systemWindow) {
+    showToast(
+        '瀏覽器阻擋了系統分頁，請允許彈出視窗後再試。',
+        'error'
+    );
+
+    return;
+}
 
 recentOpened[system.id] =
     new Date().toISOString();
