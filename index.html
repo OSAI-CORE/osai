@@ -1991,9 +1991,32 @@ body {
 .auth-login-note { margin:0; text-align:center; color:#64748b; font-size:11px; line-height:1.65; font-weight:600; }
 .auth-login-label { display:block; margin-bottom:7px; text-align:center; color:#334155; font-size:12px; font-weight:900; }
 .auth-password-input {
-    width:100%; height:44px; border:1px solid #cbd5e1; border-radius:12px; padding:0 14px;
-    text-align:center; letter-spacing:.42em; font-size:16px; font-weight:900; color:#0f172a; background:#f8fafc;
+    width:100%;
+    height:44px;
+
+    border:1px solid #cbd5e1;
+    border-radius:12px;
+
+    padding:0 16px;
+
+    text-align:center;
+
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:16px;
+    line-height:24px;
+    font-weight:700;
+
+    letter-spacing:.42em;
+
+    color:#0f172a;
+    background:#f8fafc;
+
     outline:none;
+}
+
+.auth-password-input::placeholder {
+    color:#9ca3af;
+    opacity:1;
 }
 .auth-password-input:focus { background:#fff; border-color:#6366f1; box-shadow:0 0 0 4px #eef2ff; }
 
@@ -2002,29 +2025,52 @@ body {
 ========================================================= */
 
 #permission-modal input[type="password"] {
-    font-size: 14px;
-    line-height: 1.25;
+    font-family:'Noto Sans TC', sans-serif;
 
-    letter-spacing: normal;
+    font-size:14px;
+    line-height:20px;
 
-    font-weight: 700;
+    letter-spacing:normal;
 
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
+    font-weight:400;
+
+    color:#1e293b;
+
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+}
+
+#permission-modal input[type="password"]::placeholder {
+    color:#9ca3af;
+    opacity:1;
 }
 
 /* 手機版比照績效系統維持 16px，避免 Safari 自動放大 */
 @media screen and (max-width: 900px),
        (hover: none) and (pointer: coarse) {
 
+    /* 權限登入：完全比照績效管理系統 */
+    #login-modal .auth-password-input {
+        font-size:16px !important;
+        line-height:1.25 !important;
+
+        font-weight:700 !important;
+        letter-spacing:.42em !important;
+
+        -webkit-text-size-adjust:100% !important;
+        text-size-adjust:100% !important;
+    }
+
+    /* 權限與密碼設定：完全比照績效管理系統 */
     #permission-modal input[type="password"] {
-        font-size: 16px !important;
-        line-height: 1.25 !important;
+        font-size:16px !important;
+        line-height:1.25 !important;
 
-        letter-spacing: normal !important;
+        font-weight:400 !important;
+        letter-spacing:normal !important;
 
-        -webkit-text-size-adjust: 100% !important;
-        text-size-adjust: 100% !important;
+        -webkit-text-size-adjust:100% !important;
+        text-size-adjust:100% !important;
     }
 }
 
@@ -3354,7 +3400,14 @@ data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></but
 <div class="form-field"><label class="form-label" for="new-admin-pwd">新管理者密碼</label><input id="new-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
 <div class="form-field"><label class="form-label" for="new-editor-pwd">新使用者密碼</label><input id="new-editor-pwd" type="password" class="form-input" placeholder="••••••" /></div>
             </div>
-            <label class="permission-toggle"><input id="editor-enabled-checkbox" type="checkbox" /><span>啟用使用者共用權限</span></label>
+            <label class="permission-toggle">
+    <input
+        id="editor-enabled-checkbox"
+        type="checkbox"
+        disabled
+    />
+    <span>啟用使用者共用權限</span>
+</label>
 <div class="form-help permission-bottom-note">
     使用者可維護佈告欄內容與上傳附件；新增、刪除系統及權限設定仍限管理者。
 </div>
@@ -3972,21 +4025,20 @@ const [savedConfig,savedRecent,savedBulletin,savedUsage,savedSecurity,savedActiv
 if (Array.isArray(savedBulletin)) bulletinNotices = savedBulletin;
 if (Array.isArray(savedActivity)) activityLogs = savedActivity.slice(0, MAX_ACTIVITY_LOGS);
 if (savedUsage && typeof savedUsage === 'object') usageStats = savedUsage;
+/*
+ * 使用者共用權限以目前發布的 HTML
+ * DEFAULT_EDITOR_ENABLED 為唯一正式設定。
+ *
+ * 不從 IndexedDB 還原舊的開關狀態。
+ */
+editorEnabled =
+    DEFAULT_EDITOR_ENABLED;
+
 if (savedSecurity && typeof savedSecurity === 'object') {
 
     /*
-     * 只還原「啟用使用者共用權限」設定。
-     *
-     * 管理者／使用者密碼一律使用程式碼內
-     * 的預設值，不從 IndexedDB 還原。
-     */
-    editorEnabled =
-        savedSecurity.editorEnabled !== false;
-
-    /*
      * 舊版本曾把密碼存入 IndexedDB。
-     * 如果偵測到舊欄位，立即覆寫成
-     * 只包含 editorEnabled 的安全格式。
+     * 若仍有舊欄位，繼續執行清理。
      */
     const hasLegacyPasswordRecord =
         Object.prototype.hasOwnProperty.call(
@@ -4283,7 +4335,9 @@ function openPermissionSettings() {
     document.getElementById('old-admin-pwd').value = '';
     document.getElementById('new-admin-pwd').value = '';
     document.getElementById('new-editor-pwd').value = '';
-    document.getElementById('editor-enabled-checkbox').checked = editorEnabled;
+    document.getElementById(
+    'editor-enabled-checkbox'
+).checked = DEFAULT_EDITOR_ENABLED;
     showModal('permission-modal');
 }
 function closePermissionSettings() {
@@ -4310,7 +4364,6 @@ async function savePasswordSettings() {
     const oldPwd = document.getElementById('old-admin-pwd').value;
     const newAdmin = document.getElementById('new-admin-pwd').value;
     const newEditor = document.getElementById('new-editor-pwd').value;
-    const nextEnabled = document.getElementById('editor-enabled-checkbox').checked;
 
     if (oldPwd !== systemPassword) {
         showToast('目前管理者密碼不正確。','error');
@@ -4322,7 +4375,12 @@ async function savePasswordSettings() {
 
     if (newAdmin) systemPassword = newAdmin;
     if (newEditor) editorPassword = newEditor;
-    editorEnabled = nextEnabled;
+    /*
+ * 使用者共用權限由目前 HTML 中的
+ * DEFAULT_EDITOR_ENABLED 統一控制。
+ */
+editorEnabled =
+    DEFAULT_EDITOR_ENABLED;
     try {
         await persistSecurity();
         closePermissionSettings();
