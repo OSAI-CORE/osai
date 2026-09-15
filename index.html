@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
     <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
         :root {
             --slate-950: #020617;
             --slate-900: #0f172a;
@@ -1991,32 +1994,37 @@ body {
 .auth-login-note { margin:0; text-align:center; color:#64748b; font-size:11px; line-height:1.65; font-weight:600; }
 .auth-login-label { display:block; margin-bottom:7px; text-align:center; color:#334155; font-size:12px; font-weight:900; }
 .auth-password-input {
-    width:100%;
-    height:44px;
+    width: 100%;
+    height: 44px;
 
-    border:1px solid #cbd5e1;
-    border-radius:12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
 
-    padding:0 16px;
+    padding: 0 16px;
 
-    text-align:center;
+    text-align: center;
 
-    font-family:'Noto Sans TC', sans-serif;
-    font-size:16px;
-    line-height:24px;
-    font-weight:700;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
 
-    letter-spacing:.42em;
+    letter-spacing: .42em;
 
-    color:#0f172a;
-    background:#f8fafc;
+    color: #0f172a;
+    background: #f8fafc;
 
-    outline:none;
+    outline: none;
 }
 
 .auth-password-input::placeholder {
-    color:#9ca3af;
-    opacity:1;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+
+    color: #9ca3af;
+    opacity: 1;
 }
 .auth-password-input:focus { background:#fff; border-color:#6366f1; box-shadow:0 0 0 4px #eef2ff; }
 
@@ -3394,7 +3402,6 @@ data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></but
 data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="pro-modal-body">
-            <div class="permission-settings-note">僅管理者可修改平台密碼與使用者共用權限。</div>
             <div class="form-grid" style="grid-template-columns:1fr;">
 <div class="form-field"><label class="form-label" for="old-admin-pwd">目前管理者密碼</label><input id="old-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
 <div class="form-field"><label class="form-label" for="new-admin-pwd">新管理者密碼</label><input id="new-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
@@ -4361,20 +4368,81 @@ function closePermissionSettings() {
 
 async function savePasswordSettings() {
     if (!canChangePassword()) return;
-    const oldPwd = document.getElementById('old-admin-pwd').value;
-    const newAdmin = document.getElementById('new-admin-pwd').value;
-    const newEditor = document.getElementById('new-editor-pwd').value;
 
-    if (oldPwd !== systemPassword) {
-        showToast('目前管理者密碼不正確。','error');
-        document.getElementById('old-admin-pwd').focus();
+    const oldPwd =
+        document.getElementById('old-admin-pwd').value;
+
+    const newAdmin =
+        document.getElementById('new-admin-pwd').value;
+
+    const newEditor =
+        document.getElementById('new-editor-pwd').value;
+
+    /*
+     * 僅修改管理者密碼時，
+     * 才需要再次驗證目前管理者密碼。
+     *
+     * 若只修改使用者密碼，
+     * 不要求再次輸入管理者密碼。
+     */
+    if (newAdmin) {
+
+        if (!oldPwd) {
+            showToast(
+                '修改管理者密碼時，請先輸入目前管理者密碼。',
+                'error'
+            );
+
+            document
+                .getElementById('old-admin-pwd')
+                .focus();
+
+            return;
+        }
+
+        if (oldPwd !== systemPassword) {
+            showToast(
+                '目前管理者密碼不正確。',
+                'error'
+            );
+
+            document
+                .getElementById('old-admin-pwd')
+                .focus();
+
+            return;
+        }
+    }
+
+    if (
+        newAdmin &&
+        newAdmin.length < 6
+    ) {
+        showToast(
+            '新管理者密碼至少需 6 個字元。',
+            'error'
+        );
         return;
     }
-    if (newAdmin && newAdmin.length < 6) { showToast('新管理者密碼至少需 6 個字元。','error'); return; }
-    if (newEditor && newEditor.length < 6) { showToast('新使用者密碼至少需 6 個字元。','error'); return; }
 
-    if (newAdmin) systemPassword = newAdmin;
-    if (newEditor) editorPassword = newEditor;
+    if (
+        newEditor &&
+        newEditor.length < 6
+    ) {
+        showToast(
+            '新使用者密碼至少需 6 個字元。',
+            'error'
+        );
+        return;
+    }
+
+    if (newAdmin) {
+        systemPassword = newAdmin;
+    }
+
+    if (newEditor) {
+        editorPassword = newEditor;
+    }
     /*
  * 使用者共用權限由目前 HTML 中的
  * DEFAULT_EDITOR_ENABLED 統一控制。
