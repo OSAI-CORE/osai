@@ -1955,6 +1955,38 @@ body {
     outline:none;
 }
 .auth-password-input:focus { background:#fff; border-color:#6366f1; box-shadow:0 0 0 4px #eef2ff; }
+
+/* =========================================================
+   權限與密碼設定：密碼遮罩比照績效管理系統
+========================================================= */
+
+#permission-modal input[type="password"] {
+    font-size: 14px;
+    line-height: 1.25;
+
+    letter-spacing: normal;
+
+    font-weight: 700;
+
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* 手機版比照績效系統維持 16px，避免 Safari 自動放大 */
+@media screen and (max-width: 900px),
+       (hover: none) and (pointer: coarse) {
+
+    #permission-modal input[type="password"] {
+        font-size: 16px !important;
+        line-height: 1.25 !important;
+
+        letter-spacing: normal !important;
+
+        -webkit-text-size-adjust: 100% !important;
+        text-size-adjust: 100% !important;
+    }
+}
+
 .auth-login-submit {
     width:100%; height:44px; border-radius:12px; cursor:pointer; color:#fff; background:#4f46e5;
     display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; font-weight:950;
@@ -1964,9 +1996,97 @@ body {
 .auth-login-error { color:#ef4444; text-align:center; font-size:10px; font-weight:900; }
 
 .permission-settings-note {
-    margin-bottom:12px; padding:10px 11px; border-radius:12px; background:#fffbeb; border:1px solid #fde68a;
-    color:#92400e; font-size:10px; line-height:1.6; font-weight:800;
+    margin-bottom: 12px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #64748b;
+
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 700;
+
+    text-align: center;
 }
+
+#permission-modal .pro-modal-panel.sm {
+    width: min(400px, 100%);
+}
+
+#permission-modal .form-help {
+    font-size: 11px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+#permission-modal .permission-bottom-note {
+    width: 100%;
+    text-align: left !important;
+}
+
+#permission-modal .form-label {
+    font-size: 11px;
+    font-weight: 900;
+}
+
+/* =========================================================
+   權限與密碼設定：取消可見捲動條
+   正常高度直接完整顯示；低高度仍可滑動但不顯示捲軸
+========================================================= */
+
+#permission-modal .pro-modal-body {
+    overflow-x: hidden;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#permission-modal .pro-modal-body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* 桌機與手機直式等正常高度，不需要內部捲動 */
+@media screen and (min-height: 560px) {
+
+    #permission-modal .pro-modal-body {
+        overflow-y: hidden;
+    }
+
+}
+
+/* 手機橫式等較矮畫面：
+   保留滑動能力，但不顯示上下拉桿 */
+@media screen and (max-height: 559px) {
+
+    #permission-modal .pro-modal-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+}
+
+/* =========================================================
+   平台系統管理 / 新增系統 / 新增佈告：視窗寬度統一
+========================================================= */
+@media screen and (min-width: 761px) {
+
+    #platform-settings-modal .pro-modal-panel.lg,
+    #system-editor-modal .pro-modal-panel,
+    #notice-editor-modal .pro-modal-panel.lg {
+        width: min(640px, calc(100vw - 48px));
+    }
+
+}
+
 .permission-toggle {
     margin-top:10px; padding:10px 11px; border-radius:12px; background:#f8fafc; border:1px solid #e2e8f0;
     display:flex; align-items:center; gap:9px; color:#334155; font-size:11px; font-weight:900;
@@ -2728,6 +2848,136 @@ body.file-preview-open { overflow:hidden; }
     }
 }
 
+/* =========================================================
+   OSAI 管理平台：手機直式時間
+   比照職業安全法規鑑別系統
+========================================================= */
+
+@media screen
+and (max-width: 760px)
+and (orientation: portrait) {
+
+    .clock-box {
+        display: flex !important;
+        flex-direction: column;
+
+        align-items: flex-end;
+        justify-content: center;
+
+        min-width: 72px;
+        width: auto;
+
+        padding: 0 !important;
+
+        border: 0;
+        border-radius: 0;
+
+        background: transparent;
+
+        text-align: right;
+        line-height: 1.05;
+    }
+
+    /* 上方日期 */
+    .clock-date {
+        display: block !important;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        font-weight: 900;
+
+        line-height: 1.05;
+        letter-spacing: 0.06em;
+
+        font-variant-numeric: tabular-nums;
+
+        white-space: nowrap;
+    }
+
+    /* 下方時間 */
+    .clock-time {
+        display: block !important;
+
+        margin-top: 1px;
+
+        color: #34d399;
+
+        font-size: 9px;
+        font-weight: 900;
+
+        line-height: 1.05;
+        letter-spacing: 0.06em;
+
+        font-variant-numeric: tabular-nums;
+
+        white-space: nowrap;
+    }
+}
+
+/* =========================================================
+   OSAI 管理平台：手機橫式品牌
+   保留 OSAI + 動態圓點 + 英文品牌
+========================================================= */
+
+@media screen
+and (orientation: landscape)
+and (max-width: 1024px)
+and (max-height: 600px) {
+
+    .topbar-branding {
+        flex: 1 1 auto;
+        min-width: 0;
+
+        gap: 8px;
+
+        padding-right: 10px;
+    }
+
+    .top-brand-osai {
+        flex: 0 0 auto;
+
+        font-size: 17px;
+        letter-spacing: 0.08em;
+    }
+
+    .top-brand-integrated {
+        display: inline-flex !important;
+
+        flex: 0 1 auto;
+        min-width: 0;
+
+        align-items: center;
+        justify-content: flex-start;
+
+        gap: 5px;
+
+        color: #dbeafe;
+
+        font-size: 7.5px;
+        font-weight: 900;
+
+        line-height: 1.1;
+        letter-spacing: 0.07em;
+
+        white-space: nowrap;
+    }
+
+    /*
+     * 保留原本動態特效，
+     * 只將手機橫式的小圓點視覺縮小。
+     */
+    .top-brand-integrated .integrated-orb {
+        flex: 0 0 8px;
+
+        width: 8px;
+        height: 8px;
+
+        transform: scale(0.72);
+        transform-origin: center;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -2968,7 +3218,9 @@ data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></but
     <div class="pro-modal-panel sm" onclick="event.stopPropagation()">
         <div class="pro-modal-head">
             <div class="pro-modal-title-wrap">
-                <div class="pro-modal-icon" style="background:#fffbeb;color:#d97706;"><i class="fa-solid fa-key"></i></div>
+<div class="pro-modal-icon" style="background:#fffbeb;color:#d97706;">
+    <i class="fa-solid fa-key"></i>
+</div>
                 <div><h2 id="permission-title" class="pro-modal-title">權限與密碼設定</h2><div class="pro-modal-subtitle">ACCESS SETTINGS</div></div>
             </div>
             <button id="permission-close-btn" type="button" class="pro-modal-close system-tooltip-btn"
@@ -2977,12 +3229,14 @@ data-tooltip="關閉" aria-label="關閉"><i class="fa-solid fa-xmark"></i></but
         <div class="pro-modal-body">
             <div class="permission-settings-note">僅管理者可修改平台密碼與使用者共用權限。</div>
             <div class="form-grid" style="grid-template-columns:1fr;">
-                <div class="form-field"><label class="form-label" for="old-admin-pwd">目前管理者密碼</label><input id="old-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
-                <div class="form-field"><label class="form-label" for="new-admin-pwd">新管理者密碼</label><input id="new-admin-pwd" type="password" class="form-input" placeholder="留白表示不變更" /></div>
-                <div class="form-field"><label class="form-label" for="new-editor-pwd">新使用者密碼</label><input id="new-editor-pwd" type="password" class="form-input" placeholder="留白表示不變更" /></div>
+<div class="form-field"><label class="form-label" for="old-admin-pwd">目前管理者密碼</label><input id="old-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
+<div class="form-field"><label class="form-label" for="new-admin-pwd">新管理者密碼</label><input id="new-admin-pwd" type="password" class="form-input" placeholder="••••••" /></div>
+<div class="form-field"><label class="form-label" for="new-editor-pwd">新使用者密碼</label><input id="new-editor-pwd" type="password" class="form-input" placeholder="••••••" /></div>
             </div>
             <label class="permission-toggle"><input id="editor-enabled-checkbox" type="checkbox" /><span>啟用使用者共用權限</span></label>
-            <div class="form-help" style="margin-top:8px;">使用者可維護佈告欄內容與上傳附件；新增、刪除系統及權限設定仍限管理者。</div>
+<div class="form-help permission-bottom-note">
+    使用者可維護佈告欄內容與上傳附件；新增、刪除系統及權限設定仍限管理者。
+</div>
         </div>
         <div class="pro-modal-foot">
             <div></div>
@@ -3690,10 +3944,63 @@ function showToast(message,type='success') {
 
 function updateClock() {
     const now = new Date();
-    const date = now.toLocaleDateString('zh-TW', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });
-    const time = now.toLocaleTimeString('zh-TW', { hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
-    document.getElementById('clock-date').textContent = date;
-    document.getElementById('clock-time').textContent = time;
+
+    /*
+     * 手機直式：
+     * 比照法規鑑別系統使用 YYYY/MM/DD。
+     *
+     * 桌機與手機橫式：
+     * 維持目前含星期的日期格式。
+     */
+    const isMobilePortrait =
+        window.matchMedia(
+            '(max-width: 760px) and (orientation: portrait)'
+        ).matches;
+
+    let date;
+
+    if (isMobilePortrait) {
+        const y = now.getFullYear();
+        const m = String(
+            now.getMonth() + 1
+        ).padStart(2, '0');
+        const d = String(
+            now.getDate()
+        ).padStart(2, '0');
+
+        date = `${y}/${m}/${d}`;
+    } else {
+        date =
+            now.toLocaleDateString(
+                'zh-TW',
+                {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    weekday: 'short'
+                }
+            );
+    }
+
+    const time =
+        now.toLocaleTimeString(
+            'zh-TW',
+            {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            }
+        );
+
+    document.getElementById(
+        'clock-date'
+    ).textContent = date;
+
+    document.getElementById(
+        'clock-time'
+    ).textContent = time;
+
     normalizeUsageStats();
 }
 
@@ -4969,9 +5276,24 @@ ensureFilePreviewGestures();
 
 (async function initPlatform(){
     await loadPlatformState();
+
     updateClock();
     setInterval(updateClock,1000);
+
     renderAll();
+
+    /*
+     * 產生與績效管理系統一致的
+     * Lucide key-round 圖示。
+     */
+(async function initPlatform(){
+    await loadPlatformState();
+
+    updateClock();
+    setInterval(updateClock,1000);
+
+    renderAll();
+})();
 })();
 </script>
 </body>
