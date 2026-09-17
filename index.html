@@ -2625,6 +2625,20 @@ body.file-preview-open { overflow:hidden; }
 #activity-log-count {
     color: #94a3b8;
     font-size: 9px;
+
+    line-height: 1;
+    white-space: nowrap;
+}
+
+
+/* 最近活動右側：筆數＋清除按鈕 */
+.activity-list-head-actions {
+    margin-left: auto;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
 }
 
 
@@ -2799,32 +2813,17 @@ body.file-preview-open { overflow:hidden; }
 /* ===== 清除紀錄 ===== */
 
 .activity-clear-btn {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
 
-    border-radius: 10px;
+    flex: 0 0 28px;
+
+    border-radius: 8px;
 
     display: grid;
     place-items: center;
 
     cursor: pointer;
-
-    color: #64748b;
-    background: #ffffff;
-
-    border: 1px solid #e2e8f0;
-
-    transition:
-        color .16s ease,
-        border-color .16s ease,
-        background .16s ease;
-}
-
-.activity-clear-btn:hover {
-    color: #e11d48;
-
-    border-color: #fecdd3;
-    background: #fff1f2;
 }
 
 
@@ -2970,6 +2969,100 @@ body.file-preview-open { overflow:hidden; }
     }
 
 }
+
+
+/* =========================================================
+   管理平台－垃圾桶統一樣式
+
+   比照證照管理系統：
+   1. Font Awesome fa-trash
+   2. 統一 12px
+   3. 平常 Slate 灰色
+   4. Hover 僅垃圾桶變紅
+   5. 無底色、無外框、無陰影
+========================================================= */
+
+.platform-trash-btn {
+    padding: 0 !important;
+
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+
+    color: #94a3b8 !important;
+
+    display: inline-grid;
+    place-items: center;
+
+    transition:
+        color 0.18s ease !important;
+}
+
+
+/* 垃圾桶統一 12px */
+.platform-trash-btn .fa-trash {
+    font-size: 12px !important;
+    line-height: 1 !important;
+
+    color: #94a3b8 !important;
+
+    transition:
+        color 0.18s ease !important;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+
+    .platform-trash-btn:hover {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        color: #94a3b8 !important;
+
+        transform: none !important;
+    }
+
+    .platform-trash-btn:hover .fa-trash {
+        color: #dc2626 !important;
+    }
+}
+
+
+/* =========================================================
+   職業安全管理佈告欄－編輯鉛筆
+
+   移除按鈕外框與背景，
+   保留原本灰色 → 藍色 Hover。
+========================================================= */
+
+.notice-edit-icon-btn {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+
+    color: #64748b !important;
+}
+
+.notice-edit-icon-btn .fa-pen {
+    font-size: 12px;
+    line-height: 1;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+
+    .notice-edit-icon-btn:hover {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        color: #2563eb !important;
+
+        transform: none !important;
+    }
+}
+
 
 /* 系統排序控制 */
 .setting-order-actions {
@@ -3252,27 +3345,37 @@ and (max-height: 600px) {
                 </div>
             </div>
 
-            <div class="section-head-actions">
-                <button
-                    id="clear-activity-log-btn"
-                    type="button"
-                    class="activity-clear-btn system-tooltip-btn hidden"
-                    aria-label="清除活動紀錄"
-                    data-tooltip="清除活動紀錄"
-                >
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
-            </div>
         </div>
 
 <div class="activity-card">
 
     <div class="activity-list-head">
+
         <span>最近活動</span>
-        <span id="activity-log-count">0 筆</span>
+
+        <div class="activity-list-head-actions">
+
+            <span id="activity-log-count">
+                0 筆
+            </span>
+
+            <button
+                id="clear-activity-log-btn"
+                type="button"
+                class="activity-clear-btn platform-trash-btn system-tooltip-btn hidden"
+                aria-label="清除活動紀錄"
+                data-tooltip="清除活動紀錄"
+            >
+                <i class="fa-solid fa-trash"
+                   aria-hidden="true"></i>
+            </button>
+
+        </div>
+
     </div>
 
-    <div id="activity-log-list" class="activity-log-list"></div>
+    <div id="activity-log-list"
+         class="activity-log-list"></div>
 
 </div>
 
@@ -4531,10 +4634,19 @@ function renderSystems() {
         if (!enabled) { statusText = '平台入口已停用'; statusClass = 'disabled'; }
         else if (configured) { statusText = '已完成連結設定'; statusClass = 'ready'; }
 
-        const adminActions = isAdmin && !system.core ? `
-            <div class="system-admin-actions">
-                <button type="button" class="system-admin-btn delete system-tooltip-btn" data-system-delete="${escapeHTML(system.id)}" aria-label="刪除系統" data-tooltip="刪除系統"><i class="fa-solid fa-trash-can"></i></button>
-            </div>` : '';
+const adminActions = isAdmin && !system.core ? `
+    <div class="system-admin-actions">
+        <button type="button"
+                class="system-admin-btn delete platform-trash-btn system-tooltip-btn"
+                data-system-delete="${escapeHTML(system.id)}"
+                aria-label="刪除系統"
+                data-tooltip="刪除系統">
+
+            <i class="fa-solid fa-trash"
+               aria-hidden="true"></i>
+
+        </button>
+    </div>` : '';
 
         return `
             <article class="system-card ${enabled ? '' : 'is-disabled'}" style="--accent:${system.accent};--accent-soft:${system.soft};--accent-border:${system.border};" data-system-id="${escapeHTML(system.id)}">
@@ -4679,7 +4791,24 @@ function renderSystemSettings(focusSystemId='') {
                         <button type="button" class="setting-mini-btn order system-tooltip-btn" data-tooltip="向上移動" data-setting-move="up" data-setting-move-id="${escapeHTML(system.id)}" aria-label="向上移動"><i class="fa-solid fa-arrow-up"></i></button>
                         <button type="button" class="setting-mini-btn order system-tooltip-btn" data-tooltip="向下移動" data-setting-move="down" data-setting-move-id="${escapeHTML(system.id)}" aria-label="向下移動"><i class="fa-solid fa-arrow-down"></i></button>
                     </span>
-                    ${system.core ? '' : `<button type="button" class="setting-mini-btn system-tooltip-btn" data-tooltip="編輯系統" data-setting-edit="${escapeHTML(system.id)}" aria-label="編輯系統"><i class="fa-solid fa-pen"></i></button><button type="button" class="setting-mini-btn delete system-tooltip-btn" data-tooltip="刪除系統" data-setting-delete="${escapeHTML(system.id)}" aria-label="刪除系統"><i class="fa-solid fa-trash-can"></i></button>`}
+                    ${system.core ? '' : `
+    <button type="button"
+            class="setting-mini-btn system-tooltip-btn"
+            data-tooltip="編輯系統"
+            data-setting-edit="${escapeHTML(system.id)}"
+            aria-label="編輯系統">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button type="button"
+            class="setting-mini-btn delete platform-trash-btn system-tooltip-btn"
+            data-tooltip="刪除系統"
+            data-setting-delete="${escapeHTML(system.id)}"
+            aria-label="刪除系統">
+        <i class="fa-solid fa-trash"
+           aria-hidden="true"></i>
+    </button>
+`}
                 </div>
             </div>
             <div class="setting-row">
@@ -5019,11 +5148,34 @@ function renderBulletin() {
 
     grid.innerHTML = sorted.map(notice => {
         const attachments = Array.isArray(notice.attachments) ? notice.attachments : [];
-        const actions = canEditBulletin() ? `
-            <div class="notice-actions">
-                <button type="button" class="notice-action-btn system-tooltip-btn" data-tooltip="編輯佈告" data-notice-edit="${escapeHTML(notice.id)}" aria-label="編輯佈告"><i class="fa-solid fa-pen"></i></button>
-                ${isAdmin ? `<button type="button" class="notice-action-btn delete system-tooltip-btn" data-tooltip="刪除佈告" data-notice-delete="${escapeHTML(notice.id)}" aria-label="刪除佈告"><i class="fa-solid fa-trash-can"></i></button>` : ''}
-            </div>` : '';
+const actions = canEditBulletin() ? `
+    <div class="notice-actions">
+
+        <button type="button"
+                class="notice-action-btn notice-edit-icon-btn system-tooltip-btn"
+                data-tooltip="編輯佈告"
+                data-notice-edit="${escapeHTML(notice.id)}"
+                aria-label="編輯佈告">
+
+            <i class="fa-solid fa-pen"
+               aria-hidden="true"></i>
+
+        </button>
+
+        ${isAdmin ? `
+            <button type="button"
+                    class="notice-action-btn delete platform-trash-btn system-tooltip-btn"
+                    data-tooltip="刪除佈告"
+                    data-notice-delete="${escapeHTML(notice.id)}"
+                    aria-label="刪除佈告">
+
+                <i class="fa-solid fa-trash"
+                   aria-hidden="true"></i>
+
+            </button>
+        ` : ''}
+
+    </div>` : '';
         const attachmentHtml = attachments.length ? `<div class="notice-attachments">${attachments.map(file => {
             const isPdf = String(file.type).includes('pdf');
             return `<button type="button" class="attachment-chip ${isPdf ? 'pdf' : 'image'}" data-preview-file="${escapeHTML(file.id)}"><i class="fa-solid ${isPdf ? 'fa-file-pdf' : 'fa-file-image'}"></i><span class="file-name">${escapeHTML(file.name)}</span><span>${escapeHTML(formatFileSize(file.size))}</span></button>`;
@@ -5094,7 +5246,16 @@ function renderNoticeEditorAttachments() {
             <span class="editor-attachment-text"><span class="editor-attachment-name">${escapeHTML(file.name)}</span><span class="editor-attachment-meta">${escapeHTML(formatFileSize(file.size))}${pending ? '｜待加入' : ''}</span></span>
             <span class="editor-attachment-actions">
                 <button type="button" class="editor-file-btn system-tooltip-btn" data-tooltip="預覽附件" data-editor-preview="${escapeHTML(file.id)}" aria-label="預覽附件"><i class="fa-solid fa-eye"></i></button>
-                ${pending ? `<button type="button" class="editor-file-btn system-tooltip-btn delete" data-tooltip="移除待加入附件" data-pending-remove="${escapeHTML(file.id)}" aria-label="移除待加入附件"><i class="fa-solid fa-xmark"></i></button>` : (isAdmin ? `<button type="button" class="editor-file-btn system-tooltip-btn delete" data-tooltip="刪除附件" data-existing-remove="${escapeHTML(file.id)}" aria-label="刪除附件"><i class="fa-solid fa-trash-can"></i></button>` : '')}
+                ${pending ? `<button type="button" class="editor-file-btn system-tooltip-btn delete" data-tooltip="移除待加入附件" data-pending-remove="${escapeHTML(file.id)}" aria-label="移除待加入附件"><i class="fa-solid fa-xmark"></i></button>` : (isAdmin ? `<button type="button"
+        class="editor-file-btn delete platform-trash-btn system-tooltip-btn"
+        data-tooltip="刪除附件"
+        data-existing-remove="${escapeHTML(file.id)}"
+        aria-label="刪除附件">
+
+    <i class="fa-solid fa-trash"
+       aria-hidden="true"></i>
+
+</button>` : '')}
             </span>
         </div>`).join('');
 
