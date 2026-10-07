@@ -2089,6 +2089,105 @@ body {
 .auth-login-submit:hover { background:#4338ca; }
 .auth-login-error { color:#ef4444; text-align:center; font-size:10px; font-weight:900; }
 
+/* =========================================================
+   OSAI 管理平台｜登入驗證 Spinner 手機相容修正
+
+   修正部分手機瀏覽器／WebKit：
+   Font Awesome fa-spin
+   停留在第一幀、不持續旋轉的問題。
+
+   僅影響：
+   #login-submit-btn 驗證中的 Spinner
+
+   不修改：
+   - 登入流程
+   - 中央權限 API
+   - 按鈕顏色
+   - 其他平台動畫
+========================================================= */
+
+@-webkit-keyframes osaiLoginSpinnerSpin {
+
+    from {
+        -webkit-transform:
+            rotate(0deg);
+
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        -webkit-transform:
+            rotate(360deg);
+
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+@keyframes osaiLoginSpinnerSpin {
+
+    from {
+        -webkit-transform:
+            rotate(0deg);
+
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        -webkit-transform:
+            rotate(360deg);
+
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+/*
+ * 手機直式／橫式與觸控裝置：
+ * 強制讓登入驗證 Spinner 持續旋轉。
+ */
+@media screen and (max-width: 980px),
+       (hover: none) and (pointer: coarse) {
+
+    #login-submit-btn
+    .fa-spinner.fa-spin {
+
+        display:
+            inline-block !important;
+
+        -webkit-animation:
+            osaiLoginSpinnerSpin
+            1s
+            linear
+            infinite !important;
+
+        animation:
+            osaiLoginSpinnerSpin
+            1s
+            linear
+            infinite !important;
+
+        -webkit-animation-play-state:
+            running !important;
+
+        animation-play-state:
+            running !important;
+
+        -webkit-transform-origin:
+            50% 50% !important;
+
+        transform-origin:
+            50% 50% !important;
+
+        will-change:
+            transform;
+    }
+}
+
 .permission-settings-note {
     margin-bottom: 12px;
 
