@@ -2406,6 +2406,193 @@ body {
 .file-preview-tool-btn:hover { background:rgba(255,255,255,.18); }
 .file-preview-zoom-pill { min-width:66px; background:rgba(37,99,235,.28); color:#dbeafe; border:1px solid rgba(147,197,253,.24); }
 .file-preview-body { position:relative; flex:1 1 auto; min-height:0; overflow:auto; padding:18px; background:rgba(2,6,23,.28); -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:manipulation; }
+
+/* =========================================================
+   OSAI｜附件預覽 Scrollbar
+   統一績效／證照管理系統規格
+========================================================= */
+
+/* Firefox */
+.file-preview-body {
+    scrollbar-width: thin;
+    scrollbar-color:
+        rgba(148, 163, 184, 0.58)
+        rgba(15, 23, 42, 0.22);
+
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: contain;
+    touch-action: pan-x pan-y;
+}
+
+/* Chrome、Edge、Safari */
+@supports selector(::-webkit-scrollbar) {
+
+    .file-preview-body {
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+    }
+
+    .file-preview-body::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    .file-preview-body::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.20);
+        border-radius: 999px;
+    }
+
+    .file-preview-body::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.52);
+        border-radius: 999px;
+        border: 2px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .file-preview-body::-webkit-scrollbar-thumb:hover {
+        background: rgba(191, 219, 254, 0.68);
+    }
+
+    .file-preview-body::-webkit-scrollbar-thumb:active {
+        background: rgba(147, 197, 253, 0.82);
+    }
+
+    .file-preview-body::-webkit-scrollbar-button {
+        -webkit-appearance: none;
+        appearance: none;
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    .file-preview-body::-webkit-scrollbar-corner {
+        background: rgba(15, 23, 42, 0.20);
+    }
+}
+
+/* 手機直式、橫式與觸控裝置 */
+@media screen and (max-width: 950px),
+       (hover: none) and (pointer: coarse) {
+
+    .file-preview-body {
+        scrollbar-width: thin;
+        scrollbar-color:
+            rgba(148, 163, 184, 0.50)
+            rgba(15, 23, 42, 0.16);
+
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        overscroll-behavior-y: contain;
+        touch-action: pan-x pan-y;
+    }
+
+    @supports selector(::-webkit-scrollbar) {
+
+        .file-preview-body {
+            scrollbar-width: auto;
+            scrollbar-color: auto;
+        }
+
+        .file-preview-body::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        .file-preview-body::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.16);
+            border-radius: 999px;
+        }
+
+        .file-preview-body::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.50);
+            border-radius: 999px;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+        }
+
+        .file-preview-body::-webkit-scrollbar-thumb:active {
+            background: rgba(147, 197, 253, 0.78);
+        }
+
+        .file-preview-body::-webkit-scrollbar-corner {
+            background: rgba(15, 23, 42, 0.16);
+        }
+    }
+}
+
+/* =========================================================
+   OSAI｜附件專用列印
+   不影響平台原有介面及佈告欄
+========================================================= */
+
+#file-preview-print-btn.hidden {
+    display: none !important;
+}
+
+#osai-attachment-print-root {
+    display: none;
+}
+
+@media print {
+
+    html.osai-attachment-print-html,
+    body.osai-attachment-print {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    body.osai-attachment-print
+    > :not(#osai-attachment-print-root) {
+        display: none !important;
+    }
+
+    body.osai-attachment-print
+    #osai-attachment-print-root {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+    }
+
+    body.osai-attachment-print
+    .osai-attachment-print-page {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    body.osai-attachment-print
+    .osai-attachment-print-page
+    + .osai-attachment-print-page {
+        break-before: page;
+        page-break-before: always;
+    }
+
+    body.osai-attachment-print
+    .osai-attachment-print-page img {
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+        max-width: 100% !important;
+
+        object-fit: contain !important;
+
+        margin: 0 auto !important;
+        box-shadow: none !important;
+    }
+}
+
 #file-preview-stage { min-width:100%; min-height:100%; display:flex; align-items:center; justify-content:center; }
 #file-preview-image { display:block; width:auto; height:auto; max-width:none; max-height:none; border-radius:16px; background:#fff; box-shadow:0 20px 50px rgba(2,6,23,.34); user-select:none; -webkit-user-drag:none; }
 #pdf-preview-pages { width:max-content; min-width:min(100%,280px); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:18px; margin:0 auto; padding:2px 0 18px; }
@@ -3853,7 +4040,18 @@ data-tooltip="關閉附件預覽" onclick="closeFilePreviewModal()" aria-label="
             <button type="button" class="file-preview-tool-btn file-preview-zoom-pill" onclick="fitFilePreviewToScreen()"><span id="file-preview-zoom-label">100%</span></button>
             <button type="button" class="file-preview-tool-btn" onclick="zoomFilePreviewBy(0.15)"><i class="fa-solid fa-magnifying-glass-plus"></i><span>放大</span></button>
             <button type="button" class="file-preview-tool-btn" onclick="rotateFilePreviewBy(90)"><i class="fa-solid fa-rotate-right"></i><span>旋轉</span></button>
-            <button type="button" class="file-preview-tool-btn" onclick="fitFilePreviewToScreen()"><i class="fa-solid fa-maximize"></i><span>適合畫面</span></button>
+            <button type="button" class="file-preview-tool-btn" onclick="fitFilePreviewToScreen()"><i class="fa-solid fa-maximize"></i><span>適合</span></button>
+
+<button id="file-preview-print-btn"
+        type="button"
+        class="file-preview-tool-btn hidden"
+        onclick="printPreviewAttachment()"
+        title="列印附件"
+        aria-label="列印附件">
+    <i class="fa-solid fa-print"></i>
+    <span>列印</span>
+</button>
+
         </div>
 
         <div id="file-preview-body" class="file-preview-body">
@@ -4963,6 +5161,19 @@ let filePreviewRotation = 0;
 let filePreviewPdfDocument = null;
 let filePreviewPdfRenderSerial = 0;
 let filePreviewPdfAppliedRelativeScale = 1;
+
+// PDF 全部頁面是否完成渲染
+let filePreviewPdfPrintReady = false;
+
+// 辨識目前正在開啟的附件，防止舊任務回寫
+let filePreviewOpenSerial = 0;
+
+// PDF.js 正在載入中的工作
+let filePreviewPdfLoadingTask = null;
+
+// 手機旋轉與視窗尺寸變化延遲計時器
+let filePreviewImageViewportTimer = null;
+
 let filePreviewTouchDistance = null;
 let filePreviewTouchScale = 1;
 let filePreviewObjectUrl = '';
@@ -5468,6 +5679,26 @@ function getCurrentRole() {
     return 'viewer';
 }
 function canEditBulletin() { return isAdmin || isEditor; }
+
+// 管理者及使用者才可以使用內建附件列印
+function canPrintPreviewAttachment() {
+    return canEditBulletin();
+}
+
+// 依目前權限顯示或隱藏列印按鈕
+function updateFilePreviewPrintButton() {
+
+    const button = document.getElementById(
+        'file-preview-print-btn'
+    );
+
+    if (button) {
+        button.classList.toggle(
+            'hidden',
+            !canPrintPreviewAttachment()
+        );
+    }
+}
 function canManageSystems() { return isAdmin; }
 function canDeleteData() { return isAdmin; }
 function canChangePassword() { return isAdmin; }
@@ -5585,6 +5816,8 @@ const loginButton =
 document.getElementById('platform-settings-btn').classList.toggle('hidden', !isAdmin);
 document.getElementById('permission-settings-btn').classList.toggle('hidden', !isAdmin);
 document.getElementById('add-notice-btn').classList.toggle('hidden', !canEditBulletin());
+
+updateFilePreviewPrintButton();
 
 renderSystems();
 renderBulletin();
@@ -7839,8 +8072,36 @@ function revokePreviewObjectUrl() {
 }
 function resetFilePreview() {
     const {frame,image,pdfPages} = getFilePreviewElements();
+
+    // 讓正在等待中的舊附件工作立即失效
+    filePreviewOpenSerial++;
     filePreviewPdfRenderSerial++;
-    if (filePreviewPdfDocument?.destroy) { try { filePreviewPdfDocument.destroy(); } catch (_) {} }
+    filePreviewPdfPrintReady = false;
+
+    // 清除手機轉向的延遲重新計算
+    clearTimeout(filePreviewImageViewportTimer);
+    filePreviewImageViewportTimer = null;
+
+    // 取消尚未完成的 PDF 載入
+    if (filePreviewPdfLoadingTask?.destroy) {
+        try {
+            Promise.resolve(
+                filePreviewPdfLoadingTask.destroy()
+            ).catch(() => {});
+        } catch (_) {}
+    }
+
+    filePreviewPdfLoadingTask = null;
+
+    // 釋放目前 PDF 文件
+    if (filePreviewPdfDocument?.destroy) {
+        try {
+            Promise.resolve(
+                filePreviewPdfDocument.destroy()
+            ).catch(() => {});
+        } catch (_) {}
+    }
+
     filePreviewPdfDocument=null; filePreviewMode=''; filePreviewScale=1; filePreviewDefaultScale=1; filePreviewRotation=0; filePreviewPdfAppliedRelativeScale=1; filePreviewTouchDistance=null; filePreviewTouchScale=1;
     revokePreviewObjectUrl();
     if (frame) { frame.removeAttribute('src'); frame.classList.add('hidden'); frame.style.transform=''; frame.style.width=''; frame.style.height=''; }
@@ -7891,8 +8152,44 @@ function applyPdfScale() {
     updateFilePreviewZoomLabel();
 }
 
+function getImagePreviewScaleLimits() {
+
+    const base = Math.max(
+        0.0001,
+        filePreviewDefaultScale || 1
+    );
+
+    const mobile = window.matchMedia(
+        '(max-width:900px), (hover:none) and (pointer:coarse)'
+    ).matches;
+
+    const min = Math.max(
+        0.00005,
+        base * 0.5
+    );
+
+    const max = Math.max(
+        min,
+        Math.min(
+            4,
+            base * (mobile ? 2 : 4)
+        )
+    );
+
+    return { min, max };
+}
+
 function setFilePreviewScale(next) {
-    filePreviewScale=clamp(next,.15,4);
+
+    const limits = filePreviewMode === 'image'
+        ? getImagePreviewScaleLimits()
+        : { min: 0.15, max: 4 };
+
+    filePreviewScale = clamp(
+        next,
+        limits.min,
+        limits.max
+    );
     if (filePreviewMode==='image') applyImageScale();
     else if (filePreviewMode==='pdf') applyPdfScale();
     else updateFilePreviewZoomLabel();
@@ -7905,8 +8202,12 @@ function fitFilePreviewToScreen() {
 }
 async function rotateFilePreviewBy(degrees=90) {
     filePreviewRotation=(filePreviewRotation+degrees)%360;
-    if (filePreviewMode==='image') applyImageScale();
-    else if (filePreviewMode==='pdf') await renderPdfPreviewPages();
+
+    if (filePreviewMode==='image') {
+        refreshImagePreviewForViewport();
+    } else if (filePreviewMode==='pdf') {
+        await renderPdfPreviewPages();
+    }
 }
 
 async function renderPdfPreviewPages() {
@@ -7914,6 +8215,9 @@ async function renderPdfPreviewPages() {
     if (!pdfPages || !filePreviewPdfDocument) return;
     const relativeBefore=filePreviewScale/(filePreviewDefaultScale||1);
     const serial=++filePreviewPdfRenderSerial;
+
+    filePreviewPdfPrintReady = false;
+
     const pdf=filePreviewPdfDocument;
     const outputScale=Math.min(Math.max(window.devicePixelRatio||1,1.4),2.2);
     pdfPages.innerHTML=''; pdfPages.classList.remove('hidden');
@@ -7921,60 +8225,374 @@ async function renderPdfPreviewPages() {
         for (let pageNumber=1;pageNumber<=pdf.numPages;pageNumber++) {
             if (serial!==filePreviewPdfRenderSerial) return;
             const page=await pdf.getPage(pageNumber);
+
+            // 如果使用者已切換附件或關閉視窗，
+            // 不再使用舊 PDF 的頁面。
+            if (serial !== filePreviewPdfRenderSerial) {
+                return;
+            }
+
             const viewport=page.getViewport({scale:filePreviewDefaultScale,rotation:filePreviewRotation});
             const width=Math.floor(viewport.width), height=Math.floor(viewport.height);
             const shell=document.createElement('div'); shell.className='pdf-preview-page-shell'; shell.dataset.baseWidth=String(width); shell.dataset.baseHeight=String(height); shell.style.width=`${width}px`; shell.style.height=`${height}px`;
             const canvas=document.createElement('canvas'); canvas.className='pdf-preview-page-canvas'; canvas.width=Math.floor(width*outputScale); canvas.height=Math.floor(height*outputScale); canvas.style.width=`${width}px`; canvas.style.height=`${height}px`;
             const badge=document.createElement('div'); badge.className='pdf-preview-page-number'; badge.textContent=`${pageNumber} / ${pdf.numPages}`;
             shell.append(canvas,badge); pdfPages.appendChild(shell);
-            await page.render({canvasContext:canvas.getContext('2d'),viewport,transform:outputScale!==1?[outputScale,0,0,outputScale,0,0]:null}).promise;
-        }
-        filePreviewScale=filePreviewDefaultScale*relativeBefore;
-        applyPdfScale();
-    } catch (error) { console.warn('PDF 預覽繪製失敗：',error); }
-    finally { if (serial===filePreviewPdfRenderSerial) setFilePreviewLoading(false); }
-}
+            await page.render({
+                canvasContext: canvas.getContext('2d'),
+                viewport,
+                transform: outputScale !== 1
+                    ? [outputScale, 0, 0, outputScale, 0, 0]
+                    : null
+            }).promise;
 
-async function openPdfPreview(file) {
-    const {body,frame,image,pdfPages} = getFilePreviewElements();
-    filePreviewMode='pdf';
-    frame.classList.add('hidden'); image.classList.add('hidden'); pdfPages.classList.remove('hidden');
-    setFilePreviewLoading(true,'PDF 載入中...');
-    try {
-        if (!window.pdfjsLib) throw new Error('PDFJS_UNAVAILABLE');
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        const pdf=await window.pdfjsLib.getDocument({data:dataUrlToUint8Array(file.data)}).promise;
-        filePreviewPdfDocument=pdf;
-        const first=await pdf.getPage(1);
-        const viewport=first.getViewport({scale:1});
-        const available=Math.max(280,(body?.clientWidth||window.innerWidth)-44);
-        const desktop=window.matchMedia('(min-width:901px)').matches;
-        filePreviewDefaultScale=clamp((available/viewport.width)*(desktop ? 0.76 : 1),.35,1.7);
-        filePreviewScale=filePreviewDefaultScale;
-        await renderPdfPreviewPages();
+            // 每一頁完成後確認仍是目前的工作
+            if (serial !== filePreviewPdfRenderSerial) {
+                return;
+            }
+        }
+
+        if (serial !== filePreviewPdfRenderSerial) {
+            return;
+        }
+
+        filePreviewScale =
+            filePreviewDefaultScale * relativeBefore;
+
+        applyPdfScale();
+
+        // 只有完整繪製成功才允許附件列印
+        filePreviewPdfPrintReady = true;
+
     } catch (error) {
-        console.warn('PDF.js unavailable, fallback viewer:',error);
-        filePreviewMode='pdf-frame';
-        pdfPages.classList.add('hidden'); image.classList.add('hidden');
-        filePreviewObjectUrl=dataUrlToBlobUrl(file.data);
-        frame.src=filePreviewObjectUrl; frame.classList.remove('hidden');
-        filePreviewDefaultScale=1; filePreviewScale=1; updateFilePreviewZoomLabel(); setFilePreviewLoading(false);
+
+        if (serial === filePreviewPdfRenderSerial) {
+            console.warn('PDF 預覽繪製失敗：', error);
+        }
+
+    } finally {
+
+        if (serial === filePreviewPdfRenderSerial) {
+            setFilePreviewLoading(false);
+        }
     }
 }
 
+// =========================================================
+// OSAI｜PDF 附件預覽
+// 加入非同步載入工作序號與過期任務防護
+// =========================================================
+
+async function openPdfPreview(file) {
+
+    const {body,frame,image,pdfPages} =
+        getFilePreviewElements();
+
+    const openSerial = filePreviewOpenSerial;
+
+    let loadingTask = null;
+
+    filePreviewMode = 'pdf';
+
+    frame.classList.add('hidden');
+    image.classList.add('hidden');
+    pdfPages.classList.remove('hidden');
+
+    setFilePreviewLoading(true, 'PDF 載入中...');
+
+    try {
+
+        if (!window.pdfjsLib) {
+            throw new Error('PDFJS_UNAVAILABLE');
+        }
+
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // 建立可以追蹤及取消的 PDF 載入工作
+        loadingTask = window.pdfjsLib.getDocument({
+            data: dataUrlToUint8Array(file.data)
+        });
+
+        filePreviewPdfLoadingTask = loadingTask;
+
+        const pdf = await loadingTask.promise;
+
+        // 等待期間如果已換附件或關閉視窗，
+        // 就釋放這份過期的 PDF。
+        if (openSerial !== filePreviewOpenSerial) {
+
+            try {
+                await pdf.destroy();
+            } catch (_) {}
+
+            return;
+        }
+
+        filePreviewPdfDocument = pdf;
+
+        const first = await pdf.getPage(1);
+
+        if (openSerial !== filePreviewOpenSerial) {
+            return;
+        }
+
+        const viewport = first.getViewport({
+            scale: 1
+        });
+
+        const available = Math.max(
+            280,
+            (body?.clientWidth || window.innerWidth) - 44
+        );
+
+        // 保留桌機與手機不同的 PDF 初始顯示方式
+        const desktop = window.matchMedia(
+            '(min-width:901px) and (hover:hover) and (pointer:fine)'
+        ).matches;
+
+        filePreviewDefaultScale = clamp(
+            (available / viewport.width) *
+                (desktop ? 0.76 : 1),
+            0.35,
+            1.7
+        );
+
+        filePreviewScale = filePreviewDefaultScale;
+
+        await renderPdfPreviewPages();
+
+    } catch (error) {
+
+        // 過期工作的取消錯誤，不應再開啟備援預覽。
+        if (openSerial !== filePreviewOpenSerial) {
+            return;
+        }
+
+        console.warn(
+            'PDF.js unavailable, fallback viewer:',
+            error
+        );
+
+        filePreviewMode = 'pdf-frame';
+        filePreviewPdfPrintReady = false;
+
+        pdfPages.classList.add('hidden');
+        image.classList.add('hidden');
+
+        filePreviewObjectUrl =
+            dataUrlToBlobUrl(file.data);
+
+        frame.src = filePreviewObjectUrl;
+        frame.classList.remove('hidden');
+
+        filePreviewDefaultScale = 1;
+        filePreviewScale = 1;
+
+        updateFilePreviewZoomLabel();
+        setFilePreviewLoading(false);
+
+    } finally {
+
+        // 只清除屬於自己這次的工作，
+        // 不影響後來新開啟的 PDF。
+        if (filePreviewPdfLoadingTask === loadingTask) {
+            filePreviewPdfLoadingTask = null;
+        }
+    }
+}
+
+
+// =========================================================
+// OSAI｜圖片預覽適合畫面比例
+// 依旋轉角度計算實際顯示方向
+// =========================================================
+
+function getImageFitPreviewScale(image) {
+
+    const {body} = getFilePreviewElements();
+
+    if (
+        !image?.naturalWidth ||
+        !image?.naturalHeight
+    ) {
+        return 1;
+    }
+
+    const sideways =
+        Math.abs(filePreviewRotation % 180) === 90;
+
+    const naturalWidth = sideways
+        ? image.naturalHeight
+        : image.naturalWidth;
+
+    const naturalHeight = sideways
+        ? image.naturalWidth
+        : image.naturalHeight;
+
+    const availableWidth = Math.max(
+        1,
+        (body?.clientWidth || window.innerWidth) - 36
+    );
+
+    const availableHeight = Math.max(
+        1,
+        (body?.clientHeight || window.innerHeight) - 36
+    );
+
+    const fitScale = Math.min(
+        availableWidth / naturalWidth,
+        availableHeight / naturalHeight,
+        1
+    );
+
+    return clamp(fitScale, 0.01, 1);
+}
+
+
+// =========================================================
+// OSAI｜桌機／手機圖片初始比例
+// 桌機：適合畫面 125%
+// 手機直式與橫式：適合畫面 100%
+// =========================================================
+
+function refreshImagePreviewForViewport() {
+
+    if (filePreviewMode !== 'image') {
+        return;
+    }
+
+    const {modal,image,body} =
+        getFilePreviewElements();
+
+    if (
+        !modal ||
+        modal.classList.contains('hidden') ||
+        !image?.naturalWidth
+    ) {
+        return;
+    }
+
+    const fit = getImageFitPreviewScale(image);
+
+    const desktop = window.matchMedia(
+        '(min-width:901px) and (hover:hover) and (pointer:fine)'
+    ).matches;
+
+    filePreviewDefaultScale = fit;
+
+    filePreviewScale = desktop
+        ? Math.min(fit * 1.25, 1.25)
+        : fit;
+
+    applyImageScale();
+
+    if (body) {
+        body.scrollTop = 0;
+        body.scrollLeft = 0;
+    }
+}
+
+
+// =========================================================
+// OSAI｜手機旋轉及視窗尺寸改變
+// 延遲重新計算圖片適合比例
+// =========================================================
+
+function scheduleImagePreviewViewportFit() {
+
+    if (filePreviewMode !== 'image') {
+        return;
+    }
+
+    clearTimeout(filePreviewImageViewportTimer);
+
+    filePreviewImageViewportTimer = setTimeout(() => {
+
+        filePreviewImageViewportTimer = null;
+
+        requestAnimationFrame(() => {
+
+            if (filePreviewMode === 'image') {
+                refreshImagePreviewForViewport();
+            }
+
+        });
+
+    }, 180);
+}
+
+
+// 視窗尺寸變化
+window.addEventListener(
+    'resize',
+    scheduleImagePreviewViewportFit,
+    {passive: true}
+);
+
+
+// 手機直式、橫式切換
+window.addEventListener(
+    'orientationchange',
+    scheduleImagePreviewViewportFit
+);
+
+
+// =========================================================
+// OSAI｜JPG／JPEG／PNG 附件預覽
+// 圖片完成載入與比例計算後才顯示
+// =========================================================
+
 function openImagePreview(file) {
-    const {body,frame,image,pdfPages} = getFilePreviewElements();
-    filePreviewMode='image'; frame.classList.add('hidden'); pdfPages.classList.add('hidden'); image.classList.remove('hidden');
-    setFilePreviewLoading(true,'圖片載入中...');
-    image.onload=()=>{
-        const aw=Math.max(260,(body?.clientWidth||window.innerWidth)-36), ah=Math.max(260,(body?.clientHeight||window.innerHeight)-36);
-        const fit=Math.min(aw/image.naturalWidth,ah/image.naturalHeight,1);
-        filePreviewDefaultScale=clamp(fit,.15,1);
-        filePreviewScale=window.matchMedia('(min-width:901px)').matches?Math.min(filePreviewDefaultScale*1.25,1.25):filePreviewDefaultScale;
-        applyImageScale(); setFilePreviewLoading(false);
+
+    const {frame,image,pdfPages} =
+        getFilePreviewElements();
+
+    const openSerial = filePreviewOpenSerial;
+
+    filePreviewMode = 'image';
+
+    frame.classList.add('hidden');
+    pdfPages.classList.add('hidden');
+
+    // 圖片載入前先保持隱藏，避免閃現
+    image.classList.add('hidden');
+
+    setFilePreviewLoading(true, '圖片載入中...');
+
+    image.onload = () => {
+
+        if (
+            openSerial !== filePreviewOpenSerial ||
+            filePreviewMode !== 'image'
+        ) {
+            return;
+        }
+
+        // 先完成初始比例、尺寸與旋轉計算
+        refreshImagePreviewForViewport();
+
+        // 計算完成才顯示圖片
+        image.classList.remove('hidden');
+
+        setFilePreviewLoading(false);
     };
-    image.onerror=()=>{setFilePreviewLoading(false);showToast('圖片預覽載入失敗。','error');};
-    image.src=file.data;
+
+    image.onerror = () => {
+
+        if (openSerial !== filePreviewOpenSerial) {
+            return;
+        }
+
+        setFilePreviewLoading(false);
+
+        showToast(
+            '圖片預覽載入失敗。',
+            'error'
+        );
+    };
+
+    image.src = file.data;
 }
 
 function openFilePreviewById(fileId) {
@@ -7985,11 +8603,327 @@ function openFilePreviewById(fileId) {
     title.textContent=file.name||'附件預覽';
     subtitle.textContent='職業安全管理佈告欄附件';
     badge.textContent=String(file.type).includes('pdf')?'PDF':String(file.type).includes('png')?'PNG':'JPG';
-    document.body.classList.add('file-preview-open'); modal.classList.remove('hidden');
-    if (String(file.type).includes('pdf')) openPdfPreview(file); else openImagePreview(file);
+document.body.classList.add('file-preview-open');
+modal.classList.remove('hidden');
+
+updateFilePreviewPrintButton();
+
+if (String(file.type).includes('pdf')) {
+    openPdfPreview(file);
+} else {
+    openImagePreview(file);
+}
 }
 
+// =========================================================
+// OSAI｜附件列印清理
+// =========================================================
+
+function cleanupAttachmentPrint() {
+
+    document.getElementById(
+        'osai-attachment-print-root'
+    )?.remove();
+
+    document.getElementById(
+        'osai-attachment-print-page-style'
+    )?.remove();
+
+    document.documentElement.classList.remove(
+        'osai-attachment-print-html'
+    );
+
+    document.body.classList.remove(
+        'osai-attachment-print'
+    );
+}
+
+
+// 避免連續點擊造成重複執行
+let osaiAttachmentPrintPreparing = false;
+
+
+// =========================================================
+// OSAI｜附件列印
+// 支援 JPG／JPEG／PNG／PDF
+// =========================================================
+
+async function printPreviewAttachment() {
+
+    if (osaiAttachmentPrintPreparing) {
+        return;
+    }
+
+    // 權限確認
+    if (!canPrintPreviewAttachment()) {
+        updateFilePreviewPrintButton();
+        return;
+    }
+
+    const {modal,image,pdfPages} =
+        getFilePreviewElements();
+
+    if (
+        !modal ||
+        modal.classList.contains('hidden')
+    ) {
+        return;
+    }
+
+    const isImage = filePreviewMode === 'image';
+    const isPdf = filePreviewMode === 'pdf';
+
+    if (!isImage && !isPdf) {
+
+        if (filePreviewMode === 'pdf-frame') {
+            showToast(
+                '此 PDF 目前使用備援預覽，無法使用內建列印。',
+                'error'
+            );
+        }
+
+        return;
+    }
+
+    // 圖片必須載入完成
+    if (
+        isImage &&
+        (
+            !image ||
+            !image.complete ||
+            !image.naturalWidth
+        )
+    ) {
+        showToast(
+            '圖片尚未載入完成，請稍後列印。',
+            'error'
+        );
+        return;
+    }
+
+    // PDF 各頁 Canvas
+    const canvases = isPdf && pdfPages
+        ? Array.from(
+            pdfPages.querySelectorAll(
+                '.pdf-preview-page-canvas'
+            )
+        )
+        : [];
+
+    // PDF 必須完整渲染
+    if (
+        isPdf &&
+        (
+            !filePreviewPdfPrintReady ||
+            !filePreviewPdfDocument ||
+            canvases.length !== filePreviewPdfDocument.numPages ||
+            canvases.some(
+                canvas => !canvas.width || !canvas.height
+            )
+        )
+    ) {
+        showToast(
+            'PDF 頁面尚未全部載入完成，請稍後列印。',
+            'error'
+        );
+        return;
+    }
+
+    // 記住目前附件及渲染工作
+    const openSerial = filePreviewOpenSerial;
+    const renderSerial = filePreviewPdfRenderSerial;
+
+    const imageSource = isImage
+        ? (image.currentSrc || image.src)
+        : '';
+
+    const firstWidth = isImage
+        ? image.naturalWidth
+        : canvases[0].width;
+
+    const firstHeight = isImage
+        ? image.naturalHeight
+        : canvases[0].height;
+
+    const landscape = firstWidth > firstHeight;
+
+    const maxHeight = landscape
+        ? '185mm'
+        : '270mm';
+
+    osaiAttachmentPrintPreparing = true;
+
+    cleanupAttachmentPrint();
+
+    try {
+
+        // 建立臨時列印區
+        const root = document.createElement('div');
+        root.id = 'osai-attachment-print-root';
+
+        const addPage = (src, number) => {
+
+            const page = document.createElement('section');
+            page.className = 'osai-attachment-print-page';
+
+            const picture = document.createElement('img');
+
+            picture.src = src;
+            picture.alt = `附件第 ${number} 頁`;
+            picture.style.maxHeight = maxHeight;
+
+            page.appendChild(picture);
+            root.appendChild(page);
+        };
+
+        if (isImage) {
+
+            addPage(imageSource, 1);
+
+        } else {
+
+            // PDF 每頁分別輸出
+            canvases.forEach((canvas, index) => {
+
+                addPage(
+                    canvas.toDataURL('image/png'),
+                    index + 1
+                );
+
+            });
+        }
+
+        // 附件專用紙張設定
+        const style = document.createElement('style');
+        style.id = 'osai-attachment-print-page-style';
+
+        style.textContent = `@page {
+            size: A4 ${landscape ? 'landscape' : 'portrait'};
+            margin: 10mm;
+            @bottom-center { content: none; }
+        }`;
+
+        document.head.appendChild(style);
+        document.body.appendChild(root);
+
+        document.documentElement.classList.add(
+            'osai-attachment-print-html'
+        );
+
+        document.body.classList.add(
+            'osai-attachment-print'
+        );
+
+        // 等待列印圖片載入及解碼
+        const pictures = Array.from(
+            root.querySelectorAll('img')
+        );
+
+        await Promise.all(
+            pictures.map(async picture => {
+
+                if (typeof picture.decode === 'function') {
+                    await picture.decode();
+                    return;
+                }
+
+                await new Promise((resolve, reject) => {
+
+                    if (picture.complete) {
+
+                        if (picture.naturalWidth) {
+                            resolve();
+                        } else {
+                            reject(
+                                new Error('列印圖片讀取失敗')
+                            );
+                        }
+
+                        return;
+                    }
+
+                    picture.addEventListener(
+                        'load',
+                        resolve,
+                        {once: true}
+                    );
+
+                    picture.addEventListener(
+                        'error',
+                        () => reject(
+                            new Error('列印圖片讀取失敗')
+                        ),
+                        {once: true}
+                    );
+                });
+            })
+        );
+
+        // 等待瀏覽器版面更新
+        await new Promise(resolve => {
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(resolve);
+            });
+
+        });
+
+        // 列印前再次確認權限及附件狀態
+        if (
+            !canPrintPreviewAttachment() ||
+            modal.classList.contains('hidden') ||
+            root.parentNode !== document.body ||
+            openSerial !== filePreviewOpenSerial ||
+            (
+                isPdf &&
+                (
+                    renderSerial !== filePreviewPdfRenderSerial ||
+                    !filePreviewPdfPrintReady
+                )
+            ) ||
+            (
+                isImage &&
+                imageSource !== (image.currentSrc || image.src)
+            )
+        ) {
+            cleanupAttachmentPrint();
+            return;
+        }
+
+        // 圖片準備完成後才啟動列印
+        window.print();
+
+    } catch (error) {
+
+        console.error(
+            'OSAI 附件列印準備失敗：',
+            error
+        );
+
+        cleanupAttachmentPrint();
+
+        showToast(
+            '附件列印準備失敗，請確認檔案。',
+            'error'
+        );
+
+    } finally {
+
+        osaiAttachmentPrintPreparing = false;
+    }
+}
+
+
+// 列印結束時清理臨時內容
+window.addEventListener(
+    'afterprint',
+    cleanupAttachmentPrint
+);
+
 function closeFilePreviewModal() {
+
+    cleanupAttachmentPrint();
+
     resetFilePreview();
     document.getElementById('file-preview-modal').classList.add('hidden');
     document.body.classList.remove('file-preview-open');
